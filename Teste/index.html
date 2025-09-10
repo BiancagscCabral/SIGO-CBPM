@@ -10,33 +10,36 @@
 
     <header class="main-header">
         <div class="logo-header">
-           <img src="assets/logo header.png" alt="brasão do cbmpe">
-           <span>Web Login</span>
+            <img src="assets/logo header.png" alt="Brasão do CBMPE">
         </div>
         <nav class="accessibility-nav">
-           <img src="assets/Contrast.png" alt="alto contraste">
-                <span class="icon"> </span>
+            <a href="#" class="nav-link">
+                <span class="icon">🌓</span>
                 Alto Contraste
-           <img src="assets/VL libras.png" alt="Libras">
-                <span class="icon"> </span>
-                VLibras 
-                VLibras 
+            </a>
+            <a href="#" class="nav-link">
+                <span class="icon">🤟</span>
+                VLibras
             </a>
         </nav>
     </header>
-    <main class="login-container">
-<section class="info-section">
-    <img src="assets/logo principal.png" alt="Brsão do corpo de bombeiros">
-    <p class="subheading">Sistema Integrado de Gestão de Ocorrências</p>
-    <img src="assets/logo principal.png" alt="Brasão do corpo de bombeiros">
-        <p>A plataforma integrada que moderniza o registro e a gestão das ocorrências em Pernambuco</p>
-    </section>
 
-<section class="login-form-section">
+    <main class="login-container">
+
+        <section class="info-section">
+            <img src="assets/logo principal.png" alt="Brasão do Corpo de Bombeiros de Pernambuco" class="info-logo">
+            <p class="subheading">Sistema Integrado de Gestão de Ocorrências</p>
+            <h1>Bem-vindo ao 
+                <br> SIGO CBMPE</h1>
+            <p>A plataforma integrada que moderniza o registro e a gestão das ocorrências em Pernambuco</p>
+        </section>
+
+        <section class="login-form-section">
             <form action="/login" method="POST">
                 <h2>Identifique-se com:</h2>
-                <p>Digite sua Matrícula para <strong>acessar</strong> o sistema</p>
-<div class="input-group">
+                <p class="entrada">Digite sua Matrícula para <strong>acessar</strong> o sistema</p>
+
+                <div class="input-group">
                     <label for="matricula">Matrícula</label>
                     <input type="text" id="matricula" name="matricula" placeholder="Digite sua Matrícula" required>
                 </div>
@@ -49,10 +52,12 @@
                 <button type="submit" class="submit-button">Continuar</button>
 
                 <p class="register-link">
-                    Primeira vez aqui? <a href="/registro">Registre-se</a>
+                    Primeira vez aqui? <a href="/registro"> <strong>Registre-se <span class="semi-bold"></span></strong></a>
                 </p>
             </form>
         </section>
+
+    </main>
 
 </body>
 </html></body>
