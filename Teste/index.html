@@ -1,64 +1,51 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="style.css">
-    <title>Login PI</title>
+    <title>Teste SIGO</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <header class="main-header">
-        <div class="logo-header">
-            <img src="assets/logo header.png" alt="Brasão do CBMPE">
-        </div>
-        <nav class="accessibility-nav">
-            <a href="#" class="nav-link">
-                <span class="icon">🌓</span>
-                Alto Contraste
-            </a>
-            <a href="#" class="nav-link">
-                <span class="icon">🤟</span>
-                VLibras
-            </a>
+    <header>
+        <img src="assets/logo_header.jpg" alt="Logo SIGO">
+        <nav aria-label="Acessibilidade">   <!-- usando "aria label" pra definir a tag de navegação de acessibilidade -->
+            <button>Alto Contraste</button>
+            <button>VLibras</button>
         </nav>
     </header>
 
-    <main class="login-container">
+    <main>
 
-        <section class="info-section">
-            <img src="assets/logo principal.png" alt="Brasão do Corpo de Bombeiros de Pernambuco" class="info-logo">
-            <p class="subheading">Sistema Integrado de Gestão de Ocorrências</p>
-            <h1>Bem-vindo ao 
-                <br> SIGO CBMPE</h1>
+        <section aria-labelledby="titulo-apresentacao">  <!-- ROTULADO POR "titulo-apresentacao" -->
+            <img src="assets/logo_main.jpg" alt="Logo Principal do SIGO">
+            <h1 id="titulo-apresentacao">Sistema Integrado de Gestão de Ocorrências</h1>
             <p>A plataforma integrada que moderniza o registro e a gestão das ocorrências em Pernambuco</p>
         </section>
 
-        <section class="login-form-section">
-            <form action="/login" method="POST">
-                <h2>Identifique-se com:</h2>
-                <p class="entrada">Digite sua Matrícula para <strong>acessar</strong> o sistema</p>
-
-                <div class="input-group">
+        <section aria-labelledby="titulo-login">
+            <form action="/login" method="post">
+                <h2 id="titulo-login">Identifique-se com:</h2>
+                <p>Digite sua Matrícula para acessar o sistema</p>
+                
+                <div>
                     <label for="matricula">Matrícula</label>
                     <input type="text" id="matricula" name="matricula" placeholder="Digite sua Matrícula" required>
                 </div>
-
-                <div class="input-group">
+                
+                <div>
                     <label for="senha">Senha</label>
                     <input type="password" id="senha" name="senha" placeholder="Digite sua Senha" required>
                 </div>
+                
+                <button type="submit">Entrar</button>
 
-                <button type="submit" class="submit-button">Continuar</button>
-
-                <p class="register-link">
-                    Primeira vez aqui? <a href="/registro"> <strong>Registre-se <span class="semi-bold"></span></strong></a>
-                </p>
+                <p>Primeira vez aqui? <a class="link-destaque" href="/registro">Registre-se</a></p>
             </form>
         </section>
 
     </main>
 
 </body>
-</html></body>
 </html>
