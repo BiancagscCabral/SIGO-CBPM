@@ -1,21 +1,42 @@
-import React from 'react';
-import './Relatorios.css';
 {/* (SE GI APAGAR MEUS COMENTS VOU ME MATA) */}
-{/* IMPORT ICONS */}
+import React, { useState } from 'react';
+import './Relatorios.css';
+
 import iconeAlerta from '../assets/Alert.png';
 import iconeProgresso from '../assets/Progress.png';
 import iconeSucesso from '../assets/Success.png';
 import iconeEquipes from '../assets/Teams.png';
 
+const dadosIniciaisDasOcorrencias = [
+  { id: '014', status: 'Em andamento', tipo: 'Incêndio Residencial', endereco: 'Rua das Flores, 123', horario: '14:30' },
+  { id: '025', status: 'Reforço Solicitado', tipo: 'Acidente de Trânsito', endereco: 'Av. Principal, 456', horario: '13:15' },
+  { id: '006', status: 'Em andamento', tipo: 'Alagamento', endereco: 'Rua da Moeda, 100', horario: '15:10' },
+  { id: '007', status: 'Finalizada', tipo: 'Resgate em Altura', endereco: 'Sertãozinho, 789', horario: '12:45' },
+  { id: '032', status: 'Finalizada', tipo: 'Incêndio Residencial', endereco: 'Rua do Sol, 500', horario: '11:00' },   
+  { id: '037', status: 'Em andamento', tipo: 'Vazamento de gás', endereco: 'Rua das Pitangas, 88', horario: '16:05' },
+  { id: '012', status: 'Em andamento', tipo: 'Captura de animal', endereco: 'Av. Beira Rio, 2010', horario: '15:50' },
+  { id: '024', status: 'Finalizada', tipo: 'Acidente de Trânsito', endereco: 'Cruzamento da Caxangá, 700', horario: '10:20' },
+  { id: '008', status: 'Finalizada', tipo: 'Alagamento', endereco: 'Rua da Harmonia, 355', horario: '09:45' },
+  { id: '022', status: 'Finalizada', tipo: 'Incêndio Residencial', endereco: 'Praça de Casa Forte, 112', horario: '08:15' },
+];
+
+const getStatusClass = (status) => {
+  if (status === 'Em andamento') return 'status-andamento';
+  if (status === 'Reforço Solicitado') return 'status-reforco';
+  if (status === 'Finalizada') return 'status-finalizada';
+  return '';
+};
+
 function Relatorio() {
+  const [ocorrencias, setOcorrencias] = useState(dadosIniciaisDasOcorrencias);
+
   return (
     <div className="relatorio-container">
-      {/* CABEÇALHO DO TÍTULO */}
       <div className="relatorio-header">
         <h1>RELATÓRIOS</h1>
       </div>
 
-      {/* GRID DE ESTATÍSTICAS */}
+      {/* ESTATÍSTICAS */}
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-info">
@@ -47,91 +68,61 @@ function Relatorio() {
         </div>
       </div>
 
-      {/* OCORRÊNCIAS ABERTAS */}
+      {/* OCORRÊNCIAS ABERTAS - (DINÂMICO) */}
       <div className="incident-section">
         <div className="incident-section-header">
           <h2>Ocorrências Abertas</h2>
           <a href="#">Ver Todas</a>
         </div>
         <div className="incident-list">
-
-          <div className="incident-item">
-            <div className="incident-details">
-              <strong>#001 <span className="status status-andamento">Em andamento</span></strong>
-              <p>Incêndio Residencial - Rua das Flores, 123</p>
-            </div>
-            <div className="incident-time-action">
-                <span>14:30</span>
-                <a href="#">Ver Detalhes da Ocorrência</a>
-            </div>
-          </div>
-
-          <div className="incident-item">
-            <div className="incident-details">
-              <strong>#002 <span className="status status-andamento">Em andamento</span></strong>
-              <p>Acidente de Trânsito - Av. Principal, 456</p>
-            </div>
-            <div className="incident-time-action">
-                <span>13:15</span>
-                <a href="#">Ver Detalhes da Ocorrência</a>
-            </div>
-          </div>
-
-          <div className="incident-item">
-            <div className="incident-details">
-              <strong>#003 <span className="status status-reforco">Reforço Solicitado</span></strong>
-              <p>Resgate em Altura - Sertãozinho, 789</p>
-            </div>
-            <div className="incident-time-action">
-                <span>12:45</span>
-                <a href="#">Ver Detalhes da Ocorrência</a>
-            </div>
-
-          </div>
+          {ocorrencias
+            .filter(ocorrencia => ocorrencia.status !== 'Finalizada')
+            .map(ocorrencia => (
+              <div key={ocorrencia.id} className="incident-item">
+                <div className="incident-details">
+                  <strong>
+                    #{ocorrencia.id}
+                    <span className={`status ${getStatusClass(ocorrencia.status)}`}>
+                      {ocorrencia.status}
+                    </span>
+                  </strong>
+                  <p>{ocorrencia.tipo} - {ocorrencia.endereco}</p>
+                </div>
+                <div className="incident-time-action">
+                  <span>{ocorrencia.horario}</span>
+                  <a href="#">Ver Detalhes da Ocorrência</a>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
 
-      {/* OCORRÊNCIAS FINALIZADAS */}
+      {/* OCORRÊNCIAS FINALIZADAS - (DINÂMICO) */}
       <div className="incident-section">
         <div className="incident-section-header">
           <h2>Ocorrências Finalizadas</h2>
           <a href="#">Ver Todas</a>
         </div>
         <div className="incident-list">
-            
-           <div className="incident-item">
-            <div className="incident-details">
-              <strong>#001 <span className="status status-finalizada">Finalizada</span></strong>
-              <p>Incêndio Residencial - Rua das Flores, 123</p>
-            </div>
-            <div className="incident-time-action">
-                <span>14:30</span>
-                <a href="#">Ver Detalhes da Ocorrência</a>
-            </div>
-          </div>
-          
-          <div className="incident-item">
-            <div className="incident-details">
-              <strong>#002 <span className="status status-finalizada">Finalizada</span></strong>
-              <p>Incêndio Residencial - Rua das Flores, 123</p>
-            </div>
-            <div className="incident-time-action">
-                <span>14:30</span>
-                <a href="#">Ver Detalhes da Ocorrência</a>
-            </div>
-          </div>
-
-          <div className="incident-item">
-            <div className="incident-details">
-              <strong>#003 <span className="status status-finalizada">Finalizada</span></strong>
-              <p>Incêndio Residencial - Rua das Flores, 123</p>
-            </div>
-            <div className="incident-time-action">
-                <span>14:30</span>
-                <a href="#">Ver Detalhes da Ocorrência</a>
-            </div>
-          </div>
-
+          {ocorrencias
+            .filter(ocorrencia => ocorrencia.status === 'Finalizada')
+            .map(ocorrencia => (
+              <div key={ocorrencia.id} className="incident-item">
+                <div className="incident-details">
+                   <strong>
+                    #{ocorrencia.id}
+                    <span className={`status ${getStatusClass(ocorrencia.status)}`}>
+                      {ocorrencia.status}
+                    </span>
+                  </strong>
+                  <p>{ocorrencia.tipo} - {ocorrencia.endereco}</p>
+                </div>
+                <div className="incident-time-action">
+                  <span>{ocorrencia.horario}</span>
+                  <a href="#">Ver Detalhes da Ocorrência</a>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     </div>
