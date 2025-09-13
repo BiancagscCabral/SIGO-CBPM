@@ -1,0 +1,15 @@
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: white;
+  padding-top: 72px;
+}
+
+.page-container {
+  display: flex;
+  align-items: center;
+  gap: 260px;
+}
