@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './MinhasOcorrencias.css';
+import Modal from './Modal';
 
 const getStatusClass = (status) => {
     if (status === 'Em andamento') return 'status-andamento';
@@ -8,6 +9,7 @@ const getStatusClass = (status) => {
     return '';
 };
 
+// DADOS
 const dadosIniciaisMinhasOcorrencias = [
     {
         id: '025',
@@ -52,8 +54,8 @@ const dadosIniciaisMinhasOcorrencias = [
             uf: 'PE'
         },
         chamado: {
-            tipo: 'Salvamento Aquático', // Alterado conforme solicitado
-            detalhes: 'Banhista com dificuldades de retornar à praia.' // Detalhes atualizados
+            tipo: 'Salvamento Aquático',
+            detalhes: 'Banhista com dificuldades de retornar à praia.'
         },
         equipes: [
             {
@@ -149,8 +151,17 @@ function MinhasOcorrencias() {
     const [ocorrencias, setOcorrencias] = useState(dadosIniciaisMinhasOcorrencias);
     const [ordenacao, setOrdenacao] = useState('horario-recente');
 
+    // CONTROLE DO MODAL
+    const [modalVisivel, setModalVisivel] = useState(false);
+    const [ocorrenciaSelecionada, setOcorrenciaSelecionada] = useState(null);
+
     const handleEdit = (ocorrenciaId) => alert(`Editar ocorrência ${ocorrenciaId}`);
-    const handleReport = (ocorrenciaId) => alert(`Gerar relatório para ocorrência ${ocorrenciaId}`);
+    
+    // ABRIR O MODAL
+    const handleVerDetalhes = (ocorrencia) => {
+        setOcorrenciaSelecionada(ocorrencia);
+        setModalVisivel(true);
+    };
 
     const ocorrenciasOrdenadas = [...ocorrencias].sort((a, b) => {
         switch (ordenacao) {
@@ -213,15 +224,22 @@ function MinhasOcorrencias() {
 
                         <div className="ocorrencia-actions-time">
                             <span className="horario">{formatarHorario(ocorrencia.timestamps.abertura)}</span>
-                            <a href="#">Ver Detalhes da Ocorrência</a>
+                            <a href="#" onClick={() => handleVerDetalhes(ocorrencia)}>Ver Detalhes da Ocorrência</a>
                             <div className="item-buttons">
                                 <button className="btn btn-editar" onClick={() => handleEdit(ocorrencia.id)}>📝 Editar</button>
-                                <button className="btn btn-relatorio" onClick={() => handleReport(ocorrencia.id)}>📄 Relatório de Ocorrência</button>
+                                <button className="btn btn-relatorio" onClick={() => handleVerDetalhes(ocorrencia)}>📄 Relatório de Ocorrência</button>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
+
+            {modalVisivel && (
+                <Modal 
+                    ocorrencia={ocorrenciaSelecionada} 
+                    onClose={() => setModalVisivel(false)} 
+                />
+            )}
         </div>
     );
 }
