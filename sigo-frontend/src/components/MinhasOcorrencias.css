@@ -1,0 +1,181 @@
+.minhas-ocorrencias-container {
+    width: 100%;
+    max-width: 960px;
+    margin: 24px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.minhas-ocorrencias-header {
+    background-color: #314697;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.minhas-ocorrencias-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* Seção "Ver Todas" */
+.minhas-ocorrencias-actions {
+    text-align: right;
+    padding: 0 8px;
+}
+
+.minhas-ocorrencias-actions a {
+    text-decoration: none;
+    color: #314697;
+    font-weight: bold;
+}
+
+.ocorrencia-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ocorrencia-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.ocorrencia-details {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.ocorrencia-details strong {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.ocorrencia-details p {
+    margin: 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.ocorrencia-details p.endereco {
+    color: #777;
+    font-size: 0.85rem;
+}
+
+.ocorrencia-actions-time {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.ocorrencia-actions-time .horario {
+    font-weight: bold;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.ocorrencia-actions-time a {
+    font-size: 0.85rem;
+    color: #314697;
+    text-decoration: none;
+    margin-bottom: 8px;
+}
+
+
+.item-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-editar {
+    background-color: #314697;
+    color: white;
+}
+
+.btn-editar:hover {
+    background-color: #2a3a7e;
+}
+
+.btn-relatorio {
+    background-color: #5c6bc0;
+    color: white;
+}
+
+.btn-relatorio:hover {
+    background-color: #4a57a0;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+}
+
+.status-andamento {
+    background-color: #f8a5a5;
+    color: #b91c1c;
+}
+
+.status-reforco {
+    background-color: #fde68a;
+    color: #ca8a04;
+}
+
+.status-finalizada {
+    background-color: #a7f3d0;
+    color: #065f46;
+}
+
+.minhas-ocorrencias-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 8px;
+}
+
+.ordenacao-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ordenacao-container label {
+    font-weight: bold;
+    color: #333;
+}
+
+.ordenacao-container select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 0.9rem;
+}
