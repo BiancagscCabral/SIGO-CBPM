@@ -1,0 +1,153 @@
+.relatorio-container {
+    width: 100%;
+    max-width: 960px;
+    margin: 24px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.relatorio-header {
+    background-color: #314697; /* Azul do protótipo */
+    color: white;
+    padding: 16px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.relatorio-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colunas de tamanho igual */
+    gap: 20px;
+}
+
+.stat-card {
+    background-color: #f7f7f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-info span {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.stat-info strong {
+    font-size: 2rem;
+    color: #333;
+}
+
+.stat-icon {
+    font-size: 3rem;
+    /* width: 40px; */
+    /* height: 40px; */
+}
+
+.incident-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.incident-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 8px;
+}
+
+.incident-section-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.incident-section-header a {
+    text-decoration: none;
+    color: #314697;
+    font-weight: bold;
+}
+
+.incident-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.incident-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.incident-details strong {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.incident-details p {
+    margin: 4px 0 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.incident-time-action {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.incident-time-action span {
+    font-weight: bold;
+    color: #333;
+}
+
+.incident-time-action a {
+    font-size: 0.9rem;
+    color: #314697;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+}
+
+.status-andamento {
+    background-color: #f8a5a5;
+    color: #b91c1c;
+}
+
+.status-reforco {
+    background-color: #fde68a;
+    color: #ca8a04;
+}
+
+.status-finalizada {
+    background-color: #a7f3d0;
+    color: #065f46;
+}
