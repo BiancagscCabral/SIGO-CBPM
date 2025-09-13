@@ -153,3 +153,29 @@
     background-color: #a7f3d0;
     color: #065f46;
 }
+
+.minhas-ocorrencias-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 8px;
+}
+
+.ordenacao-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ordenacao-container label {
+    font-weight: bold;
+    color: #333;
+}
+
+.ordenacao-container select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 0.9rem;
+}
