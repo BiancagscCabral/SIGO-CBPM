@@ -87,8 +87,8 @@
   resize: vertical;
 }
 
-.form-group select 
-{ -webkit-appearance: none;
+.form-group select {
+   -webkit-appearance: none;
    -moz-appearance: none;
     appearance: none;
      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%233A4B8B%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); 
@@ -98,17 +98,71 @@
     }
 
 
-.input-with-button { display: flex; align-items: center; gap: 10px; }
-.input-with-button input { flex-grow: 1; }
-.btn-capture { padding: 12px 20px; background-color: #ffffff; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-weight: 500; white-space: nowrap; transition: background-color 0.2s; }
-.btn-capture:hover { background-color: #f5f5f5; }
-.form-actions { display: flex; justify-content: flex-end; gap: 16px; padding-top: 20px; border-top: 1px solid #eee; }
-.form-actions button { padding: 12px 24px; border: none; border-radius: 4px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background-color 0.2s, transform 0.1s; display: flex; align-items: center; gap: 8px; }
-.form-actions button:active { transform: translateY(1px); }
-.btn-primary { background-color: #3A4B8B; color: white; }
-.btn-primary:hover { background-color: #2c3a6b; }
-.btn-secondary { background-color: #ffffff; color: #555; border: 1px solid #ccc; }
-.btn-secondary:hover { background-color: #f5f5f5; }
+.input-with-button { 
+  display: flex;
+   align-items: center;
+    gap: 10px; 
+  }
+
+.input-with-button input {
+   flex-grow: 1;
+   }
+
+.btn-capture {
+   padding: 12px 20px; 
+   background-color: #ffffff;
+    border: 1px solid #ccc;
+     border-radius: 4px;
+      cursor: pointer;
+       font-weight: 500; 
+       white-space: nowrap;
+        transition: background-color 0.2s;
+       }
+
+.btn-capture:hover { 
+  background-color: #f5f5f5;
+ }
+
+.form-actions {
+   display: flex; justify-content: flex-end;
+    gap: 16px; padding-top: 20px;
+     border-top: 1px solid #eee;
+     }
+
+.form-actions button { 
+  padding: 12px 24px;
+   border: none;
+    border-radius: 4px; 
+    font-size: 1rem;
+     font-weight: 600; 
+     cursor: pointer; 
+     transition: background-color 0.2s, transform 0.1s;
+      display: flex; 
+      align-items: center;
+       gap: 8px; 
+      }
+
+.form-actions button:active {
+  transform: translateY(1px);
+ }
+.btn-primary {
+   background-color: #3A4B8B;
+    color: white;
+   }
+
+.btn-primary:hover { 
+  background-color: #2c3a6b;
+ }
+
+.btn-secondary { 
+  background-color: #ffffff; 
+  color: #555;
+   border: 1px solid #ccc;
+   }
+
+.btn-secondary:hover {
+   background-color: #f5f5f5;
+   }
 @media (max-width: 600px) { .form-group.half-width { width: 100%; } }
 
 /* Estilos para upload de arquivos e assinatura */
