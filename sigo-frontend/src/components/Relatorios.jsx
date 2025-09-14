@@ -11,69 +11,69 @@ import iconeEquipes from '../assets/Teams.png';
 
 // DADOS
 const dadosIniciaisDasOcorrencias = [
-  {
-    id: '006', status: 'Em andamento', prioridade: 'Média',
-    timestamps: { abertura: '2025-09-13T13:15:00-03:00', finalizacao: null },
-    endereco: { logradouro: 'Rua da Moeda', numero: '100', bairro: 'Recife Antigo', cidade: 'Recife', uf: 'PE' },
-    chamado: { tipo: 'Alagamento', detalhes: 'Via pública inundada após fortes chuvas.' },
-    equipes: [{ id: 'AC-01', viatura: 'Auto Comando', efetivo: 2 }]
-  },
-  {
-    id: '014', status: 'Reforço Solicitado', prioridade: 'Alta',
-    timestamps: { abertura: '2025-09-13T14:30:00-03:00', finalizacao: null },
-    endereco: { logradouro: 'Rua das Flores', numero: '123', bairro: 'Espinheiro', cidade: 'Recife', uf: 'PE' },
-    chamado: { tipo: 'Incêndio Residencial', detalhes: 'Fumaça saindo de apartamento no 2º andar.' },
-    equipes: [{ id: 'ABT-02', viatura: 'Auto Bomba Tanque', efetivo: 4 }]
-  },
-  {
-    id: '025', status: 'Reforço Solicitado', prioridade: 'Alta',
-    timestamps: { abertura: '2025-09-13T14:33:00-03:00', finalizacao: null },
-    endereco: { logradouro: 'Av. Principal', numero: '456', bairro: 'Boa Viagem', cidade: 'Recife', uf: 'PE' },
-    chamado: { tipo: 'Acidente de Trânsito', detalhes: 'Colisão entre carro e moto, com vítima.' },
-    equipes: [{ id: 'UR-05', viatura: 'Unidade de Resgate', efetivo: 3 }]
-  },
-  {
-    id: '032', status: 'Finalizada', prioridade: 'Alta',
-    timestamps: { abertura: '2025-09-13T11:00:00-03:00', finalizacao: '2025-09-13T12:15:00-03:00' },
-    endereco: { logradouro: 'Rua do Sol', numero: '500', bairro: 'Santo Antônio', cidade: 'Recife', uf: 'PE' },
-    chamado: { tipo: 'Incêndio Residencial', detalhes: 'Curto-circuito em ar-condicionado.' },
-    equipes: [{ id: 'ABT-03', viatura: 'Auto Bomba Tanque', efetivo: 4 }]
-  },
-  {
-    id: '037', status: 'Em andamento', prioridade: 'Alta',
-    timestamps: { abertura: '2025-09-13T16:05:00-03:00', finalizacao: null },
-    endereco: { logradouro: 'Rua das Pitangas', numero: '88', bairro: 'Graças', cidade: 'Recife', uf: 'PE' },
-    chamado: { tipo: 'Vazamento de gás', detalhes: 'Forte cheiro de gás em edifício residencial.' },
-    equipes: [{ id: 'ABT-05', viatura: 'Auto Bomba Tanque', efetivo: 4 }]
-  },
-  {
-    id: '012', status: 'Em andamento', prioridade: 'Baixa',
-    timestamps: { abertura: '2025-09-13T15:50:00-03:00', finalizacao: null },
-    endereco: { logradouro: 'Av. Beira Rio', numero: '2010', bairro: 'Madalena', cidade: 'Recife', uf: 'PE' },
-    chamado: { tipo: 'Captura de animal', detalhes: 'Gato preso no topo de uma árvore.' },
-    equipes: [{ id: 'AR-12', viatura: 'Auto Resgate', efetivo: 2 }]
-  },
-  {
-    id: '024', status: 'Finalizada', prioridade: 'Média',
-    timestamps: { abertura: '2025-09-13T10:20:00-03:00', finalizacao: '2025-09-13T10:55:00-03:00' },
-    endereco: { logradouro: 'Cruzamento da Caxangá', numero: '700', bairro: 'Cordeiro', cidade: 'Recife', uf: 'PE' },
-    chamado: { tipo: 'Acidente de Trânsito', detalhes: 'Colisão sem vítimas, apenas danos materiais.' },
-    equipes: [{ id: 'AR-10', viatura: 'Auto Resgate', efetivo: 2 }]
-  },
-  {
-    id: '008', status: 'Finalizada', prioridade: 'Baixa',
-    timestamps: { abertura: '2025-09-13T09:45:00-03:00', finalizacao: '2025-09-13T10:30:00-03:00' },
-    endereco: { logradouro: 'Rua da Harmonia', numero: '355', bairro: 'Casa Amarela', cidade: 'Recife', uf: 'PE' },
-    chamado: { tipo: 'Alagamento', detalhes: 'Pequeno ponto de alagamento em via local.' },
-    equipes: [{ id: 'AC-02', viatura: 'Auto Comando', efetivo: 2 }]
-  },
-  {
-    id: '022', status: 'Finalizada', prioridade: 'Alta',
-    timestamps: { abertura: '2025-09-13T08:15:00-03:00', finalizacao: '2025-09-13T09:00:00-03:00' },
-    endereco: { logradouro: 'Praça de Casa Forte', numero: '112', bairro: 'Casa Forte', cidade: 'Recife', uf: 'PE' },
-    chamado: { tipo: 'Incêndio Residencial', detalhes: 'Princípio de incêndio na cozinha, controlado.' },
-    equipes: [{ id: 'ABT-01', viatura: 'Auto Bomba Tanque', efetivo: 4 }]
-  }
+    {
+        id: '006', status: 'Em andamento', prioridade: 'Média',
+        timestamps: { abertura: '2025-09-13T13:15:00-03:00', finalizacao: null },
+        endereco: { logradouro: 'Rua da Moeda', numero: '100', bairro: 'Recife Antigo', cidade: 'Recife', uf: 'PE' },
+        chamado: { tipo: 'Alagamento', detalhes: 'Via pública inundada após fortes chuvas.' },
+        equipes: [{ id: 'AC-01', viatura: 'Auto Comando', efetivo: 2 }]
+    },
+    {
+        id: '014', status: 'Reforço Solicitado', prioridade: 'Alta',
+        timestamps: { abertura: '2025-09-13T14:30:00-03:00', finalizacao: null },
+        endereco: { logradouro: 'Rua das Flores', numero: '123', bairro: 'Espinheiro', cidade: 'Recife', uf: 'PE' },
+        chamado: { tipo: 'Incêndio Residencial', detalhes: 'Fumaça saindo de apartamento no 2º andar.' },
+        equipes: [{ id: 'ABT-02', viatura: 'Auto Bomba Tanque', efetivo: 4 }]
+    },
+    {
+        id: '025', status: 'Reforço Solicitado', prioridade: 'Alta',
+        timestamps: { abertura: '2025-09-13T14:33:00-03:00', finalizacao: null },
+        endereco: { logradouro: 'Av. Principal', numero: '456', bairro: 'Boa Viagem', cidade: 'Recife', uf: 'PE' },
+        chamado: { tipo: 'Acidente de Trânsito', detalhes: 'Colisão entre carro e moto, com vítima.' },
+        equipes: [{ id: 'UR-05', viatura: 'Unidade de Resgate', efetivo: 3 }]
+    },
+    {
+        id: '032', status: 'Finalizada', prioridade: 'Alta',
+        timestamps: { abertura: '2025-09-13T11:00:00-03:00', finalizacao: '2025-09-13T12:15:00-03:00' },
+        endereco: { logradouro: 'Rua do Sol', numero: '500', bairro: 'Santo Antônio', cidade: 'Recife', uf: 'PE' },
+        chamado: { tipo: 'Incêndio Residencial', detalhes: 'Curto-circuito em ar-condicionado.' },
+        equipes: [{ id: 'ABT-03', viatura: 'Auto Bomba Tanque', efetivo: 4 }]
+    },
+    {
+        id: '037', status: 'Em andamento', prioridade: 'Alta',
+        timestamps: { abertura: '2025-09-13T16:05:00-03:00', finalizacao: null },
+        endereco: { logradouro: 'Rua das Pitangas', numero: '88', bairro: 'Graças', cidade: 'Recife', uf: 'PE' },
+        chamado: { tipo: 'Vazamento de gás', detalhes: 'Forte cheiro de gás em edifício residencial.' },
+        equipes: [{ id: 'ABT-05', viatura: 'Auto Bomba Tanque', efetivo: 4 }]
+    },
+    {
+        id: '012', status: 'Em andamento', prioridade: 'Baixa',
+        timestamps: { abertura: '2025-09-13T15:50:00-03:00', finalizacao: null },
+        endereco: { logradouro: 'Av. Beira Rio', numero: '2010', bairro: 'Madalena', cidade: 'Recife', uf: 'PE' },
+        chamado: { tipo: 'Captura de animal', detalhes: 'Gato preso no topo de uma árvore.' },
+        equipes: [{ id: 'AR-12', viatura: 'Auto Resgate', efetivo: 2 }]
+    },
+    {
+        id: '024', status: 'Finalizada', prioridade: 'Média',
+        timestamps: { abertura: '2025-09-13T10:20:00-03:00', finalizacao: '2025-09-13T10:55:00-03:00' },
+        endereco: { logradouro: 'Cruzamento da Caxangá', numero: '700', bairro: 'Cordeiro', cidade: 'Recife', uf: 'PE' },
+        chamado: { tipo: 'Acidente de Trânsito', detalhes: 'Colisão sem vítimas, apenas danos materiais.' },
+        equipes: [{ id: 'AR-10', viatura: 'Auto Resgate', efetivo: 2 }]
+    },
+    {
+        id: '008', status: 'Finalizada', prioridade: 'Baixa',
+        timestamps: { abertura: '2025-09-13T09:45:00-03:00', finalizacao: '2025-09-13T10:30:00-03:00' },
+        endereco: { logradouro: 'Rua da Harmonia', numero: '355', bairro: 'Casa Amarela', cidade: 'Recife', uf: 'PE' },
+        chamado: { tipo: 'Alagamento', detalhes: 'Pequeno ponto de alagamento em via local.' },
+        equipes: [{ id: 'AC-02', viatura: 'Auto Comando', efetivo: 2 }]
+    },
+    {
+        id: '022', status: 'Finalizada', prioridade: 'Alta',
+        timestamps: { abertura: '2025-09-13T08:15:00-03:00', finalizacao: '2025-09-13T09:00:00-03:00' },
+        endereco: { logradouro: 'Praça de Casa Forte', numero: '112', bairro: 'Casa Forte', cidade: 'Recife', uf: 'PE' },
+        chamado: { tipo: 'Incêndio Residencial', detalhes: 'Princípio de incêndio na cozinha, controlado.' },
+        equipes: [{ id: 'ABT-01', viatura: 'Auto Bomba Tanque', efetivo: 4 }]
+    }
 ];
 
 const getStatusClass = (status) => {
@@ -92,7 +92,8 @@ function Relatorio() {
     const [modalVisivel, setModalVisivel] = useState(false);
     const [ocorrenciaSelecionada, setOcorrenciaSelecionada] = useState(null);
 
-    const handleVerDetalhes = (ocorrencia) => {
+    const handleVerDetalhes = (event, ocorrencia) => {
+        event.preventDefault();
         setOcorrenciaSelecionada(ocorrencia);
         setModalVisivel(true);
     };
@@ -157,7 +158,7 @@ function Relatorio() {
                             </div>
                             <div className="incident-time-action">
                                 <span>{formatarHorario(ocorrencia.timestamps.abertura)}</span>
-                                <a href="#" onClick={() => handleVerDetalhes(ocorrencia)}>Ver Detalhes da Ocorrência</a>
+                                <a href="#" onClick={(e) => handleVerDetalhes(e, ocorrencia)}>Ver Detalhes da Ocorrência</a>
                             </div>
                         </div>
                     ))}
@@ -180,7 +181,7 @@ function Relatorio() {
                             </div>
                             <div className="incident-time-action">
                                 <span>{formatarHorario(ocorrencia.timestamps.abertura)}</span>
-                                <a href="#" onClick={() => handleVerDetalhes(ocorrencia)}>Ver Detalhes da Ocorrência</a>
+                                <a href="#" onClick={(e) => handleVerDetalhes(e, ocorrencia)}>Ver Detalhes da Ocorrência</a>
                             </div>
                         </div>
                     ))}
