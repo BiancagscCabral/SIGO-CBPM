@@ -1,8 +1,12 @@
 
+/* importando font poppins*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 * {
    box-sizing: border-box; 
    margin: 0;
     padding: 0; 
+    font-family: Poppins, sans-serif;
   }
 
 .page-container { 
@@ -10,8 +14,6 @@
   justify-content: center; 
   background-color: #f0f2f5; 
   padding: 40px 20px; 
-  font-family: 'Segoe UI',
-   Tahoma, Geneva, Verdana, sans-serif;
  }
 
 .form-container {
@@ -23,16 +25,19 @@
      overflow: hidden; }
 
 .form-header {
-  background-color: #3A4B8B; 
+  background-color: #314697; 
   color: white; 
   padding: 16px;
   text-align: center;
+  border-radius: 10px;
    }
 
 .form-header h2 { 
-  font-size: 1.25rem;
-   font-weight: 600;
+  font-size: 24px;
+   font-weight: 600;  
    }
+
+   
 .occurrence-form {
   padding: 30px;
   display: flex;
@@ -72,8 +77,8 @@
     width: 100%;
      padding: 12px;
       border: 1px solid #dcdcdc;
-       border-radius: 4px;
-        background-color: #f7f7f7;
+       border-radius: 10px;
+        background-color: #F1F4FF;
          font-size: 1rem; 
          font-family: inherit;
           transition: border-color 0.2s, box-shadow 0.2s; 
@@ -150,7 +155,7 @@
   transform: translateY(1px);
  }
 .btn-primary {
-   background-color: #3A4B8B;
+   background-color: #314697;
     color: white;
    }
 
@@ -167,6 +172,7 @@
 .btn-secondary:hover {
    background-color: #f5f5f5;
    }
+
 @media (max-width: 600px) { .form-group.half-width { width: 100%; } }
 
 /* Estilos para upload de arquivos e assinatura */
@@ -240,7 +246,7 @@
 .btn-clear-signature {
   background: none;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 10px;
   padding: 6px 12px;
   cursor: pointer;
   font-size: 0.8rem;
@@ -248,4 +254,14 @@
 
 .btn-clear-signature:hover {
   background-color: #f5f5f5;
+}
+/* Ícones dentro dos botões */
+.btn-capture img,
+.btn-primary img,
+.btn-secondary img {
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
+  
+  
 }
