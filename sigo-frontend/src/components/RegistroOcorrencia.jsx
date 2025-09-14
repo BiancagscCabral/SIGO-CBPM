@@ -6,6 +6,8 @@ import icon_gpsb from "../assets/icon_gpsb.svg";
 import pen from "../assets/pen.svg"; // ícone para upload de fotos
 import camera1 from "../assets/camera1.svg"; // ícone para upload de fotos
 import video from "../assets/video.svg"; // ícone para upload de vídeos
+import save from "../assets/save.svg"; // ícone para salvar
+import send from "../assets/send.svg"; // ícone para enviar 
 
 function RegistroOcorrencia() {
   const [nomeSolicitante, setNomeSolicitante] = useState("");
@@ -266,10 +268,10 @@ function RegistroOcorrencia() {
 
           <div className="form-actions">
             <button type="button" className="btn-secondary">
-              Salvar Localmente
+              <img src={save} alt="salvar" />Salvar Localmente
             </button>
             <button type="submit" className="btn-primary">
-              Enviar Online
+              <img src={send} alt="enviar" />Enviar Online
             </button>
           </div>
         </form>

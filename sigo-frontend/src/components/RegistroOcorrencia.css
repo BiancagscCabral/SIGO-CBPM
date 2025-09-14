@@ -1,19 +1,103 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-.page-container { display: flex; justify-content: center; background-color: #f0f2f5; padding: 40px 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-.form-container { width: 100%; max-width: 900px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); overflow: hidden; }
-.form-header { background-color: #3A4B8B; color: white; padding: 16px; text-align: center; }
-.form-header h2 { font-size: 1.25rem; font-weight: 600; }
-.occurrence-form { padding: 30px; display: flex; flex-direction: column; gap: 30px; }
-.form-section { display: flex; flex-wrap: wrap; gap: 20px; }
-.form-group { display: flex; flex-direction: column; gap: 8px; }
-.form-group.full-width { width: 100%; }
-.form-group.half-width { width: calc(50% - 10px); }
-.form-group label { font-weight: 600; color: #333; font-size: 0.9rem; }
-.form-group input[type="text"], .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #dcdcdc; border-radius: 4px; background-color: #f7f7f7; font-size: 1rem; font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; }
-.form-group input[type="text"]:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #3A4B8B; box-shadow: 0 0 0 2px rgba(58, 75, 139, 0.2); }
-.form-group textarea { resize: vertical; }
-.form-group select { -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%233A4B8B%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 10px auto; }
+
+.page-container { 
+  display: flex; 
+  justify-content: center; 
+  background-color: #f0f2f5; 
+  padding: 40px 20px; 
+  font-family: 'Segoe UI',
+   Tahoma, Geneva, Verdana, sans-serif;
+ }
+
+.form-container {
+   width: 100%; 
+   max-width: 900px; 
+   background-color: #ffffff;
+    border-radius: 8px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+     overflow: hidden; }
+
+.form-header {
+  background-color: #3A4B8B; 
+  color: white; 
+  padding: 16px;
+  text-align: center;
+   }
+
+.form-header h2 { 
+  font-size: 1.25rem;
+   font-weight: 600;
+   }
+.occurrence-form {
+  padding: 30px;
+  display: flex;
+  flex-direction: column; 
+   gap: 30px;
+   }
+
+.form-section {
+   display: flex;
+  flex-wrap: wrap; 
+    gap: 20px;
+  }
+
+.form-group {
+   display: flex;
+    flex-direction: column; 
+    gap: 8px;
+   }
+
+.form-group.full-width { 
+  width: 100%; 
+}
+
+.form-group.half-width {
+   width: calc(50% - 10px);
+   }
+
+.form-group label {
+   font-weight: 600;
+    color: #333;
+     font-size: 0.9rem; 
+    }
+
+.form-group input[type="text"],
+ .form-group select,
+  .form-group textarea { 
+    width: 100%;
+     padding: 12px;
+      border: 1px solid #dcdcdc;
+       border-radius: 4px;
+        background-color: #f7f7f7;
+         font-size: 1rem; 
+         font-family: inherit;
+          transition: border-color 0.2s, box-shadow 0.2s; 
+        }
+
+.form-group input[type="text"]:focus,
+ .form-group select:focus,
+  .form-group textarea:focus {
+     outline: none;
+      border-color: #3A4B8B; 
+      box-shadow: 0 0 0 2px rgba(58, 75, 139, 0.2); 
+    }
+
+.form-group textarea { 
+  resize: vertical;
+}
+
+.form-group select 
+{ -webkit-appearance: none;
+   -moz-appearance: none;
+    appearance: none;
+     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%233A4B8B%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); 
+     background-repeat: no-repeat;
+     background-position: right 15px top 50%; 
+    background-size: 10px auto; 
+    }
+
+
 .input-with-button { display: flex; align-items: center; gap: 10px; }
 .input-with-button input { flex-grow: 1; }
 .btn-capture { padding: 12px 20px; background-color: #ffffff; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-weight: 500; white-space: nowrap; transition: background-color 0.2s; }
