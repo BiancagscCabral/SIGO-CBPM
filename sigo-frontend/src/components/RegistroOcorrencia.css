@@ -285,6 +285,10 @@
   font-size: 0.8rem;
 }
 
+.btn-clear-signature * {
+  cursor: inherit;
+}
+
 .btn-clear-signature:hover {
   background-color: #f5f5f5;
 }
