@@ -1,0 +1,24 @@
+.app-layout {
+  display: flex;
+}
+
+.main-content-area.sidebar-open {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+}
+
+.main-content-area.sidebar-closed {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+.main-content-area {
+  flex-grow: 1;
+  padding-top: 72px; 
+  transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.page-content {
+  padding: 20px;
+}
+
