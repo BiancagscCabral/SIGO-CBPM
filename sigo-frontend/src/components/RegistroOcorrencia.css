@@ -1,0 +1,314 @@
+
+/* importando font poppins*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+   box-sizing: border-box; 
+   margin: 0;
+    padding: 0; 
+    font-family: Poppins, sans-serif;
+  }
+
+.page-container { 
+  display: flex; 
+  justify-content: center; 
+  background-color: #ffffff; 
+  padding: 40px 20px; 
+ }
+
+.form-container {
+   width: 100%; 
+   max-width: 900px; 
+   background-color: #ffffff;
+    border-radius: 8px; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+     overflow: hidden; }
+
+.form-header {
+  background-color: #314697; 
+  color: white; 
+  padding: 16px;
+  text-align: center;
+  border-radius: 10px;
+   }
+
+.form-header h2 { 
+  font-size: 24px;
+   font-weight: 600;  
+   }
+
+   
+.occurrence-form {
+  padding: 30px;
+  display: flex;
+  flex-direction: column; 
+   gap: 30px;
+   }
+
+.form-section {
+   display: flex;
+  flex-wrap: wrap; 
+    gap: 20px;
+  }
+
+.form-group {
+   display: flex;
+    flex-direction: column; 
+    gap: 8px;
+   }
+
+.form-group.full-width { 
+  width: 100%; 
+}
+
+.form-group.half-width {
+   width: calc(50% - 10px);
+   }
+
+.form-group label {
+   font-weight: 600;
+    color: #333;
+     font-size: 0.9rem; 
+    }
+
+.form-group input[type="text"],
+ .form-group select,
+  .form-group textarea { 
+    width: 100%;
+     padding: 12px;
+      border: 1px solid #dcdcdc;
+       border-radius: 10px;
+        background-color: #F1F4FF;
+         color: #6E5C5C;
+         font-size: 1rem; 
+         font-family: inherit;
+          transition: border-color 0.2s, box-shadow 0.2s; 
+        }
+
+.form-group input[type="text"]:focus,
+ .form-group select:focus,
+  .form-group textarea:focus {
+     outline: none;
+      border-color: #3A4B8B; 
+      box-shadow: 0 0 0 2px rgba(58, 75, 139, 0.2); 
+    }
+
+.form-group textarea { 
+  resize: vertical;
+}
+
+.form-group select {
+   -webkit-appearance: none;
+   -moz-appearance: none;
+    appearance: none;
+     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%233A4B8B%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); 
+     background-repeat: no-repeat;
+     background-position: right 15px top 50%; 
+    background-size: 10px auto; 
+    }
+
+
+.input-with-button { 
+  display: flex;
+   align-items: stretch;
+    gap: 10px; 
+  }
+
+.input-with-button input {
+   flex-grow: 1;
+   }
+
+.btn-capture {
+   padding: 12px 20px; 
+   background-color: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+     border-radius: 10px;
+      cursor: pointer;
+       font-weight: 500; 
+       white-space: nowrap;
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        gap : 8px;
+       }
+
+.btn-capture:hover { 
+  background-color: #f5f5f5;
+ }
+
+.form-actions {
+   display: flex; justify-content: flex-end;
+    gap: 16px; padding-top: 20px;
+     border-top: 1px solid #eee;
+     }
+
+.form-actions button { 
+  padding: 12px 24px;
+  border: 1px solid #ccc;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 10px; 
+    font-size: 1rem;
+     font-weight: 600; 
+     cursor: pointer; 
+     transition: background-color 0.2s, transform 0.1s;
+      display: flex; 
+      align-items: center;
+       gap: 8px; 
+      }
+
+.form-actions button:active {
+  transform: translateY(1px);
+ }
+
+.btn-primary {
+   background-color: #314697;
+    color: black;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+   }
+
+.btn-primary:hover { 
+  background-color: #0f2e9b;
+ }
+
+.btn-secondary { 
+  background-color: #ffffff; 
+  border: 1px solid black;
+    border-radius: 10px;
+   }
+
+.btn-secondary:hover {
+   background-color: #f5f5f5;
+   }
+
+@media (max-width: 600px) { .form-group.half-width { width: 100%; } }
+
+/* Estilos para upload de arquivos e assinatura */
+
+.upload-box {
+  border: 2px dashed #dcdcdc;
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.upload-box:hover {
+  border-color: #3A4B8B;
+  background-color: #f9f9ff;
+}
+
+.upload-label {
+  cursor: pointer;
+  display: flex;
+  border: 1px solid #ccc;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px;
+}
+
+.upload-label span {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap : 10px;
+}
+
+.upload-label small {
+  font-size: 0.8rem;
+  color: #888;
+
+}
+
+/* Esconde o input de arquivo padrão */
+.upload-box input[type="file"] {
+  display: none;
+}
+
+.signature-box {
+  border: 2px dashed #dcdcdc;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.signature-canvas {
+  width: 100%;
+  height: 150px;
+  border: 1px solid #E9EDF4; 
+  border-radius: 10px; 
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"><text x="95" y="15" font-family="Poppins, sans-serif" font-size="14" fill="%23a0a8b7" text-anchor="end">Assine aqui</text></svg>');
+  background-repeat: no-repeat;
+  background-position: bottom 10px right 15px;
+}
+
+.signature-actions {
+  position: relative; 
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; 
+  margin-top: 8px;
+  padding: 0 5px;
+  height: 28px; 
+}
+
+.signature-actions small {
+  color: #626262;
+  font-size: 1rem;
+  font-style: bold;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%; 
+  text-align: center;
+ } 
+
+.btn-clear-signature {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 6px 12px;
+  align-items: center;
+  white-space: nowrap;
+  display: flex;
+  gap : 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-clear-signature * {
+  cursor: inherit;
+}
+
+.btn-clear-signature:hover {
+  background-color: #f5f5f5;
+}
+/* Ícones dentro dos botões */
+.btn-capture img,
+.btn-primary img,
+.btn-secondary img {
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
+}
+
+label {
+  display: flex;        
+  align-items: center;  
+  gap: 2px;           
+}
+
+label img {
+  vertical-align: middle;   /* alinha o icon vertical */
+  width: 32px;          
+  height: 32px;         
+} 
