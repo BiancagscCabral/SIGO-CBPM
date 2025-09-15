@@ -37,75 +37,73 @@ function Dashboard() {
   const hanleRegistroClick = () => {
     navigate('/registro-ocorrencia');
   }
+  return (
+    <main className="main-content">
+      <div className="dashboard-header">
+        <h1>Dashboard</h1>
+          <p>Bem Vindo ao Sistema Integrado de Gestão de Ocorrências</p>
+      </div>
+      <section className="stats-grid">
+        <StatCard 
+        icon={<FaFire />}
+        value="1.247"
+        title="Total de Ocorrências"
+        increase="+2.5% desde o mês passado"
+        iconBgColor="#f44336"
+        />
+        <StatCard 
+        icon={<FaClock />}
+        value="23"
+        title="Ocorrências Hoje"
+        subtext="Últimas 24 horas"
+        iconBgColor="#ff9800"
+        />
+        <StatCard 
+        icon={<FaRegClock />}
+        value="8"
+        title="Em Andamento"
+        subtext="Requer atenção"
+        iconBgColor="#2196f3"
+        />
+        <StatCard 
+        icon={<FaUsers />}
+        value="12"
+        title="Equipes Ativas"
+        subtext="Disponíveis para atendimento"
+        iconBgColor="#4caf50"
+        />
+        </section>
 
-
-    return (
-        <main className="main-content">
-          <div className="dashboard-header">
-            <h1>Dashboard</h1>
-            <p>Bem Vindo ao Sistema Integrado de Gestão de Ocorrências</p>
-          </div>
-            <section className="stats-grid">
-                <StatCard 
-                icon={<FaFire />}
-                value="1.247"
-                title="Total de Ocorrências"
-                increase="+2.5% desde o mês passado"
-                iconBgColor="#f44336"
-                />
-                <StatCard 
-                icon={<FaClock />}
-                value="23"
-                title="Ocorrências Hoje"
-                subtext="Últimas 24 horas"
-                iconBgColor="#ff9800"
-                />
-                <StatCard 
-                icon={<FaRegClock />}
-                value="8"
-                title="Em Andamento"
-                subtext="Requer atenção"
-                iconBgColor="#2196f3"
-                />
-                <StatCard 
-                icon={<FaUsers />}
-                value="12"
-                title="Equipes Ativas"
-                subtext="Disponíveis para atendimento"
-                iconBgColor="#4caf50"
-                />
-            </section>
-
-            <section className="quick-access-grid">
-                <QuickAccessCard
-                icon={<LuFilePlus />}
-                title="Registrar Ocorrência"
-                description="Cadastrar nova ocorrência no sistema"
-                bgColor="bg-red"
-                onClick={hanleRegistroClick}
-                />
-                <QuickAccessCard
-                icon={<FiClipboard />}
-                title="Minhas Ocorrências"
-                description="Visualizar ocorrências registradas por mim"
-                bgColor="bg-blue"
-                />
-                <QuickAccessCard
-                icon={<IoDocumentTextOutline />}
-                title="Relatórios"
-                description="Gerar relatórios e estatísticas"
-                bgColor="bg-orange"
-                />
-                <QuickAccessCard
-                icon={<FiSettings />}
-                title="Configurações"
-                description="Configurar sistema e preferências"
-                bgColor="bg-gray"
-                linkText="Configurar"
-                />
-            </section>
-        </main>
-    );
+        <section className="quick-access-grid">
+          <QuickAccessCard
+          icon={<LuFilePlus />}
+          title="Registrar Ocorrência"
+          description="Cadastrar nova ocorrência no sistema"
+          bgColor="bg-red"
+          onClick={hanleRegistroClick}
+          />
+          <QuickAccessCard
+          icon={<FiClipboard />}
+          title="Minhas Ocorrências"
+          description="Visualizar ocorrências registradas por mim"
+          bgColor="bg-blue"
+          />
+          <QuickAccessCard
+          icon={<IoDocumentTextOutline />}
+          title="Relatórios"
+          description="Gerar relatórios e estatísticas"
+          bgColor="bg-orange"
+          />
+          <QuickAccessCard
+          icon={<FiSettings />}
+          title="Configurações"
+          description="Configurar sistema e preferências"
+          bgColor="bg-gray"
+          linkText="Configurar"
+          />
+      </section>
+    </main>
+  );
 }
 
 export default Dashboard;
