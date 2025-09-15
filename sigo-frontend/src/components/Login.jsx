@@ -1,8 +1,21 @@
 import React from 'react';
+import {useNavigate} from 'react-router-dom';
 import './Login.css';
 import logoSigo from '../assets/logosigo.svg';
 
-function Login({ onRegister }) {
+function Login() {
+  const navigate = useNavigate();
+  
+  const handleLogin = (e) => {
+    e.preventDefault();
+    navigate('/dashboard');
+  };
+
+  const handleRegisterClick = (e) => {
+    e.preventDefault();
+    navigate('/register');
+  };
+
   return (
     <div className="page-container">
       <div className="logo-section">
@@ -12,15 +25,17 @@ function Login({ onRegister }) {
       </div>
 
       <div className="login-section">
-        <h2>Digite sua Matrícula para acessar o sistema</h2>
-        <label>Matrícula</label>
-        <input type="text" placeholder="Digite sua Matrícula" />
+        <form onSubmit={handleLogin}>
+          <h2>Digite sua Matrícula para acessar o sistema</h2>
+          <label>Matrícula</label>
+          <input type="text" placeholder="Digite sua Matrícula" />
 
-        <label>Senha</label>
-        <input type="password" placeholder="Digite sua Senha"/>
+          <label>Senha</label>
+          <input type="password" placeholder="Digite sua Senha"/>
 
-        <button type="submit">Entrar</button>
-        <p>Primeira vez aqui? <a href="#" onClick={onRegister}>Registre-se</a></p>
+          <button type="submit">Entrar</button>
+          <p>Primeira vez aqui? <a href="#" onClick={handleRegisterClick}>Registre-se</a></p>
+        </form>
       </div>
     </div>
   );

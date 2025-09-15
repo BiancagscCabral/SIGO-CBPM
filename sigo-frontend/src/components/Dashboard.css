@@ -1,0 +1,121 @@
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.dashboard-header p {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin-top: 4px;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 40px;
+  background-color: white;;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.stat-card-info h2 {
+  font-size: 28px;
+  margin: 0;
+  color: #333;
+}
+
+.stat-card-info p {
+  margin: 4px 0 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.stat-card-info .increase {
+  color: #00a37a;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.stat-card .icon {
+  font-size: 24px;
+}
+
+.quick-access-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.quick-access-card {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quick-access-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.quick-access-card .icon-background {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.quick-access-card .icon-background .icon {
+  font-size: 24px;
+  color: #fff;
+}
+
+.quick-access-card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #333;
+}
+
+.quick-access-card p {
+  margin: 0 0 16px;
+  color: #666;
+  font-size: 14px;
+}
+
+.quick-access-card .link {
+  color: #ff6f00;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.bg-red { background-color: #f44336; }
+.bg-blue { background-color: #2196f3; }
+.bg-orange { background-color: #ff9800; }
+.bg-gray { background-color: #607d8b; }

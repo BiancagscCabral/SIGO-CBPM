@@ -1,9 +1,35 @@
+.page-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 80px;
+  background-color: white;
+}
+
+body {
+  margin: 0;
+  background-color: white;
+}
+
+.logo-section {
+  flex: 0 1 800px;
+  text-align: center;
+  padding-right: 40px;
+}
+
 .register-section {
   width: 400px;
   padding: 40px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.register-section form {
   display: flex;
   flex-direction: column;
   gap: 12px;

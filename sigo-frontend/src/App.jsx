@@ -1,22 +1,25 @@
-import { useState } from 'react'
-import './App.css'
-import Header from './components/Header'
-import Register from './components/Register'
-import Login from './components/Login'
+import React, { useState } from 'react';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import './App.css';
+import Header from './components/Header';
+import Login from './components/Login';
+import Register from './components/Register';
+import Dashboard from './components/Dashboard';
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true)
-
   return (
     <>
-      <Header/>
-      {isLogin ? (
-        <Login onRegister={() => setIsLogin(false)} />
-      ) : (
-        <Register onBackToLogin={() => setIsLogin(true)} />
-      )}
+      <Header />
+      <main className="page-container">
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Navigate to="/login" />} />
+        </Routes>
+      </main>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
