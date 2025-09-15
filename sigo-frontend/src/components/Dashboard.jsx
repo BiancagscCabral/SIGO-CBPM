@@ -4,6 +4,7 @@ import { FiFilePlus, FiClipboard, FiFileText, FiSettings, FiArrowUp } from 'reac
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { LuFilePlus } from "react-icons/lu";
 import './Dashboard.css';
+import { useNavigate } from 'react-router-dom';
 
 const StatCard = ({ icon, value, title, subtext, increase, iconBgColor }) => (
   <div className="stat-card">
@@ -19,8 +20,8 @@ const StatCard = ({ icon, value, title, subtext, increase, iconBgColor }) => (
   </div>
 );
 
-const QuickAccessCard = ({ icon, title, description, bgColor, linkText = "Clique para acessar" }) => (
-  <div className="quick-access-card">
+const QuickAccessCard = ({ icon, title, description, bgColor, linkText = "Clique para acessar", onClick }) => (
+  <div className="quick-access-card" onClick={onClick}>
     <div className={`icon-background ${bgColor}`}>
       <div className="icon">{icon}</div>
     </div>
@@ -31,6 +32,13 @@ const QuickAccessCard = ({ icon, title, description, bgColor, linkText = "Clique
 );
 
 function Dashboard() {
+  const navigate = useNavigate();
+
+  const hanleRegistroClick = () => {
+    navigate('/registro-ocorrencia');
+  }
+
+
     return (
         <main className="main-content">
           <div className="dashboard-header">
@@ -74,6 +82,7 @@ function Dashboard() {
                 title="Registrar Ocorrência"
                 description="Cadastrar nova ocorrência no sistema"
                 bgColor="bg-red"
+                onClick={hanleRegistroClick}
                 />
                 <QuickAccessCard
                 icon={<FiClipboard />}
