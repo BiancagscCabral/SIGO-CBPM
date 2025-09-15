@@ -8,6 +8,7 @@ import camera1 from "../assets/camera1.svg"; // ícone para upload de fotos
 import video from "../assets/video.svg"; // ícone para upload de vídeos
 import save from "../assets/save.svg"; // ícone para salvar
 import send from "../assets/send.svg"; // ícone para enviar 
+import lixo from "../assets/lixo.svg"; // ícone para lixeira
 
 function RegistroOcorrencia() {
   const [nomeSolicitante, setNomeSolicitante] = useState("");
@@ -259,7 +260,7 @@ function RegistroOcorrencia() {
                     onClick={clearSignature}
                     className="btn-clear-signature"
                   >
-                    Limpar
+                   <img src={lixo} alt="lixeira" /> Limpar
                   </button>
                 </div>
               </div>
