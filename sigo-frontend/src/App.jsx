@@ -7,6 +7,8 @@ import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import RegistroOcorrencia from './components/RegistroOcorrencia'; 
 import Layout from './components/Layout';
+import Relatorios from './components/Relatorios';
+import MinhasOcorrencias from './components/MinhasOcorrencias';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
       <Route element={<Layout/>}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/registro-ocorrencia" element={<RegistroOcorrencia />} />
+        <Route path="/relatorios" element={<Relatorios />} />
+        <Route path="/minhas-ocorrencias" element={<MinhasOcorrencias />} />
       </Route>
     </Routes>
   );
