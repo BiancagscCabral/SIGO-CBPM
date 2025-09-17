@@ -2,42 +2,63 @@
 /* importando font poppins*/
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+
+
 * {
    box-sizing: border-box; 
    margin: 0;
     padding: 0; 
     font-family: Poppins, sans-serif;
   }
-
+  
 .page-container { 
   display: flex; 
-  justify-content: center; 
+  flex-direction: column; 
+  align-items: center;
   background-color: #ffffff; 
-  padding: 40px 20px; 
- }
+  padding: 24px 40px 40px; /* ta em shorthand*/
+  gap: 32px; /* Adiciona um espaço entre o título e o container principal */
+}
 
 .form-container {
-   width: 100%; 
-   max-width: 900px; 
-   background-color: #ffffff;
-    border-radius: 8px; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-     overflow: hidden; }
+  width: 1211px;
+  max-width: 100%; /* Garante que não ultrapasse a tela em janelas menores */
+  height: auto; /* a altura se ajusta ao conteúdo */
+  min-height: 764px; /* Define uma altura, mas permite crescer se caso precisar*/
+  background-color: #ffffff;
+  border-radius: 8px; 
+ /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+}
 
-.form-header {
-  background-color: #314697; 
-  color: white; 
-  padding: 16px;
-  text-align: center;
-  border-radius: 10px;
-   }
+/* título*/
+.page-title-section {
+  width: 100%;
+  margin-bottom: 32px; /* Espaço entre o subtítulo e o form */
+}
 
-.form-header h2 { 
-  font-size: 24px;
-   font-weight: 600;  
-   }
+.page-title-section h1 {
+  font-size: 2rem; 
+  font-weight: 700;
+  color: #314697; /* Cor principal azul */
+  margin-bottom: 8px;
+}
 
-   
+.page-title-section p {
+  font-size: 1rem; /* 16px */
+  color: #6E5C5C; /* Cinza (seguindo o protótipo)*/
+}
+
+/*titulo do formulario*/
+
+.form-section-title{
+font-size: 1.25rem; /* 20px */
+  font-weight: 600;
+  color: #1E1E1E;
+  margin-bottom: 8px; /* Reduz a margem para ficar mais perto dos campos */
+  padding-bottom: 16px;
+
+}
+
 .occurrence-form {
   padding: 30px;
   display: flex;
@@ -67,7 +88,7 @@
 
 .form-group label {
    font-weight: 600;
-    color: #333;
+    color: #1E1E1E;
      font-size: 0.9rem; 
     }
 
@@ -126,7 +147,7 @@
      border-radius: 10px;
       cursor: pointer;
        font-weight: 500; 
-       white-space: nowrap;
+       white-space:inherit;
         transition: background-color 0.2s;
         display: flex;
         align-items: center;
@@ -138,8 +159,10 @@
  }
 
 .form-actions {
-   display: flex; justify-content: flex-end;
-    gap: 16px; padding-top: 20px;
+   display: flex; 
+   justify-content: center;
+    gap: 16px; 
+    padding-top: 20px;
      border-top: 1px solid #eee;
      }
 
@@ -155,6 +178,8 @@
       display: flex; 
       align-items: center;
        gap: 8px; 
+       min-width: 220px;
+       justify-content: center;
       }
 
 .form-actions button:active {
@@ -162,7 +187,7 @@
  }
 
 .btn-primary {
-   background-color: #314697;
+   background-color: rgba(49, 70, 151, 1);
     color: black;
     border-radius: 10px;
     border: 1px solid #ccc;
@@ -170,7 +195,7 @@
    }
 
 .btn-primary:hover { 
-  background-color: #0f2e9b;
+  background-color: rgba(134, 151, 217, 1);
  }
 
 .btn-secondary { 
@@ -180,7 +205,7 @@
    }
 
 .btn-secondary:hover {
-   background-color: #f5f5f5;
+   background-color: rgba(134, 151, 217, 1);
    }
 
 @media (max-width: 600px) { .form-group.half-width { width: 100%; } }
@@ -228,6 +253,10 @@
   font-size: 0.8rem;
   color: #888;
 
+}
+
+.upload-box:hover{
+  color: #6BE749;
 }
 
 /* Esconde o input de arquivo padrão */
@@ -292,6 +321,7 @@
 .btn-clear-signature:hover {
   background-color: #f5f5f5;
 }
+
 /* Ícones dentro dos botões */
 .btn-capture img,
 .btn-primary img,
