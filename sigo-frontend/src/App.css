@@ -5,3 +5,9 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: white;
 }
+
+.input-sem-setas::-webkit-outer-spin-button,
+.input-sem-setas::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
