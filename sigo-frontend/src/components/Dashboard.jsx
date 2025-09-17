@@ -34,9 +34,18 @@ const QuickAccessCard = ({ icon, title, description, bgColor, linkText = "Clique
 function Dashboard() {
   const navigate = useNavigate();
 
-  const hanleRegistroClick = () => {
+  const handleRegistroClick = () => {
     navigate('/registro-ocorrencia');
   }
+
+  const handleRelatoriosClick = () => {
+    navigate('/relatorios');
+  }
+
+  const handleMinhasOcorrenciasClick = () => {
+    navigate('/minhas-ocorrencias');
+  }
+
   return (
     <main className="main-content">
       <div className="dashboard-header">
@@ -80,19 +89,22 @@ function Dashboard() {
           title="Registrar Ocorrência"
           description="Cadastrar nova ocorrência no sistema"
           bgColor="bg-red"
-          onClick={hanleRegistroClick}
+          onClick={handleRegistroClick}
           />
           <QuickAccessCard
           icon={<FiClipboard />}
           title="Minhas Ocorrências"
           description="Visualizar ocorrências registradas por mim"
           bgColor="bg-blue"
+          onClick={handleMinhasOcorrenciasClick}
           />
           <QuickAccessCard
           icon={<IoDocumentTextOutline />}
           title="Relatórios"
           description="Gerar relatórios e estatísticas"
           bgColor="bg-orange"
+          onClick={handleRelatoriosClick}
+          
           />
           <QuickAccessCard
           icon={<FiSettings />}

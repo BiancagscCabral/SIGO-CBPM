@@ -27,24 +27,39 @@ function Register() {
       <div className="register-section">
         <form onSubmit={handleRegister}>
           <h2>Cadastre-se no Sistema</h2>
+
+          <div className="form-group full-width">
+            <label>Nome Completo</label>
+            <input type="text" placeholder="Digite seu nome completo" />
+          </div>
+
+          <div className="form-group">
+            <label>Matrícula</label>
+            <input type="number" className="input-sem-setas" placeholder="Digite sua matrícula" />
+          </div>
+
+          <div className="form-group">
+            <label>Telefone</label>
+            <input type="number" className="input-sem-setas" placeholder="Digite seu número" />
+          </div>
+
+          <div className="form-group full-width">
+            <label>E-mail</label>
+            <input type="email" placeholder="Digite seu e-mail" />
+          </div>
           
-          <label>Nome Completo</label>
-          <input type="text" placeholder="Digite seu nome completo" />
+          <div className="form-group">
+            <label>Senha</label>
+            <input type="password" placeholder="Digite sua senha" />
+          </div>
 
-          <label>Matrícula</label>
-          <input type="text" placeholder="Digite sua matrícula" />
+          <div className="form-group">
+            <label>Confirmar Senha</label>
+            <input type="password" placeholder="Confirme sua senha" />
+          </div>
 
-          <label>E-mail</label>
-          <input type="email" placeholder="Digite seu e-mail" />
-
-          <label>Senha</label>
-          <input type="password" placeholder="Digite sua senha" />
-
-          <label>Confirmar Senha</label>
-          <input type="password" placeholder="Confirme sua senha" />
-
-          <button type="submit">Cadastrar</button>
-          <p>Já possui conta? <a href="#" onClick={handleBackToLoginClick}>Faça login</a></p>
+          <button type="submit" className="full-width">Cadastrar</button>
+          <p className="full-width">Já possui conta? <a href="#" onClick={handleBackToLoginClick}>Faça login</a></p>
         </form>
       </div>
     </div>

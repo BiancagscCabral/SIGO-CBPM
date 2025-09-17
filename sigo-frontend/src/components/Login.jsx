@@ -26,7 +26,7 @@ function Login() {
 
       <div className="login-section">
         <form onSubmit={handleLogin}>
-          <h2>Digite sua Matrícula para acessar o sistema</h2>
+          <h2>Identifique-se com sua matrícula para continuar</h2>
           <label>Matrícula</label>
           <input type="text" placeholder="Digite sua Matrícula" />
 
