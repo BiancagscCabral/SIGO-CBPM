@@ -1,9 +1,12 @@
 .page-container {
   width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 40px 20px;
+  justify-content: space-between;
+  padding: 20px 80px;
   background-color: white;
 }
 
@@ -13,28 +16,18 @@ body {
 }
 
 .logo-section {
-  
-  margin-left: 150px;
+  flex: 0 1 800px;
   text-align: center;
-  margin-right: auto;
-}
-
-.logo-section img {
-  max-width: 600px;
-  margin-bottom: 20px;
+  padding-right: 40px;
 }
 
 .logo-section p {
   color: #6E5C5C;
   font-size: 1.2rem;
-  margin-bottom: 10px;
-  max-width: 600px;
-}
-
-.logo-section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  white-space: nowrap;
+  line-height: 1.5;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 500px;
 }
 
 .login-section h1 {
@@ -51,10 +44,8 @@ body {
 }
 
 .login-section {
-  max-width: 400px;
+  width: 400px;
   padding: 50px;
-  margin-left: 0;
-  margin-right: auto;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -73,8 +64,7 @@ body {
 
 .login-section label {
   color: #000000;
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: bold;
 }
 
 .login-section input {
@@ -82,11 +72,10 @@ body {
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
-  width: 100%;
 }
 
 .login-section button {
-  padding: 10px;
+  padding: 12px;
   border-radius: 6px;
   border: none;
   background-color: #314697;
@@ -99,21 +88,4 @@ body {
 
 .login-section button:hover {
   background-color: #8697D9;
-}
-
-.forgot-password-container {
-  width: 100%;
-  text-align: right;
-  margin-bottom: 12px;
-}
-
-.forgot-password-link {
-  color: #314697;
-  font-size: 0.9rem;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.forgot-password-link:hover {
-  text-decoration: underline;
 }

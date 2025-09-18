@@ -1,119 +1,75 @@
-* {
-  box-sizing: border-box;
+.page-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 80px;
+  background-color: white;
 }
 
 body {
   margin: 0;
   background-color: white;
-  font-family: sans-serif;
-}
-
-.page-container {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  gap: 60px;
 }
 
 .logo-section {
-  flex: 1;
-  max-width: 500px;
+  flex: 0 1 800px;
   text-align: center;
-  color: #333;
-}
-
-.logo-section img {
-  max-width: 250px;
-  margin-bottom: 20px;
-}
-
-.logo-section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.logo-section p {
-  font-size: 1rem;
-  line-height: 1.5;
+  padding-right: 40px;
 }
 
 .register-section {
-  width: 100%;
-  max-width: 600px;
-  margin-right: auto;
-  padding: 30px 50px;
+  width: 400px;
+  padding: 40px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.register-section h2 {
-    text-align: left;
-    font-weight: normal;
-    margin-bottom: 5px;
-    font-size: 1.2rem;
-}
-
 .register-section form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-}
-
-.form-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
 }
 
-.full-width {
-  grid-column: 1 / -1;
+.register-section h2 {
+  font-size: 1.1rem;
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+
+.register-section p {
+  text-align: center;
+  font-size: 1.1rem;
 }
 
 .register-section label {
   color: #000000;
   font-weight: bold;
-  font-size: 0.9rem;
 }
 
 .register-section input {
-  padding: 10px;
+  padding: 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
-  width: 100%;
-}
-
-.input-sem-setas::-webkit-outer-spin-button,
-.input-sem-setas::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.input-sem-setas {
-  -moz-appearance: textfield;
 }
 
 .register-section button {
-  padding: 10px;
+  padding: 12px;
   border-radius: 6px;
   border: none;
   background-color: #314697;
   color: white;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 5px;
-  transition: background-color 0.3s;
+  margin-top: 10px;
 }
 
 .register-section button:hover {
   background-color: #8697D9;
-}
-
-.register-section form p {
-    text-align: center;
-    margin-top: 5px;
 }
