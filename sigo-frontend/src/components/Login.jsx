@@ -61,7 +61,7 @@ function Login() {
         <form onSubmit={handleLogin}>
           <h2>Identifique-se para acessar o sistema</h2>
 
-          <label htmlfor="matricula">Matrícula</label>
+          <label htmlFor="matricula">Matrícula</label>
           <input 
           id="matricula"
           name="matricula"
