@@ -24,6 +24,15 @@ function Register() {
     }));
   };
 
+  const handleNumericChange = (e) => {
+    const { name, value } = e.target;
+    const onlyNums = value.replace(/[^0-9]/g, '');
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: onlyNums,
+    }));
+  }
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
@@ -75,65 +84,81 @@ function Register() {
         <form onSubmit={handleRegister}>
           <h2>Cadastre-se no Sistema</h2>
           
-          <label>Nome Completo</label>
-          <input
-            type="text"
-            name="nome"
-            placeholder="Digite seu nome completo"
-            value={formData.nome || ''}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-group">
+            <label>Nome Completo</label>
+            <input
+              type="text"
+              name="nome"
+              placeholder="Digite seu nome completo"
+              value={formData.nome || ''}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <label>Matrícula</label>
-          <input
-            type="text"
-            name="matricula"
-            placeholder="Digite sua matrícula"
-            value={formData.matricula || ''}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-row">
+            <div className="form-group">
+              <label>Matrícula</label>
+              <input
+                type="text"
+                name="matricula"
+                inputMode="numeric"
+                placeholder="Digite sua matrícula"
+                value={formData.matricula || ''}
+                onChange={handleNumericChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Telefone</label>
+              <input
+                type="tel"
+                name="telefone"
+                inputMode="numeric"
+                placeholder="Digite seu telefone"
+                value={formData.telefone || ''}
+                onChange={handleNumericChange}
+                required
+              />
+            </div>
+          </div>
 
-          <label>Telefone</label>
-          <input
-            type="tel"
-            name="telefone"
-            placeholder="Digite seu telefone"
-            value={formData.telefone || ''}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-group">
+            <label>E-mail</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Digite seu e-mail"
+              value={formData.email || ''}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <label>E-mail</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Digite seu e-mail"
-            value={formData.email || ''}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Senha</label>
-          <input
-            type="password"
-            name="senha"
-            placeholder="Digite sua senha"
-            value={formData.senha || ''}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Confirmar Senha</label>
-          <input
-            type="password"
-            name="confirma_senha"
-            placeholder="Confirme sua senha"
-            value={formData.confirma_senha || ''}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-row">
+            <div className="form-group">
+              <label>Senha</label>
+              <input
+                type="password"
+                name="senha"
+                placeholder="Digite sua senha"
+                value={formData.senha || ''}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Confirmar Senha</label>
+              <input
+                type="password"
+                name="confirma_senha"
+                placeholder="Confirme sua senha"
+                value={formData.confirma_senha || ''}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
 
           {error && <p className="error-message">{error}</p>}
           {success && <p className="success-message">{success}</p>}

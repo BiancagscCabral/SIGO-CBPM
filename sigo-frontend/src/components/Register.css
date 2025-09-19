@@ -22,7 +22,7 @@ body {
 }
 
 .register-section {
-  width: 400px;
+  width: 520px;
   padding: 40px;
   background-color: white;
   border-radius: 8px;
@@ -32,7 +32,7 @@ body {
 .register-section form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
 }
 
 .register-section h2 {
@@ -52,6 +52,7 @@ body {
 }
 
 .register-section input {
+  width: 100%;
   padding: 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -73,3 +74,16 @@ body {
 .register-section button:hover {
   background-color: #8697D9;
 }
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 5px;
+}
+
