@@ -156,7 +156,7 @@ function MinhasOcorrencias() {
     const [ocorrenciaSelecionada, setOcorrenciaSelecionada] = useState(null);
 
     const handleEdit = (ocorrenciaId) => alert(`Editar ocorrência ${ocorrenciaId}`);
-    
+
     // ABRIR O MODAL
     const handleVerDetalhes = (ocorrencia) => {
         setOcorrenciaSelecionada(ocorrencia);
@@ -184,8 +184,9 @@ function MinhasOcorrencias() {
 
     return (
         <div className="minhas-ocorrencias-container">
-            <div className="minhas-ocorrencias-header">
-                <h1>MINHAS OCORRÊNCIAS</h1>
+            <div className="page-header">
+                <h1>Minhas Ocorrências</h1>
+                <p>Visualize e gerencie as ocorrências que você registrou</p>
             </div>
 
             <div className="minhas-ocorrencias-actions">
@@ -235,9 +236,9 @@ function MinhasOcorrencias() {
             </div>
 
             {modalVisivel && (
-                <Modal 
-                    ocorrencia={ocorrenciaSelecionada} 
-                    onClose={() => setModalVisivel(false)} 
+                <Modal
+                    ocorrencia={ocorrenciaSelecionada}
+                    onClose={() => setModalVisivel(false)}
                 />
             )}
         </div>
