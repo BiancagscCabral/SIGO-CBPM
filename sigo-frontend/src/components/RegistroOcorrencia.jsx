@@ -1,14 +1,14 @@
 import React, { useState, useRef } from "react";
-import SignatureCanvas from "react-signature-canvas"; // importanto a biblioteca de assinatura
+import SignatureCanvas from "react-signature-canvas"; // Biblioteca de assinatura
 import "./RegistroOcorrencia.css";
 import icon_gps from "../assets/icon_gps.svg";
 import icon_gpsb from "../assets/icon_gpsb.svg";
-import pen from "../assets/pen.svg"; // ícone para upload de fotos
-import camera1 from "../assets/camera1.svg"; // ícone para upload de fotos
-import video from "../assets/video.svg"; // ícone para upload de vídeos
-import save from "../assets/save.svg"; // ícone para salvar
-import send from "../assets/send.svg"; // ícone para enviar 
-import lixo from "../assets/lixo.svg"; // ícone para lixeira
+import pen from "../assets/pen.svg";
+import camera1 from "../assets/camera1.svg";
+import video from "../assets/video.svg";
+import save from "../assets/save.svg";
+import send from "../assets/send.svg";
+import lixo from "../assets/lixo.svg";
 
 function RegistroOcorrencia() {
   const [nomeSolicitante, setNomeSolicitante] = useState("");
@@ -21,8 +21,8 @@ function RegistroOcorrencia() {
   const [codigoViatura, setCodigoViatura] = useState("");
   const [membrosEquipe, setMembrosEquipe] = useState("");
   const [descricaoInicial, setDescricaoInicial] = useState("");
-  const [fotos, setFotos] = useState([]); // para guardar as fotos
-  const [videos, setVideos] = useState([]); //para guardar os videos
+  const [fotos, setFotos] = useState([]);
+  const [videos, setVideos] = useState([]);
 
   // referência para o componente de assinatura
   const sigCanvas = useRef({});
@@ -59,13 +59,18 @@ function RegistroOcorrencia() {
 
   return (
     <div className="page-container">
-      <div className="form-container">
-        <div className="form-header">
-          <h2>REGISTRO DE OCORRÊNCIA</h2>
-        </div>
 
+      <div className="page-title-section">
+        <h1>Registrar Nova Ocorrência</h1>
+        <p>Cadastre uma nova ocorrência no sistema</p>
+      </div>
+
+      {/* O container do formulário começa aqui */}
+
+      <div className="form-container">
         <form onSubmit={handleSubmit} className="occurrence-form">
-          {/* seção 1/2/3 */}
+          <h2 className="form-section-title">Informações da Ocorrência</h2>
+
           <div className="form-section">
             <div className="form-group full-width">
               <label htmlFor="nomeSolicitante">Nome do Solicitante *</label>
@@ -199,7 +204,6 @@ function RegistroOcorrencia() {
             </div>
           </div>
 
-          {/*seção 4: anexos e assinatura*/}
           <div className="form-section">
             {/* Anexo de Fotos */}
             <div className="form-group half-width">
@@ -260,7 +264,7 @@ function RegistroOcorrencia() {
                     onClick={clearSignature}
                     className="btn-clear-signature"
                   >
-                   <img src={lixo} alt="lixeira" /> Limpar
+                    <img src={lixo} alt="lixeira" /> Limpar
                   </button>
                 </div>
               </div>
