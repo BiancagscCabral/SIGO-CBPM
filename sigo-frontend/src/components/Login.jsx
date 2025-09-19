@@ -1,20 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import './Login.css';
 import logoSigo from '../assets/logosigo.svg';
 
 function Login() {
-  const navigate = useNavigate();
-  
-  const handleLogin = (e) => {
-    e.preventDefault();
-    navigate('/dashboard');
+  const navigate = useNavigate()
+  const [matricula, setMatricula] = useState('')
+  const [senha, setSenha] = useState('')
+  const [error, setError] = useState('')
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    setError('')
+
+    try {
+      const response = await fetch('http://localhost:8000/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          matricula: matricula,
+          senha: senha
+        }),
+      });
+
+      if (response.ok) {
+        navigate('/dashboard')
+      } else {
+        const errorMessage = await response.text();
+        setError(errorMessage);
+      }
+    } catch (err) {
+      setError(
+        'Não foi possível conectar ao servidor. Tente novamente mais tarde.'
+      );
+    }
   };
 
   const handleRegisterClick = (e) => {
-    e.preventDefault();
-    navigate('/register');
+    e.preventDefault()
+    navigate('/register')
   };
+
+  const handleMatriculaChange = (e) => {
+    const value = e.target.value;
+    const onlyNums = value.replace(/[^0-9]/g,'');
+    setMatricula(onlyNums);
+  }
 
   return (
     <div className="page-container">
@@ -26,15 +59,34 @@ function Login() {
 
       <div className="login-section">
         <form onSubmit={handleLogin}>
-          <h2>Digite sua Matrícula para acessar o sistema</h2>
-          <label>Matrícula</label>
-          <input type="text" placeholder="Digite sua Matrícula" />
+          <h2>Identifique-se para acessar o sistema</h2>
 
-          <label>Senha</label>
-          <input type="password" placeholder="Digite sua Senha"/>
+          <label htmlfor="matricula">Matrícula</label>
+          <input 
+          id="matricula"
+          name="matricula"
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          placeholder="Digite sua Matrícula"
+          value={matricula}
+          onChange={handleMatriculaChange}required
+          />
+
+          <label htmlFor="senha">Senha</label>
+          <input
+          id="senha"
+          name="senha"
+          type="password"
+          placeholder="Digite sua senha"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}required
+          />
+
+          {error && <p className="error-message">{error}</p>}
 
           <button type="submit">Entrar</button>
-          <p>Primeira vez aqui? <a href="#" onClick={handleRegisterClick}>Registre-se</a></p>
+          <p>Primeira vez aqui? {''} <a href="#" onClick={handleRegisterClick}>Registre-se</a></p>
         </form>
       </div>
     </div>

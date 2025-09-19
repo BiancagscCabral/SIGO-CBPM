@@ -1,14 +1,61 @@
-import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Register.css';
 import logoSigo from '../assets/logosigo.svg';
 
 function Register() {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    nome: '',
+    matricula: '',
+    telefone: '',
+    email: '',
+    senha: '',
+    confirma_senha: '',
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const handleRegister = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleRegister = async (e) => {
     e.preventDefault();
-    navigate('/dashboard');
+    setError('');
+    setSuccess('');
+
+    if (formData.senha !== formData.confirma_senha) {
+      setError('As senhas não coincidem.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8000/api/user/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(formData),
+      });
+
+      const responseText = await response.text();
+
+      if (response.ok) {
+        setSuccess(responseText + ' Você será redirecionado para o login.');
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000);
+      } else {
+        setError(responseText);
+      }
+    } catch (err) {
+      setError('Não foi possível conectar ao servidor. Tente novamente mais tarde.');
+    }
   };
 
   const handleBackToLoginClick = (e) => {
@@ -19,7 +66,7 @@ function Register() {
   return (
     <div className="page-container">
       <div className="logo-section">
-        <img src={logoSigo} alt="Logo do SIGO"/>
+        <img src={logoSigo} alt="Logo do SIGO" />
         <h2>Sistema Integrado de Gestão de Ocorrências</h2>
         <p>A plataforma integrada que moderniza o registro e a gestão das ocorrências em Pernambuco</p>
       </div>
@@ -29,19 +76,67 @@ function Register() {
           <h2>Cadastre-se no Sistema</h2>
           
           <label>Nome Completo</label>
-          <input type="text" placeholder="Digite seu nome completo" />
+          <input
+            type="text"
+            name="nome"
+            placeholder="Digite seu nome completo"
+            value={formData.nome || ''}
+            onChange={handleChange}
+            required
+          />
 
           <label>Matrícula</label>
-          <input type="text" placeholder="Digite sua matrícula" />
+          <input
+            type="text"
+            name="matricula"
+            placeholder="Digite sua matrícula"
+            value={formData.matricula || ''}
+            onChange={handleChange}
+            required
+          />
+
+          <label>Telefone</label>
+          <input
+            type="tel"
+            name="telefone"
+            placeholder="Digite seu telefone"
+            value={formData.telefone || ''}
+            onChange={handleChange}
+            required
+          />
 
           <label>E-mail</label>
-          <input type="email" placeholder="Digite seu e-mail" />
+          <input
+            type="email"
+            name="email"
+            placeholder="Digite seu e-mail"
+            value={formData.email || ''}
+            onChange={handleChange}
+            required
+          />
 
           <label>Senha</label>
-          <input type="password" placeholder="Digite sua senha" />
+          <input
+            type="password"
+            name="senha"
+            placeholder="Digite sua senha"
+            value={formData.senha || ''}
+            onChange={handleChange}
+            required
+          />
 
           <label>Confirmar Senha</label>
-          <input type="password" placeholder="Confirme sua senha" />
+          <input
+            type="password"
+            name="confirma_senha"
+            placeholder="Confirme sua senha"
+            value={formData.confirma_senha || ''}
+            onChange={handleChange}
+            required
+          />
+
+          {error && <p className="error-message">{error}</p>}
+          {success && <p className="success-message">{success}</p>}
 
           <button type="submit">Cadastrar</button>
           <p>Já possui conta? <a href="#" onClick={handleBackToLoginClick}>Faça login</a></p>
