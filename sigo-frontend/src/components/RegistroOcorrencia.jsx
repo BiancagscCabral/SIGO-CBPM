@@ -59,20 +59,13 @@ function RegistroOcorrencia() {
 
   return (
     <div className="page-container">
-      
-      {/* 1. Título e subtítulo */}
-
-      <div className="page-title-section">
-        <h1>Registrar Nova Ocorrência</h1>
-        <p>Cadastre uma nova ocorrência no sistema</p>
-      </div>
-
-      {/* 2. O container do formulário começa aqui */}
-      
       <div className="form-container">
+        <div className="form-header">
+          <h2>REGISTRO DE OCORRÊNCIA</h2>
+        </div>
+
         <form onSubmit={handleSubmit} className="occurrence-form">
-           <h2 className="form-section-title">Informações da Ocorrência</h2>
-          {/* seção 1, 2, 3 */}
+          {/* seção 1/2/3 */}
           <div className="form-section">
             <div className="form-group full-width">
               <label htmlFor="nomeSolicitante">Nome do Solicitante *</label>
