@@ -1,157 +1,26 @@
 .minhas-ocorrencias-container {
     width: 100%;
-    max-width: 960px;
-    margin: 24px auto;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     gap: 32px;
 }
 
-.minhas-ocorrencias-header {
-    background-color: #314697;
-    color: white;
-    padding: 16px;
-    text-align: center;
-    border-radius: 8px;
+.page-header {
+    margin-bottom: 0;
 }
 
-.minhas-ocorrencias-header h1 {
+.page-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2c3e50;
     margin: 0;
-    font-size: 1.5rem;
 }
 
-/* Seção "Ver Todas" */
-.minhas-ocorrencias-actions {
-    text-align: right;
-    padding: 0 8px;
-}
-
-.minhas-ocorrencias-actions a {
-    text-decoration: none;
-    color: #314697;
-    font-weight: bold;
-}
-
-.ocorrencia-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.ocorrencia-item {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.ocorrencia-details {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-.ocorrencia-details strong {
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-}
-
-.ocorrencia-details p {
-    margin: 0;
-    color: #555;
-    font-size: 0.9rem;
-}
-
-.ocorrencia-details p.endereco {
-    color: #777;
-    font-size: 0.85rem;
-}
-
-.ocorrencia-actions-time {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 8px;
-}
-
-.ocorrencia-actions-time .horario {
-    font-weight: bold;
-    color: #333;
-    font-size: 0.95rem;
-}
-
-.ocorrencia-actions-time a {
-    font-size: 0.85rem;
-    color: #314697;
-    text-decoration: none;
-    margin-bottom: 8px;
-}
-
-
-.item-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.btn {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.btn-editar {
-    background-color: #314697;
-    color: white;
-}
-
-.btn-editar:hover {
-    background-color: #2a3a7e;
-}
-
-.btn-relatorio {
-    background-color: #5c6bc0;
-    color: white;
-}
-
-.btn-relatorio:hover {
-    background-color: #4a57a0;
-}
-
-.status {
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: white;
-}
-
-.status-andamento {
-    background-color: #f8a5a5;
-    color: #b91c1c;
-}
-
-.status-reforco {
-    background-color: #fde68a;
-    color: #ca8a04;
-}
-
-.status-finalizada {
-    background-color: #a7f3d0;
-    color: #065f46;
+.page-header p {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin-top: 4px;
 }
 
 .minhas-ocorrencias-actions {
@@ -178,4 +47,184 @@
     border-radius: 5px;
     background-color: white;
     font-size: 0.9rem;
+}
+
+.ocorrencia-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ocorrencia-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.ocorrencia-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+}
+
+.ocorrencia-details strong {
+    font-size: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.ocorrencia-details p {
+    margin: 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.ocorrencia-details p.endereco {
+    color: #777;
+    font-size: 0.85rem;
+}
+
+.ocorrencia-actions-time {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.ocorrencia-actions-time .horario {
+    font-weight: bold;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.ocorrencia-actions-time a {
+    font-size: 0.85rem;
+    color: #314697;
+    text-decoration: none;
+    margin-bottom: 8px;
+}
+
+.item-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-editar {
+    background-color: transparent;    /* Fundo transparente */
+    color: #314697;               /* Cor do texto igual à cor principal */
+    border: 1px solid #314697;      /* Borda com a cor principal */
+}
+
+.btn-editar:hover {
+    background-color: #314697;    /* Fundo preenche ao passar o mouse */
+    color: white;                 /* Texto fica branco */
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+}
+
+.status-andamento {
+    background-color: #f8a5a5;
+    color: #b91c1c;
+}
+
+.status-reforco {
+    background-color: #fde68a;
+    color: #ca8a04;
+}
+
+.status-finalizada {
+    background-color: #a7f3d0;
+    color: #065f46;
+}
+
+.prioridade {
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: #e9ecef;
+    padding: 3px 8px;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+}
+
+.minhas-ocorrencias-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 8px;
+}
+
+.ordenacao-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ordenacao-container label {
+    font-weight: bold;
+    color: #333;
+}
+
+.ordenacao-container select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 0.9rem;
+}
+
+/* MÁGICA DA RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .minhas-ocorrencias-container {
+        padding: 20px;
+    }
+
+    .ocorrencia-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ocorrencia-actions-time {
+        align-items: flex-start;
+        margin-top: 16px;
+        width: 100%;
+    }
+
+    .item-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
