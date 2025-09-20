@@ -133,21 +133,14 @@
 }
 
 .btn-editar {
-    background-color: #314697;
-    color: white;
+    background-color: transparent;    /* Fundo transparente */
+    color: #314697;               /* Cor do texto igual à cor principal */
+    border: 1px solid #314697;      /* Borda com a cor principal */
 }
 
 .btn-editar:hover {
-    background-color: #2a3a7e;
-}
-
-.btn-relatorio {
-    background-color: #5c6bc0;
-    color: white;
-}
-
-.btn-relatorio:hover {
-    background-color: #4a57a0;
+    background-color: #314697;    /* Fundo preenche ao passar o mouse */
+    color: white;                 /* Texto fica branco */
 }
 
 .status {

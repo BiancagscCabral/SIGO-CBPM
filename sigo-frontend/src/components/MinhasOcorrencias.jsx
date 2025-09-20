@@ -225,11 +225,10 @@ function MinhasOcorrencias() {
 
                         <div className="ocorrencia-actions-time">
                             <span className="horario">{formatarHorario(ocorrencia.timestamps.abertura)}</span>
-                            <a href="#" onClick={() => handleVerDetalhes(ocorrencia)}>Ver Detalhes da Ocorrência</a>
                             <div className="item-buttons">
-                                <button className="btn btn-editar" onClick={() => handleEdit(ocorrencia.id)}>📝 Editar</button>
-                                <button className="btn btn-relatorio" onClick={() => handleVerDetalhes(ocorrencia)}>📄 Relatório de Ocorrência</button>
+                                <button className="btn btn-editar" onClick={() => handleEdit(ocorrencia.id)}>Editar</button>
                             </div>
+                            <a href="#" onClick={() => handleVerDetalhes(ocorrencia)}>Ver Detalhes da Ocorrência</a>
                         </div>
                     </div>
                 ))}
