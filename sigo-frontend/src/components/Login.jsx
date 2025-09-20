@@ -69,7 +69,7 @@ function Login() {
           inputMode="numeric"
           pattern="[0-9]*"
           placeholder="Digite sua Matrícula"
-          value={matricula}
+          value={matricula} 
           onChange={handleMatriculaChange}required
           />
 
