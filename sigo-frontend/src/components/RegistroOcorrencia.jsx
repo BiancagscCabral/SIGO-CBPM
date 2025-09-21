@@ -128,26 +128,29 @@ function RegistroOcorrencia() {
             <textarea id="descricaoInicial" rows="5" placeholder="Descreva os detalhes da ocorrência" value={descricaoInicial} onChange={(e) => setDescricaoInicial(e.target.value)} required></textarea>
           </div>
           
-          <div className="form-group full-width">
-            <div className="upload-box">
-              <label htmlFor="fotosInput" className="upload-label">
-                <span><img src={camera1} alt="camera" />Adicionar Fotos</span>
-                <small>Máximo 10MB por foto</small>
-              </label>
-              <input type="file" id="fotosInput" multiple accept="image/*" onChange={(e) => setFotos([...e.target.files])} />
+          {/* Container para alinhar os uploads lado a lado */}
+          <div className="upload-row">
+            <div className="form-group half-width">
+              <div className="upload-box">
+                <label htmlFor="fotosInput" className="upload-label">
+                  <span><img src={camera1} alt="camera" />Adicionar Fotos</span>
+                  <small>Máximo 10MB por foto</small>
+                </label>
+                <input type="file" id="fotosInput" multiple accept="image/*" onChange={(e) => setFotos([...e.target.files])} />
+              </div>
+            </div>
+            <div className="form-group half-width">
+              <div className="upload-box">
+                <label htmlFor="videosInput" className="upload-label">
+                  <span><img src={video} alt="video" />Adicionar Vídeos</span>
+                  <small>Máximo 50MB por vídeo</small>
+                </label>
+                <input type="file" id="videosInput" multiple accept="video/*" onChange={(e) => setVideos([...e.target.files])} />
+              </div>
             </div>
           </div>
           
-          <div className="form-group full-width">
-            <div className="upload-box">
-              <label htmlFor="videosInput" className="upload-label">
-                <span><img src={video} alt="video" />Adicionar Vídeos</span>
-                <small>Máximo 50MB por vídeo</small>
-              </label>
-              <input type="file" id="videosInput" multiple accept="video/*" onChange={(e) => setVideos([...e.target.files])} />
-            </div>
-          </div>
-          
+          {/* Assinatura Digital */}
           <div className="form-group full-width">
             <label><img src={pen} alt="caneta" />Assinatura Digital</label>
             <div className="signature-box">
