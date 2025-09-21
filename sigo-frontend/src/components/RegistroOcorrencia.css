@@ -242,3 +242,24 @@
 .registro-ocorrencia-container .btn-secondary:hover {
   background-color: #f0f3ff;
 }
+
+/* A MÁGICA DA RESPONSIVIDADE */
+@media (max-width: 768px) {
+
+  .registro-ocorrencia-container .input-with-button {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .registro-ocorrencia-container .upload-row {
+    flex-direction: column;
+  }
+
+  .registro-ocorrencia-container .form-actions {
+    flex-direction: column;
+  }
+
+  .registro-ocorrencia-container .form-actions button {
+    width: 100%;
+  }
+}

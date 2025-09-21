@@ -152,3 +152,20 @@
   font-weight: 500;
   color: #314697;
 }
+
+/* MÁGICA DA RESPONSIVIDADE */
+@media (max-width: 768px) {
+
+  .relatorio-container {
+    padding: 20px;
+  }
+
+  .report-form {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-gerar {
+    height: auto;
+    width: 100%;
+  }
+}
