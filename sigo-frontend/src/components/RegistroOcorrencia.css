@@ -62,11 +62,11 @@
 .registro-ocorrencia-container .form-group input,
 .registro-ocorrencia-container .form-group select,
 .registro-ocorrencia-container .form-group textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #dcdcdc;
-  border-radius: 6px;
-  background-color: #F8F9FA;
+   width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #F1F4FF;
   color: #333;
   font-size: 1rem;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -99,17 +99,23 @@
   padding: 10px 20px;
   background-color: #f8f9fa;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
+  color: #131212;
   display: flex;
   align-items: center;
   gap: 8px;
   white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .registro-ocorrencia-container .btn-capture:hover {
-  background-color: #e9ecef;
+  background-color: #F1F4FF;
+  border-color: #a9bfff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.30);
 }
 
 .registro-ocorrencia-container .upload-row {
@@ -125,13 +131,9 @@
 .registro-ocorrencia-container .upload-box {
   border: 2px dashed #dcdcdc;
   border-radius: 8px;
-  padding: 20px;
   text-align: center;
   transition: border-color 0.2s, background-color 0.2s;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .registro-ocorrencia-container .upload-box:hover {
@@ -146,6 +148,10 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .registro-ocorrencia-container .upload-label span {
@@ -200,6 +206,11 @@
   gap: 8px;
   cursor: pointer;
   font-size: 0.8rem;
+  transition: background-color 0.2s ease;
+}
+
+.registro-ocorrencia-container .btn-clear-signature:hover {
+  background-color: #e9ecef;
 }
 
 .registro-ocorrencia-container .form-actions {
@@ -224,23 +235,51 @@
 }
 
 .registro-ocorrencia-container .btn-primary {
-  background-color: #314697;
+  background-color: #ff6f00;
   color: white;
-  border: none;
+  border: 1px solid #ff6f00;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .registro-ocorrencia-container .btn-primary:hover {
-  background-color: #2a3a7e;
-}
-
-.registro-ocorrencia-container .btn-secondary {
   background-color: transparent;
   color: #314697;
   border: 1px solid #314697;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.registro-ocorrencia-container .btn-primary img {
+  filter: brightness(0) invert(1);
+}
+
+.registro-ocorrencia-container .btn-primary:hover img {
+  filter: none;
+}
+
+.registro-ocorrencia-container .btn-secondary {
+  background-color: #314697;
+  color: white;
+  border: 1px solid #314697;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .registro-ocorrencia-container .btn-secondary:hover {
-  background-color: #f0f3ff;
+  background-color: transparent;
+  color: #314697;
+  border: 1px solid #314697;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.registro-ocorrencia-container .btn-secondary img {
+  filter: brightness(0) invert(1);
+}
+
+.registro-ocorrencia-container .btn-secondary:hover img {
+  filter: none;
 }
 
 /* A MÁGICA DA RESPONSIVIDADE */

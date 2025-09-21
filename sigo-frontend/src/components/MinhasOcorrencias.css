@@ -1,9 +1,14 @@
+.main.page-content {
+    padding: 100px;
+}
+
 .minhas-ocorrencias-container {
     width: 100%;
-    padding: 40px;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 30px;
+    padding: 40px;
+    box-sizing: border-box;
 }
 
 .page-header {
@@ -57,7 +62,7 @@
 
 .ocorrencia-item {
     background-color: #fff;
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
     border: 1px solid #e0e0e0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -203,9 +208,6 @@
 
 /* MÁGICA DA RESPONSIVIDADE */
 @media (max-width: 768px) {
-    .minhas-ocorrencias-container {
-        padding: 20px;
-    }
 
     .ocorrencia-item {
         flex-direction: column;
@@ -227,4 +229,15 @@
         width: 100%;
         justify-content: center;
     }
+
+    .page-header {
+        margin-bottom: -16px;
+    }
+
+    .minhas-ocorrencias-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        padding: 0;
+    }
+
 }

@@ -1,4 +1,3 @@
-{/* (SE GI APAGAR MEUS COMENTS VOU ME MATA) */}
 import React, { useState } from 'react';
 import './Relatorios.css';
 import { FiArrowUp } from 'react-icons/fi';
@@ -45,7 +44,7 @@ function Relatorios() {
           value="8min 32s"
           title="Tempo Médio de Resposta"
           change="-12% vs período anterior"
-          changeColor="#f44336" // Vermelho para queda
+          changeColor="#f44336"
         />
         <AnalyticsCard 
           value="94.2%"
