@@ -2,19 +2,20 @@ import React, { useState } from 'react';
 import './Configuracoes.css';
 
 function Configuracoes() {
-  const [nome, setNome] = useState('João Gabriel M. de O. Amorim');
+  const [nome, setNome] = useState('Gislany Araujo');
   const [matricula, setMatricula] = useState('12345-6');
-  const [email, setEmail] = useState('joao.amorim@cbm.pe.gov.br');
-  const [cargo, setCargo] = useState('Soldado');
+  const [email, setEmail] = useState('Gis.Araujo@cbm.pe.gov.br');
+  const [cargo, setCargo] = useState('Tenente');
 
-  const [notificacaoEmergencia, setNotificacaoEmergencia] = useState(true);
   const [notificacaoIncendio, setNotificacaoIncendio] = useState(true);
-  const [notificacaoTransito, setNotificacaoTransito] = useState(false);
+  const [notificacaoEmergencia, setNotificacaoEmergencia] = useState(true);
+  const [notificacaoTransito, setNotificacaoTransito] = useState(true);
   const [notificacaoOutros, setNotificacaoOutros] = useState(false);
   
+  const [Tema, setTema] = useState(false);
   const [leitorDeTela, setLeitorDeTela] = useState(false);
   const [comandoPorVoz, setComandoPorVoz] = useState(false);
-  const [tamanhoTexto, setTamanhoTexto] = useState('medio');
+  const [tamanhoTexto, setTamanhoTexto] = useState('pequeno');
 
   return (
     <main className="main-content">
@@ -78,16 +79,16 @@ function Configuracoes() {
           <h2>Notificações</h2>
           <div className="toggle-list">
             <div className="toggle-item">
-              <span>Emergência Médica</span>
+              <span>Incêndio</span>
               <label className="switch">
-                <input type="checkbox" checked={notificacaoEmergencia} onChange={() => setNotificacaoEmergencia(!notificacaoEmergencia)} />
+                <input type="checkbox" checked={notificacaoIncendio} onChange={() => setNotificacaoIncendio(!notificacaoIncendio)} />
                 <span className="slider round"></span>
               </label>
             </div>
             <div className="toggle-item">
-              <span>Incêndio</span>
+              <span>Emergência Médica</span>
               <label className="switch">
-                <input type="checkbox" checked={notificacaoIncendio} onChange={() => setNotificacaoIncendio(!notificacaoIncendio)} />
+                <input type="checkbox" checked={notificacaoEmergencia} onChange={() => setNotificacaoEmergencia(!notificacaoEmergencia)} />
                 <span className="slider round"></span>
               </label>
             </div>
@@ -112,6 +113,13 @@ function Configuracoes() {
         <section className="settings-section">
           <h2>Acessibilidade</h2>
            <div className="toggle-list">
+            <div className="toggle-item">
+              <span>Tema</span>
+              <label className="switch">
+                <input type="checkbox" checked={Tema} onChange={() => setTema(!Tema)} />
+                <span className="slider round"></span>
+              </label>
+            </div>
             <div className="toggle-item">
               <span>Leitores de Tela</span>
               <label className="switch">
