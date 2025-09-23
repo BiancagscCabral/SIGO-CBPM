@@ -34,7 +34,7 @@ const QuickAccessCard = ({ icon, title, description, bgColor, linkText = "Clique
 function Dashboard() {
   const navigate = useNavigate();
 
-  const hanleRegistroClick = () => {
+  const handleRegistroClick = () => {
     navigate('/registro-ocorrencia');
   }
   return (
@@ -76,32 +76,35 @@ function Dashboard() {
 
         <section className="quick-access-grid">
           <QuickAccessCard
-          icon={<LuFilePlus />}
-          title="Registrar Ocorrência"
-          description="Cadastrar nova ocorrência no sistema"
-          bgColor="bg-red"
-          onClick={hanleRegistroClick}
+            icon={<LuFilePlus />}
+            title="Registrar Ocorrência"
+            description="Cadastrar nova ocorrência no sistema"
+            bgColor="bg-red"
+            onClick={handleRegistroClick}
           />
           <QuickAccessCard
-          icon={<FiClipboard />}
-          title="Minhas Ocorrências"
-          description="Visualizar ocorrências registradas por mim"
-          bgColor="bg-blue"
+            icon={<FiClipboard />}
+            title="Minhas Ocorrências"
+            description="Visualizar ocorrências registradas por mim"
+            bgColor="bg-blue"
+            onClick={() => navigate('/minhas-ocorrencias')}
           />
           <QuickAccessCard
-          icon={<IoDocumentTextOutline />}
-          title="Relatórios"
-          description="Gerar relatórios e estatísticas"
-          bgColor="bg-orange"
+            icon={<IoDocumentTextOutline />}
+            title="Relatórios"
+            description="Gerar relatórios e estatísticas"
+            bgColor="bg-orange"
+            onClick={() => navigate('/relatorios')}
           />
           <QuickAccessCard
-          icon={<FiSettings />}
-          title="Configurações"
-          description="Configurar sistema e preferências"
-          bgColor="bg-gray"
-          linkText="Configurar"
+            icon={<FiSettings />}
+            title="Configurações"
+            description="Configurar sistema e preferências"
+            bgColor="bg-gray"
+            linkText="Configurar"
+            onClick={() => navigate('/configuracoes')}
           />
-      </section>
+        </section>
     </main>
   );
 }
