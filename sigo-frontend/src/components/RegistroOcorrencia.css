@@ -1,50 +1,42 @@
-/* Importando a fonte Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
-}
- 
-.occurrence-page.page-container { 
-  display: flex; 
-  flex-direction: column; 
-  padding: 2.5rem; /* 40px */
-  gap: 2rem;
-}
-
-.occurrence-page .page-title-section {
+.registro-ocorrencia-container {
   width: 100%;
-}
-
-.occurrence-page .page-title-section h1 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #314697;
-  margin-bottom: 0.5rem;
-}
-
-.occurrence-page .page-title-section p {
-  font-size: 1rem;
-  color: #5a6474;
-}
-
-.occurrence-page .form-container {
-  width: 100%;
-  background-color: #ffffff;
-  border-radius: 8px; 
-  padding: 2rem;
-}
-
-.occurrence-page .occurrence-form {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
+  gap: 32px;
+}
+
+.registro-ocorrencia-container .page-header {
+  margin-bottom: 0;
+}
+
+.registro-ocorrencia-container .page-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.registro-ocorrencia-container .page-header p {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin-top: 4px;
+}
+
+.registro-ocorrencia-container .form-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.registro-ocorrencia-container .occurrence-form {
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
 }
 
-.occurrence-page .form-section-title {
+.registro-ocorrencia-container .form-section-title {
   font-size: 1.25rem;
   font-weight: 600;
   color: #1E1E1E;
@@ -52,281 +44,261 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
-
-.occurrence-page .form-group {
+.registro-ocorrencia-container .form-group {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   gap: 0.5rem;
 }
 
-.occurrence-page .form-group.full-width { 
-  width: 100%; 
-}
-
-
-.occurrence-page .form-group label {
+.registro-ocorrencia-container .form-group label {
   font-weight: 600;
   color: #1E1E1E;
-  font-size: 0.9rem; 
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.occurrence-page .form-group input[type="text"],
-.occurrence-page .form-group select,
-.occurrence-page .form-group textarea { 
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #dcdcdc;
-  border-radius: 10px;
+.registro-ocorrencia-container .form-group input,
+.registro-ocorrencia-container .form-group select,
+.registro-ocorrencia-container .form-group textarea {
+   width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
   background-color: #F1F4FF;
-  color: #6E5C5C;
-  font-size: 1rem; 
-  font-family: inherit;
-  transition: border-color 0.2s, box-shadow 0.2s; 
+  color: #333;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
 }
 
-
-.occurrence-page .form-actions button:active {
-  transform: translateY(1px);
- }
-
-.occurrence-page .form-actions {
-   display: flex; 
-   justify-content: center;
-    gap: 16px; 
-    padding-top: 20px;
-     border-top: 1px solid #eee;
-     }
-
-
- .occurrence-page .form-actions button { 
-  padding: 12px 24px;
-  border: 1px solid #ccc;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-    border-radius: 10px; 
-    font-size: 1rem;
-     font-weight: 600; 
-     cursor: pointer; 
-     transition: background-color 0.2s, transform 0.1s;
-      display: flex; 
-      align-items: center;
-       gap: 8px; 
-       min-width: 220px;
-       justify-content: center;
-      }
-
-
-
-
-.occurrence-page .form-group textarea { 
+.registro-ocorrencia-container .form-group textarea {
   resize: vertical;
   min-height: 120px;
 }
 
-/* --- COMPONENTES ESPECÍFICOS --- */
-
-.occurrence-page .input-with-button { 
-   display: flex;
-   align-items: stretch;
-    gap: 10px; 
+.registro-ocorrencia-container .form-group input:focus,
+.registro-ocorrencia-container .form-group select:focus,
+.registro-ocorrencia-container .form-group textarea:focus {
+  outline: none;
+  border-color: #314697;
+  box-shadow: 0 0 0 2px rgba(49, 70, 151, 0.2);
 }
 
-.occurrence-page .input-with-button input {
+.registro-ocorrencia-container .input-with-button {
+  display: flex;
+  gap: 10px;
+}
+
+.registro-ocorrencia-container .input-with-button input {
   flex-grow: 1;
 }
 
-
-.occurrence-page .btn-capture {
-  padding: 12px 20px; 
-   background-color: #ffffff;
-    border: 1px solid #ccc;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-     border-radius: 10px;
-      cursor: pointer;
-       font-weight: 500; 
-       white-space:inherit;
-        transition: background-color 0.2s;
-        display: flex;
-        align-items: center;
-        gap : 8px;
+.registro-ocorrencia-container .btn-capture {
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #131212;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-.occurrence-page .btn-capture:hover { 
-  background-color: #f5f5f5;
- }
-
-.occurrence-page .upload-box {
-border: 2px dashed #dcdcdc;
-border-radius: 8px;
- padding: 20px;
- width: 100%;
- text-align: center;
-transition: border-color 0.2s, background-color 0.2s;
+.registro-ocorrencia-container .btn-capture:hover {
+  background-color: #F1F4FF;
+  border-color: #a9bfff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.30);
 }
 
-
-.occurrence-page .upload-box:hover {
-border-color: #3A4B8B;
- background-color: #f9f9ff;
-}
-
-.occurrence-page .upload-row {
-  display: flex; 
-  gap: 1.5rem;   /*  espaço entre as duas caixas */
+.registro-ocorrencia-container .upload-row {
+  display: flex;
+  gap: 1.5rem;
   width: 100%;
 }
 
-
-.occurrence-page .upload-row .form-group.half-width {
-  width: 100%; 
-  flex: 1;     
+.registro-ocorrencia-container .upload-row .form-group {
+  flex: 1;
 }
 
-
-
-
-.occurrence-page .form-group.half-width {
-  width: calc(50% - 0.75rem); /* Onde 0.75rem é metade do 'gap' do container pai */
+.registro-ocorrencia-container .upload-box {
+  border: 2px dashed #dcdcdc;
+  border-radius: 8px;
+  text-align: center;
+  transition: border-color 0.2s, background-color 0.2s;
+  height: 100%;
 }
 
+.registro-ocorrencia-container .upload-box:hover {
+  border-color: #314697;
+  background-color: #f9f9ff;
+}
 
-.occurrence-page .upload-label {
+.registro-ocorrencia-container .upload-label {
   cursor: pointer;
   display: flex;
-  border: 1px solid #ccc;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  padding: 10px;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.occurrence-page .upload-label span {
+.registro-ocorrencia-container .upload-label span {
   font-weight: 600;
   font-size: 1rem;
   color: #333;
   display: flex;
   align-items: center;
-  gap : 10px;
+  gap: 10px;
 }
 
-
-.occurrence-page .upload-label small {
-font-size: 0.8rem;
- color: #888;
+.registro-ocorrencia-container .upload-label small {
+  font-size: 0.8rem;
+  color: #888;
 }
 
-.occurrence-page .upload-box input[type="file"] {
- display: none;
+.registro-ocorrencia-container .upload-box input[type="file"] {
+  display: none;
 }
 
-.occurrence-page .signature-box {
-border: 2px dashed #dcdcdc;
- border-radius: 8px;
-padding: 10px;
+.registro-ocorrencia-container .signature-box {
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
 }
 
-.occurrence-page .signature-canvas {
+.registro-ocorrencia-container .signature-canvas {
   width: 100%;
   height: 150px;
-  border: 1px solid #E9EDF4; 
-  border-radius: 10px; 
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"><text x="95" y="15" font-family="Poppins, sans-serif" font-size="14" fill="%23a0a8b7" text-anchor="end">Assine aqui</text></svg>');
-  background-repeat: no-repeat;
-  background-position: bottom 10px right 15px;
+  border-bottom: 1px solid #eee;
 }
 
-
-.occurrence-page .signature-actions {
- position: relative;
- display: flex;
- align-items: center;
-justify-content: flex-end;
-margin-top: 8px;
-padding: 0 5px;
-height: 28px;
+.registro-ocorrencia-container .signature-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  background-color: #f8f9fa;
 }
 
-
-.occurrence-page .signature-actions small {
- color: #626262;
-font-size: 1rem;
- font-style: bold;
- position: absolute;
-  left: 50%;
- transform: translateX(-50%);
- width: 100%;
- text-align: center;
-
+.registro-ocorrencia-container .signature-actions small {
+  color: #6c757d;
+  font-size: 0.85rem;
 }
 
-.occurrence-page .btn-clear-signature {
+.registro-ocorrencia-container .btn-clear-signature {
   background: none;
   border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 6px 12px;
+  border-radius: 5px;
+  padding: 4px 10px;
   align-items: center;
-  white-space: nowrap;
   display: flex;
-  gap : 8px;
+  gap: 8px;
   cursor: pointer;
   font-size: 0.8rem;
+  transition: background-color 0.2s ease;
 }
 
-.occurrence-page .btn-clear-signature * {
- cursor: inherit;
+.registro-ocorrencia-container .btn-clear-signature:hover {
+  background-color: #e9ecef;
 }
 
-.occurrence-page .btn-clear-signature:hover {
-background-color: #f5f5f5;
+.registro-ocorrencia-container .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
 }
 
-
-.occurrence-page .btn-capture img,
-.btn-primary img,
-.btn-secondary img {
-width: 32px;
-height: 32px;
-margin-right: 8px;
+.registro-ocorrencia-container .form-actions button {
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  transition: background-color 0.2s;
 }
 
-.occurrence-page .label {
- display: flex;
- align-items: center;
-  gap: 2px;
+.registro-ocorrencia-container .btn-primary {
+  background-color: #ff6f00;
+  color: white;
+  border: 1px solid #ff6f00;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-.occurrence-page .label img {
-vertical-align: middle;
-width: 32px;
-height: 32px;
-} 
-
-.occurrence-page .btn-primary {
-   background-color: rgba(49, 70, 151, 1);
-    color: black;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-   }
-
-.occurrence-page .btn-primary:hover {
-background-color: rgba(134, 151, 217, 1);
+.registro-ocorrencia-container .btn-primary:hover {
+  background-color: transparent;
+  color: #314697;
+  border: 1px solid #314697;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.occurrence-page .btn-secondary { 
-  background-color: #ffffff; 
-  border: 1px solid black;
-    border-radius: 10px;
-   }
-
-.occurrence-page .btn-secondary:hover {
- background-color: rgba(134, 151, 217, 1);
+.registro-ocorrencia-container .btn-primary img {
+  filter: brightness(0) invert(1);
 }
 
+.registro-ocorrencia-container .btn-primary:hover img {
+  filter: none;
+}
 
+.registro-ocorrencia-container .btn-secondary {
+  background-color: #314697;
+  color: white;
+  border: 1px solid #314697;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.registro-ocorrencia-container .btn-secondary:hover {
+  background-color: transparent;
+  color: #314697;
+  border: 1px solid #314697;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.registro-ocorrencia-container .btn-secondary img {
+  filter: brightness(0) invert(1);
+}
+
+.registro-ocorrencia-container .btn-secondary:hover img {
+  filter: none;
+}
+
+/* A MÁGICA DA RESPONSIVIDADE */
+@media (max-width: 768px) {
+
+  .registro-ocorrencia-container .input-with-button {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .registro-ocorrencia-container .upload-row {
+    flex-direction: column;
+  }
+
+  .registro-ocorrencia-container .form-actions {
+    flex-direction: column;
+  }
+
+  .registro-ocorrencia-container .form-actions button {
+    width: 100%;
+  }
+}

@@ -97,13 +97,23 @@
 .btn-gerar {
   background-color: #ff6f00;
   color: white;
-  border: none;
+  border: 1px solid transparent;
   padding: 10px;
   border-radius: 5px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   height: 41px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-gerar:hover {
+  background-color: #f0f3ff;
+  color: #314697;
+  border: 1px solid #314697;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .available-reports h3 {
@@ -151,4 +161,21 @@
   font-size: 14px;
   font-weight: 500;
   color: #314697;
+}
+
+/* MÁGICA DA RESPONSIVIDADE */
+@media (max-width: 768px) {
+
+  .relatorio-container {
+    padding: 20px;
+  }
+
+  .report-form {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-gerar {
+    height: auto;
+    width: 100%;
+  }
 }
