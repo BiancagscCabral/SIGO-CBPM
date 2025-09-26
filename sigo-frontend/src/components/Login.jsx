@@ -1,5 +1,5 @@
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 import logoSigo from '../assets/logosigo.svg';
 
@@ -11,11 +11,7 @@ function Login() {
     navigate('/dashboard');
   };
 
-  const handleRegisterClick = (e) => {
-    e.preventDefault();
-    navigate('/register');
-  };
-
+ 
   return (
     <div className="page-container">
       <div className="logo-section">
@@ -34,7 +30,10 @@ function Login() {
           <input type="password" placeholder="Digite sua Senha"/>
 
           <button type="submit">Entrar</button>
-          <p>Primeira vez aqui? <a href="#" onClick={handleRegisterClick}>Registre-se</a></p>
+          <p>Primeira vez aqui?  <Link to="/register">Registre-se</Link></p>
+          <p className="forgot-password-link">
+          <Link to="/forgot-password">Esqueci minha senha</Link>
+          </p>
         </form>
       </div>
     </div>

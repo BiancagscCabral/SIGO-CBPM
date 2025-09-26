@@ -1,0 +1,112 @@
+/* Container que centraliza o card */
+.verify-page-container .form-card {
+  background-color: #ffffff;
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.success-icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 1rem;
+}
+
+.verify-page-container .verify-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.verify-page-container .subtitle {
+  font-size: 1rem;
+  color: #5a6474;
+  margin-bottom: 1.5rem;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.verify-code-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.verify-code-form label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.code-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.code-inputs input {
+  width: 50px;
+  height: 60px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  line-height: 1; 
+}
+
+.code-inputs input:focus {
+  outline: none;
+  border-color: #314697;
+  box-shadow: 0 0 0 3px rgba(49, 70, 151, 0.15);
+}
+
+.verify-code-form button {
+  width: 100%;
+  padding: 0.875rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.verify-code-form button[type="submit"] {
+  background-color: #314697;
+  color: white;
+}
+.verify-code-form button[type="submit"]:hover {
+  background-color: #27377a;
+}
+
+.verify-code-form .btn-resend {
+  background-color: #f0f2f5;
+  color: #5a6474;
+}
+.verify-code-form .btn-resend:hover {
+  background-color: #e0e0e0;
+}
+
+.help-text {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #5a6474;
+  line-height: 1.6;
+}
+
+.help-text a {
+  color: #314697;
+  font-weight: 600;
+  text-decoration: underline;
+}
