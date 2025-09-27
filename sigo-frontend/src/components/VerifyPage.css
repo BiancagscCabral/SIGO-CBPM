@@ -1,15 +1,25 @@
-/* Container que centraliza o card */
-.verify-page-container .form-card {
+.verify-page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: white;
+  padding: 1rem;
+}
+
+/* --- ESTILO DO CARD --- */
+.form-card {
   background-color: #ffffff;
   padding: 2.5rem;
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 450px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .success-icon {
@@ -18,26 +28,31 @@
   margin-bottom: 1rem;
 }
 
-.verify-page-container .verify-title {
+/* --- TEXTOS DENTRO DO CARD --- */
+.card-title { /* Renomeado de .verify-title */
   font-size: 1.75rem;
   font-weight: 700;
   color: #333;
-  margin-bottom: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
 }
 
-.verify-page-container .subtitle {
+.card-subtitle { /* Renomeado de .subtitle */
   font-size: 1rem;
   color: #5a6474;
-  margin-bottom: 1.5rem;
-  max-width: 320px;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  max-width: 380px;
   line-height: 1.5;
 }
 
+/* --- FORMULÁRIO DE VERIFICAÇÃO --- */
 .verify-code-form {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .verify-code-form label {
@@ -62,7 +77,8 @@
   font-weight: 600;
   border: 1px solid #dcdcdc;
   border-radius: 6px;
-  line-height: 1; 
+  line-height: 1;
+  box-sizing: border-box; /* Adicionado para consistência */
 }
 
 .code-inputs input:focus {
@@ -71,6 +87,7 @@
   box-shadow: 0 0 0 3px rgba(49, 70, 151, 0.15);
 }
 
+/* --- BOTÕES --- */
 .verify-code-form button {
   width: 100%;
   padding: 0.875rem;
@@ -80,6 +97,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
+  box-sizing: border-box; /* Adicionado para consistência */
 }
 
 .verify-code-form button[type="submit"] {
@@ -98,8 +116,9 @@
   background-color: #e0e0e0;
 }
 
+/* --- TEXTO DE AJUDA INFERIOR --- */
 .help-text {
-  margin-top: 1.5rem;
+  margin-top: 0;
   font-size: 0.9rem;
   color: #5a6474;
   line-height: 1.6;
@@ -108,5 +127,9 @@
 .help-text a {
   color: #314697;
   font-weight: 600;
-  text-decoration: underline;
+  text-decoration: none; /* Alterado para none, underline no hover */
+}
+
+.help-text a:hover {
+  text-decoration: underline; /* Adicionado hover para melhor UX */
 }

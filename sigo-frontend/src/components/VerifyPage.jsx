@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import Header from './Header'; //NAO PEGAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+import Header from './Header';
 import './VerifyPage.css'; 
 
 
@@ -41,10 +41,11 @@ function VerifyPage() {
 
   return (
     <div className="verify-page-container">
+      <Header />
       <div className="form-card"> 
        
-        <h2 className="verify-title">Email Enviado!</h2>
-        <p className="subtitle">Enviamos um código de recuperação para <br/><strong>{email}</strong></p>
+        <h2 className="card-title">Email Enviado!</h2>
+        <p className="card-subtitle">Enviamos um código de recuperação para <br/><strong>{email}</strong></p>
 
         <form onSubmit={handleSubmit} className="verify-code-form">
           <label htmlFor="code-input-0">Preencha o código</label>
