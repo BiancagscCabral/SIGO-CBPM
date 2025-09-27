@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaFire, FaClock, FaRegClock, FaUsers } from 'react-icons/fa';
 import { FiFilePlus, FiClipboard, FiFileText, FiSettings, FiArrowUp } from 'react-icons/fi';
 import { IoDocumentTextOutline } from "react-icons/io5";
@@ -31,12 +31,119 @@ const QuickAccessCard = ({ icon, title, description, bgColor, linkText = "Clique
   </div>
 );
 
+const QuickAccessSection = ({ navigate, handleRegistroClick }) => (
+  <section className="quick-access-grid">
+    <QuickAccessCard
+      icon={<LuFilePlus />}
+      title="Registrar Ocorrência"
+      description="Cadastrar nova ocorrência no sistema"
+      bgColor="bg-red"
+      onClick={handleRegistroClick}
+    />
+    <QuickAccessCard
+      icon={<FiClipboard />}
+      title="Minhas Ocorrências"
+      description="Visualizar ocorrências registradas por mim"
+      bgColor="bg-blue"
+      onClick={() => navigate('/minhas-ocorrencias')}
+    />
+    <QuickAccessCard
+      icon={<IoDocumentTextOutline />}
+      title="Relatórios"
+      description="Gerar relatórios e estatísticas"
+      bgColor="bg-orange"
+      onClick={() => navigate('/relatorios')}
+    />
+    <QuickAccessCard
+      icon={<FiSettings />}
+      title="Configurações"
+      description="Configurar sistema e preferências"
+      bgColor="bg-gray"
+      linkText="Configurar"
+      onClick={() => navigate('/configuracoes')}
+    />
+  </section>
+);
+
 function Dashboard() {
   const navigate = useNavigate();
 
-  const hanleRegistroClick = () => {
+  const [dashboardData, setDashboardData] = useState ({
+    totalOcorrencias: '...',
+    ocorrenciasHoje: '...',
+    emAndamento: '...',
+    equipesAtivas: '...',
+    percentChange: null,
+  });
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect (() => {
+    const fetchData = async () => {
+      const API_URL = 'http://localhost:8080/api/dashboard/stats';
+      
+      try {
+        const response = await fetch(API_URL, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Falha ao buscar dados: ${response.statusText}`);
+        }
+        const data = await response.json();
+
+        setDashboardData({
+          totalOcorrencias: data.totalOcorrencias.value || 'N/A',
+          ocorrenciasHoje: data.ocorrenciasHoje.value || 'N/A',
+          emAndamento: data.emAndamento.value || 'N/A',
+          equipesAtivas: data.equipesAtivas.value || 'N/A',
+          percentChange: data.totalOcorrencias.increase || null,
+        });
+
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Erro ao buscar dados do dashboard:", err);
+        setError("Não foi possível carregar os dados. Verifique a conexão.");
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleRegistroClick = () => {
     navigate('/registro-ocorrencia');
   }
+
+  if (isLoading) {
+    return (
+      <main className="main-content">
+        <div className="dashboard-header">
+          <h1>Dashboard</h1>
+          <p>Carregando dados das estatísticas</p>
+        </div>
+        <QuickAccessSection navigate={navigate} handleRegistroClick={handleRegistroClick} />
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="main-content">
+        <div className="dashboard-header">
+          <h1>Dashboard</h1>
+          <p style={{ color: '#f44336' }}>Erro: {error}</p>
+        </div>
+        <QuickAccessSection navigate={navigate} handleRegistroClick={handleRegistroClick} />
+      </main>
+    );
+  }
+
   return (
     <main className="main-content">
       <div className="dashboard-header">
@@ -45,63 +152,35 @@ function Dashboard() {
       </div>
       <section className="stats-grid">
         <StatCard 
-        icon={<FaFire />}
-        value="1.247"
-        title="Total de Ocorrências"
-        increase="+2.5% desde o mês passado"
-        iconBgColor="#f44336"
+          icon={<FaFire />}
+          value={dashboardData.totalOcorrencias}
+          title="Total de Ocorrências"
+          increase={dashboardData.percentChange}
+          iconBgColor="#f44336"
         />
         <StatCard 
-        icon={<FaClock />}
-        value="23"
-        title="Ocorrências Hoje"
-        subtext="Últimas 24 horas"
-        iconBgColor="#ff9800"
+          icon={<FaClock />}
+          value={dashboardData.ocorrenciasHoje}
+          title="Ocorrências Hoje"
+          subtext="Últimas 24 horas"
+          iconBgColor="#ff9800"
         />
         <StatCard 
-        icon={<FaRegClock />}
-        value="8"
-        title="Em Andamento"
-        subtext="Requer atenção"
-        iconBgColor="#2196f3"
+          icon={<FaRegClock />}
+          value={dashboardData.emAndamento}
+          title="Em Andamento"
+          subtext="Requer atenção"
+          iconBgColor="#2196f3"
         />
         <StatCard 
-        icon={<FaUsers />}
-        value="12"
-        title="Equipes Ativas"
-        subtext="Disponíveis para atendimento"
-        iconBgColor="#4caf50"
+          icon={<FaUsers />}
+          value={dashboardData.equipesAtivas}
+          title="Equipes Ativas"
+          subtext="Disponíveis para atendimento"
+          iconBgColor="#4caf50"
         />
-        </section>
-
-        <section className="quick-access-grid">
-          <QuickAccessCard
-          icon={<LuFilePlus />}
-          title="Registrar Ocorrência"
-          description="Cadastrar nova ocorrência no sistema"
-          bgColor="bg-red"
-          onClick={hanleRegistroClick}
-          />
-          <QuickAccessCard
-          icon={<FiClipboard />}
-          title="Minhas Ocorrências"
-          description="Visualizar ocorrências registradas por mim"
-          bgColor="bg-blue"
-          />
-          <QuickAccessCard
-          icon={<IoDocumentTextOutline />}
-          title="Relatórios"
-          description="Gerar relatórios e estatísticas"
-          bgColor="bg-orange"
-          />
-          <QuickAccessCard
-          icon={<FiSettings />}
-          title="Configurações"
-          description="Configurar sistema e preferências"
-          bgColor="bg-gray"
-          linkText="Configurar"
-          />
       </section>
+      <QuickAccessSection navigate={navigate} handleRegistroClick={handleRegistroClick}/>
     </main>
   );
 }
