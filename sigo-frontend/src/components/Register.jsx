@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './Register.css';
 import logoSigo from '../assets/logosigo.svg';
 
@@ -67,11 +67,6 @@ function Register() {
     }
   };
 
-  const handleBackToLoginClick = (e) => {
-    e.preventDefault();
-    navigate('/login');
-  };
-
   return (
     <div className="page-container">
       <div className="logo-section">
@@ -85,9 +80,10 @@ function Register() {
           <h2>Cadastre-se no Sistema</h2>
           
           <div className="form-group">
-            <label>Nome Completo</label>
+            <label htmlFor="nome">Nome Completo</label>
             <input
               type="text"
+              id="nome"
               name="nome"
               placeholder="Digite seu nome completo"
               value={formData.nome || ''}
@@ -98,9 +94,10 @@ function Register() {
 
           <div className="form-row">
             <div className="form-group">
-              <label>Matrícula</label>
+              <label htmlFor="matricula">Matrícula</label>
               <input
                 type="text"
+                id="matricula"
                 name="matricula"
                 inputMode="numeric"
                 placeholder="Digite sua matrícula"
@@ -110,9 +107,10 @@ function Register() {
               />
             </div>
             <div className="form-group">
-              <label>Telefone</label>
+              <label htmlFor="telefone">Telefone</label>
               <input
                 type="tel"
+                id="telefone"
                 name="telefone"
                 inputMode="numeric"
                 placeholder="Digite seu telefone"
@@ -124,9 +122,10 @@ function Register() {
           </div>
 
           <div className="form-group">
-            <label>E-mail</label>
+            <label htmlFor="email">E-mail</label>
             <input
               type="email"
+              id="email"
               name="email"
               placeholder="Digite seu e-mail"
               value={formData.email || ''}
@@ -137,9 +136,10 @@ function Register() {
 
           <div className="form-row">
             <div className="form-group">
-              <label>Senha</label>
+              <label htmlFor="senha">Senha</label>
               <input
                 type="password"
+                id="senha"
                 name="senha"
                 placeholder="Digite sua senha"
                 value={formData.senha || ''}
@@ -148,9 +148,10 @@ function Register() {
               />
             </div>
             <div className="form-group">
-              <label>Confirmar Senha</label>
+              <label htmlFor="confirmar_senha">Confirmar Senha</label>
               <input
                 type="password"
+                id="confirmar_senha"
                 name="confirma_senha"
                 placeholder="Confirme sua senha"
                 value={formData.confirma_senha || ''}
@@ -164,7 +165,7 @@ function Register() {
           {success && <p className="success-message">{success}</p>}
 
           <button type="submit">Cadastrar</button>
-          <p>Já possui conta? <a href="#" onClick={handleBackToLoginClick}>Faça login</a></p>
+          <p>Já possui conta? <Link to="/login">Faça login</Link></p>
         </form>
       </div>
     </div>

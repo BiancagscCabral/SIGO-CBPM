@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, Link} from 'react-router-dom';
 import './Login.css';
 import logoSigo from '../assets/logosigo.svg';
 
@@ -16,6 +16,7 @@ function Login() {
     try {
       const response = await fetch('http://localhost:8000/api/user/login', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
@@ -36,11 +37,6 @@ function Login() {
         'Não foi possível conectar ao servidor. Tente novamente mais tarde.'
       );
     }
-  };
-
-  const handleRegisterClick = (e) => {
-    e.preventDefault()
-    navigate('/register')
   };
 
   const handleMatriculaChange = (e) => {
@@ -70,7 +66,8 @@ function Login() {
           pattern="[0-9]*"
           placeholder="Digite sua Matrícula"
           value={matricula} 
-          onChange={handleMatriculaChange}required
+          onChange={handleMatriculaChange}
+          required
           />
 
           <label htmlFor="senha">Senha</label>
@@ -80,13 +77,14 @@ function Login() {
           type="password"
           placeholder="Digite sua senha"
           value={senha}
-          onChange={(e) => setSenha(e.target.value)}required
+          onChange={(e) => setSenha(e.target.value)}
+          required
           />
 
           {error && <p className="error-message">{error}</p>}
 
           <button type="submit">Entrar</button>
-          <p>Primeira vez aqui? {''} <a href="#" onClick={handleRegisterClick}>Registre-se</a></p>
+          <p>Primeira vez aqui? <Link to="/register">Registre-se</Link> </p>
         </form>
       </div>
     </div>

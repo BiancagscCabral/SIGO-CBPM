@@ -89,3 +89,23 @@ body {
 .login-section button:hover {
   background-color: #8697D9;
 }
+
+.login-section a {
+  color: #314697;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.login-section a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #d8000c;
+  background-color: #ffd2d2;
+  border: 1px solid #d8000c;
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.09rem;
+}

@@ -87,3 +87,12 @@ body {
   gap: 5px;
 }
 
+.register-section a {
+  color: #314697;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.register-section a:hover {
+  text-decoration: underline;
+}
