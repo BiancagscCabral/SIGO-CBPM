@@ -1,35 +1,64 @@
+.main.page-content {
+    padding: 100px;
+}
+
 .minhas-ocorrencias-container {
     width: 100%;
-    max-width: 960px;
-    margin: 24px auto;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 30px;
+    padding: 40px;
+    box-sizing: border-box;
 }
 
-.minhas-ocorrencias-header {
-    background-color: #314697;
-    color: white;
-    padding: 16px;
-    text-align: center;
-    border-radius: 8px;
+.page-header {
+    margin-bottom: 0;
 }
 
-.minhas-ocorrencias-header h1 {
+.page-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2c3e50;
     margin: 0;
-    font-size: 1.5rem;
 }
 
-/* Seção "Ver Todas" */
+.page-header p {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin-top: 4px;
+}
+
 .minhas-ocorrencias-actions {
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     padding: 0 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-.minhas-ocorrencias-actions a {
-    text-decoration: none;
-    color: #314697;
+.ocorrencia-actions-time a:hover {
+    color: #ff6f00;
+    text-decoration: underline;
+}
+
+.ordenacao-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ordenacao-container label {
     font-weight: bold;
+    color: #333;
+}
+
+.ordenacao-container select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 0.9rem;
 }
 
 .ocorrencia-list {
@@ -40,26 +69,29 @@
 
 .ocorrencia-item {
     background-color: #fff;
-    border: 1px solid #e0e0e0;
+    padding: 15px;
     border-radius: 8px;
-    padding: 16px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    gap: 20px;
 }
 
 .ocorrencia-details {
     display: flex;
     flex-direction: column;
+    gap: 4px;
     flex-grow: 1;
 }
 
 .ocorrencia-details strong {
     font-size: 1rem;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    margin-bottom: 4px;
 }
 
 .ocorrencia-details p {
@@ -78,6 +110,7 @@
     flex-direction: column;
     align-items: flex-end;
     gap: 8px;
+    flex-shrink: 0;
 }
 
 .ocorrencia-actions-time .horario {
@@ -93,11 +126,9 @@
     margin-bottom: 8px;
 }
 
-
 .item-buttons {
     display: flex;
     gap: 10px;
-    margin-top: 10px;
 }
 
 .btn {
@@ -114,21 +145,19 @@
 }
 
 .btn-editar {
-    background-color: #314697;
-    color: white;
+    background-color: transparent;
+    color: #314697;
+    border: 1px solid #314697;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .btn-editar:hover {
-    background-color: #2a3a7e;
-}
-
-.btn-relatorio {
-    background-color: #5c6bc0;
+    background-color: #ff6f00;
     color: white;
-}
-
-.btn-relatorio:hover {
-    background-color: #4a57a0;
+    border: 1px solid #ff6f00;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
 }
 
 .status {
@@ -152,6 +181,15 @@
 .status-finalizada {
     background-color: #a7f3d0;
     color: #065f46;
+}
+
+.prioridade {
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: #e9ecef;
+    padding: 3px 8px;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
 }
 
 .minhas-ocorrencias-actions {
@@ -178,4 +216,40 @@
     border-radius: 5px;
     background-color: white;
     font-size: 0.9rem;
+}
+
+/* MÁGICA DA RESPONSIVIDADE */
+@media (max-width: 768px) {
+
+    .ocorrencia-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ocorrencia-actions-time {
+        align-items: flex-start;
+        margin-top: 16px;
+        width: 100%;
+    }
+
+    .item-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .page-header {
+        margin-bottom: -16px;
+    }
+
+    .minhas-ocorrencias-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        padding: 0;
+    }
+
 }

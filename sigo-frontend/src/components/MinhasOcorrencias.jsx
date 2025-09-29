@@ -156,7 +156,7 @@ function MinhasOcorrencias() {
     const [ocorrenciaSelecionada, setOcorrenciaSelecionada] = useState(null);
 
     const handleEdit = (ocorrenciaId) => alert(`Editar ocorrência ${ocorrenciaId}`);
-    
+
     // ABRIR O MODAL
     const handleVerDetalhes = (ocorrencia) => {
         setOcorrenciaSelecionada(ocorrencia);
@@ -184,8 +184,9 @@ function MinhasOcorrencias() {
 
     return (
         <div className="minhas-ocorrencias-container">
-            <div className="minhas-ocorrencias-header">
-                <h1>MINHAS OCORRÊNCIAS</h1>
+            <div className="page-header">
+                <h1>Minhas Ocorrências</h1>
+                <p>Visualize e gerencie as ocorrências que você registrou</p>
             </div>
 
             <div className="minhas-ocorrencias-actions">
@@ -224,20 +225,19 @@ function MinhasOcorrencias() {
 
                         <div className="ocorrencia-actions-time">
                             <span className="horario">{formatarHorario(ocorrencia.timestamps.abertura)}</span>
-                            <a href="#" onClick={() => handleVerDetalhes(ocorrencia)}>Ver Detalhes da Ocorrência</a>
                             <div className="item-buttons">
-                                <button className="btn btn-editar" onClick={() => handleEdit(ocorrencia.id)}>📝 Editar</button>
-                                <button className="btn btn-relatorio" onClick={() => handleVerDetalhes(ocorrencia)}>📄 Relatório de Ocorrência</button>
+                                <button className="btn btn-editar" onClick={() => handleEdit(ocorrencia.id)}>Editar</button>
                             </div>
+                            <a href="#" onClick={() => handleVerDetalhes(ocorrencia)}>Ver Detalhes da Ocorrência</a>
                         </div>
                     </div>
                 ))}
             </div>
 
             {modalVisivel && (
-                <Modal 
-                    ocorrencia={ocorrenciaSelecionada} 
-                    onClose={() => setModalVisivel(false)} 
+                <Modal
+                    ocorrencia={ocorrenciaSelecionada}
+                    onClose={() => setModalVisivel(false)}
                 />
             )}
         </div>

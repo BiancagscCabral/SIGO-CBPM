@@ -9,6 +9,7 @@ import RegistroOcorrencia from './components/RegistroOcorrencia';
 import Layout from './components/Layout';
 import Relatorios from './components/Relatorios';
 import MinhasOcorrencias from './components/MinhasOcorrencias';
+import Configuracoes from './components/Configuracoes';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/registro-ocorrencia" element={<RegistroOcorrencia />} />
         <Route path="/relatorios" element={<Relatorios />} />
         <Route path="/minhas-ocorrencias" element={<MinhasOcorrencias />} />
+        <Route path="/configuracoes" element={<Configuracoes />} />
       </Route>
     </Routes>
   );

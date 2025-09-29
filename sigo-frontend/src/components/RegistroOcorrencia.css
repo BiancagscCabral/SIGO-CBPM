@@ -1,314 +1,304 @@
-
-/* importando font poppins*/
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-* {
-   box-sizing: border-box; 
-   margin: 0;
-    padding: 0; 
-    font-family: Poppins, sans-serif;
-  }
-
-.page-container { 
-  display: flex; 
-  justify-content: center; 
-  background-color: #ffffff; 
-  padding: 40px 20px; 
- }
-
-.form-container {
-   width: 100%; 
-   max-width: 900px; 
-   background-color: #ffffff;
-    border-radius: 8px; 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-     overflow: hidden; }
-
-.form-header {
-  background-color: #314697; 
-  color: white; 
-  padding: 16px;
-  text-align: center;
-  border-radius: 10px;
-   }
-
-.form-header h2 { 
-  font-size: 24px;
-   font-weight: 600;  
-   }
-
-   
-.occurrence-form {
-  padding: 30px;
+.registro-ocorrencia-container {
+  width: 100%;
   display: flex;
-  flex-direction: column; 
-   gap: 30px;
-   }
-
-.form-section {
-   display: flex;
-  flex-wrap: wrap; 
-    gap: 20px;
-  }
-
-.form-group {
-   display: flex;
-    flex-direction: column; 
-    gap: 8px;
-   }
-
-.form-group.full-width { 
-  width: 100%; 
+  flex-direction: column;
+  gap: 32px;
 }
 
-.form-group.half-width {
-   width: calc(50% - 10px);
-   }
+.registro-ocorrencia-container .page-header {
+  margin-bottom: 0;
+}
 
-.form-group label {
-   font-weight: 600;
-    color: #333;
-     font-size: 0.9rem; 
-    }
+.registro-ocorrencia-container .page-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
 
-.form-group input[type="text"],
- .form-group select,
-  .form-group textarea { 
-    width: 100%;
-     padding: 12px;
-      border: 1px solid #dcdcdc;
-       border-radius: 10px;
-        background-color: #F1F4FF;
-         color: #6E5C5C;
-         font-size: 1rem; 
-         font-family: inherit;
-          transition: border-color 0.2s, box-shadow 0.2s; 
-        }
+.registro-ocorrencia-container .page-header p {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin-top: 4px;
+}
 
-.form-group input[type="text"]:focus,
- .form-group select:focus,
-  .form-group textarea:focus {
-     outline: none;
-      border-color: #3A4B8B; 
-      box-shadow: 0 0 0 2px rgba(58, 75, 139, 0.2); 
-    }
+.registro-ocorrencia-container .form-container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
 
-.form-group textarea { 
+.registro-ocorrencia-container .occurrence-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.registro-ocorrencia-container .form-section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1E1E1E;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.registro-ocorrencia-container .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.registro-ocorrencia-container .form-group label {
+  font-weight: 600;
+  color: #1E1E1E;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.registro-ocorrencia-container .form-group input,
+.registro-ocorrencia-container .form-group select,
+.registro-ocorrencia-container .form-group textarea {
+   width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #F1F4FF;
+  color: #333;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.registro-ocorrencia-container .form-group textarea {
   resize: vertical;
+  min-height: 120px;
 }
 
-.form-group select {
-   -webkit-appearance: none;
-   -moz-appearance: none;
-    appearance: none;
-     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%233A4B8B%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); 
-     background-repeat: no-repeat;
-     background-position: right 15px top 50%; 
-    background-size: 10px auto; 
-    }
+.registro-ocorrencia-container .form-group input:focus,
+.registro-ocorrencia-container .form-group select:focus,
+.registro-ocorrencia-container .form-group textarea:focus {
+  outline: none;
+  border-color: #314697;
+  box-shadow: 0 0 0 2px rgba(49, 70, 151, 0.2);
+}
 
-
-.input-with-button { 
+.registro-ocorrencia-container .input-with-button {
   display: flex;
-   align-items: stretch;
-    gap: 10px; 
-  }
+  gap: 10px;
+}
 
-.input-with-button input {
-   flex-grow: 1;
-   }
+.registro-ocorrencia-container .input-with-button input {
+  flex-grow: 1;
+}
 
-.btn-capture {
-   padding: 12px 20px; 
-   background-color: #ffffff;
-    border: 1px solid #ccc;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-     border-radius: 10px;
-      cursor: pointer;
-       font-weight: 500; 
-       white-space: nowrap;
-        transition: background-color 0.2s;
-        display: flex;
-        align-items: center;
-        gap : 8px;
-       }
-
-.btn-capture:hover { 
-  background-color: #f5f5f5;
- }
-
-.form-actions {
-   display: flex; justify-content: flex-end;
-    gap: 16px; padding-top: 20px;
-     border-top: 1px solid #eee;
-     }
-
-.form-actions button { 
-  padding: 12px 24px;
+.registro-ocorrencia-container .btn-capture {
+  padding: 10px 20px;
+  background-color: #f8f9fa;
   border: 1px solid #ccc;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-    border-radius: 10px; 
-    font-size: 1rem;
-     font-weight: 600; 
-     cursor: pointer; 
-     transition: background-color 0.2s, transform 0.1s;
-      display: flex; 
-      align-items: center;
-       gap: 8px; 
-      }
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #131212;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
 
-.form-actions button:active {
-  transform: translateY(1px);
- }
+.registro-ocorrencia-container .btn-capture:hover {
+  background-color: #F1F4FF;
+  border-color: #a9bfff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.30);
+}
 
-.btn-primary {
-   background-color: #314697;
-    color: black;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-   }
+.registro-ocorrencia-container .upload-row {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+}
 
-.btn-primary:hover { 
-  background-color: #0f2e9b;
- }
+.registro-ocorrencia-container .upload-row .form-group {
+  flex: 1;
+}
 
-.btn-secondary { 
-  background-color: #ffffff; 
-  border: 1px solid black;
-    border-radius: 10px;
-   }
-
-.btn-secondary:hover {
-   background-color: #f5f5f5;
-   }
-
-@media (max-width: 600px) { .form-group.half-width { width: 100%; } }
-
-/* Estilos para upload de arquivos e assinatura */
-
-.upload-box {
+.registro-ocorrencia-container .upload-box {
   border: 2px dashed #dcdcdc;
   border-radius: 8px;
-  padding: 20px;
-  width: 100%;
   text-align: center;
   transition: border-color 0.2s, background-color 0.2s;
+  height: 100%;
 }
 
-.upload-box:hover {
-  border-color: #3A4B8B;
+.registro-ocorrencia-container .upload-box:hover {
+  border-color: #314697;
   background-color: #f9f9ff;
 }
 
-.upload-label {
+.registro-ocorrencia-container .upload-label {
   cursor: pointer;
   display: flex;
-  border: 1px solid #ccc;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  padding: 10px;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.upload-label span {
+.registro-ocorrencia-container .upload-label span {
   font-weight: 600;
   font-size: 1rem;
   color: #333;
   display: flex;
   align-items: center;
-  gap : 10px;
+  gap: 10px;
 }
 
-.upload-label small {
+.registro-ocorrencia-container .upload-label small {
   font-size: 0.8rem;
   color: #888;
-
 }
 
-/* Esconde o input de arquivo padrão */
-.upload-box input[type="file"] {
+.registro-ocorrencia-container .upload-box input[type="file"] {
   display: none;
 }
 
-.signature-box {
-  border: 2px dashed #dcdcdc;
+.registro-ocorrencia-container .signature-box {
+  border: 1px solid #dcdcdc;
   border-radius: 8px;
-  padding: 10px;
 }
 
-.signature-canvas {
+.registro-ocorrencia-container .signature-canvas {
   width: 100%;
   height: 150px;
-  border: 1px solid #E9EDF4; 
-  border-radius: 10px; 
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"><text x="95" y="15" font-family="Poppins, sans-serif" font-size="14" fill="%23a0a8b7" text-anchor="end">Assine aqui</text></svg>');
-  background-repeat: no-repeat;
-  background-position: bottom 10px right 15px;
+  border-bottom: 1px solid #eee;
 }
 
-.signature-actions {
-  position: relative; 
+.registro-ocorrencia-container .signature-actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end; 
-  margin-top: 8px;
-  padding: 0 5px;
-  height: 28px; 
+  justify-content: space-between;
+  padding: 8px;
+  background-color: #f8f9fa;
 }
 
-.signature-actions small {
-  color: #626262;
-  font-size: 1rem;
-  font-style: bold;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%; 
-  text-align: center;
- } 
+.registro-ocorrencia-container .signature-actions small {
+  color: #6c757d;
+  font-size: 0.85rem;
+}
 
-.btn-clear-signature {
+.registro-ocorrencia-container .btn-clear-signature {
   background: none;
   border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 6px 12px;
+  border-radius: 5px;
+  padding: 4px 10px;
   align-items: center;
-  white-space: nowrap;
   display: flex;
-  gap : 8px;
+  gap: 8px;
   cursor: pointer;
   font-size: 0.8rem;
+  transition: background-color 0.2s ease;
 }
 
-.btn-clear-signature * {
-  cursor: inherit;
+.registro-ocorrencia-container .btn-clear-signature:hover {
+  background-color: #e9ecef;
 }
 
-.btn-clear-signature:hover {
-  background-color: #f5f5f5;
-}
-/* Ícones dentro dos botões */
-.btn-capture img,
-.btn-primary img,
-.btn-secondary img {
-  width: 32px;
-  height: 32px;
-  margin-right: 8px;
+.registro-ocorrencia-container .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
 }
 
-label {
-  display: flex;        
-  align-items: center;  
-  gap: 2px;           
+.registro-ocorrencia-container .form-actions button {
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  transition: background-color 0.2s;
 }
 
-label img {
-  vertical-align: middle;   /* alinha o icon vertical */
-  width: 32px;          
-  height: 32px;         
-} 
+.registro-ocorrencia-container .btn-primary {
+  background-color: #ff6f00;
+  color: white;
+  border: 1px solid #ff6f00;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.registro-ocorrencia-container .btn-primary:hover {
+  background-color: transparent;
+  color: #314697;
+  border: 1px solid #314697;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.registro-ocorrencia-container .btn-primary img {
+  filter: brightness(0) invert(1);
+}
+
+.registro-ocorrencia-container .btn-primary:hover img {
+  filter: none;
+}
+
+.registro-ocorrencia-container .btn-secondary {
+  background-color: #314697;
+  color: white;
+  border: 1px solid #314697;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.registro-ocorrencia-container .btn-secondary:hover {
+  background-color: transparent;
+  color: #314697;
+  border: 1px solid #314697;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.registro-ocorrencia-container .btn-secondary img {
+  filter: brightness(0) invert(1);
+}
+
+.registro-ocorrencia-container .btn-secondary:hover img {
+  filter: none;
+}
+
+/* A MÁGICA DA RESPONSIVIDADE */
+@media (max-width: 768px) {
+
+  .registro-ocorrencia-container .input-with-button {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .registro-ocorrencia-container .upload-row {
+    flex-direction: column;
+  }
+
+  .registro-ocorrencia-container .form-actions {
+    flex-direction: column;
+  }
+
+  .registro-ocorrencia-container .form-actions button {
+    width: 100%;
+  }
+}
