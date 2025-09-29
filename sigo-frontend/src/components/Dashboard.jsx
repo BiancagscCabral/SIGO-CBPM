@@ -68,20 +68,21 @@ const QuickAccessSection = ({ navigate, handleRegistroClick }) => (
 function Dashboard() {
   const navigate = useNavigate();
 
-  const [dashboardData, setDashboardData] = useState ({
-    totalOcorrencias: '...',
-    ocorrenciasHoje: '...',
-    emAndamento: '...',
-    equipesAtivas: '...',
+  const defaultStats = {
+    totalOcorrencias: '--',
+    ocorrenciasHoje: '--',
+    emAndamento: '--',
+    equipesAtivas: '--',
     percentChange: null,
-  });
+  };
 
+  const [dashboardData, setDashboardData] = useState(defaultStats);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect (() => {
+  useEffect(() => {
     const fetchData = async () => {
-      const API_URL = 'http://localhost:8080/api/dashboard/stats';
+      const API_URL = 'http://localhost:8000/api/dashboard/stats'; 
       
       try {
         const response = await fetch(API_URL, {
@@ -105,10 +106,11 @@ function Dashboard() {
           percentChange: data.totalOcorrencias.increase || null,
         });
 
-        setIsLoading(false);
       } catch (err) {
         console.error("Erro ao buscar dados do dashboard:", err);
         setError("Não foi possível carregar os dados. Verifique a conexão.");
+        setDashboardData(defaultStats);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -120,36 +122,15 @@ function Dashboard() {
     navigate('/registro-ocorrencia');
   }
 
-  if (isLoading) {
-    return (
-      <main className="main-content">
-        <div className="dashboard-header">
-          <h1>Dashboard</h1>
-          <p>Carregando dados das estatísticas</p>
-        </div>
-        <QuickAccessSection navigate={navigate} handleRegistroClick={handleRegistroClick} />
-      </main>
-    );
-  }
-
-  if (error) {
-    return (
-      <main className="main-content">
-        <div className="dashboard-header">
-          <h1>Dashboard</h1>
-          <p style={{ color: '#f44336' }}>Erro: {error}</p>
-        </div>
-        <QuickAccessSection navigate={navigate} handleRegistroClick={handleRegistroClick} />
-      </main>
-    );
-  }
-
   return (
     <main className="main-content">
       <div className="dashboard-header">
         <h1>Dashboard</h1>
-          <p>Bem Vindo ao Sistema Integrado de Gestão de Ocorrências</p>
+        {isLoading && <p>Carregando dados das estatísticas...</p>}
+        {error && <p style={{ color: '#f44336' }}>{error}</p>}
+        {!isLoading && !error && <p>Bem Vindo ao Sistema Integrado de Gestão de Ocorrências</p>}
       </div>
+      
       <section className="stats-grid">
         <StatCard 
           icon={<FaFire />}
