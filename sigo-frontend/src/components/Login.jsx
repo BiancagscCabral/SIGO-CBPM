@@ -84,7 +84,10 @@ function Login() {
           {error && <p className="error-message">{error}</p>}
 
           <button type="submit">Entrar</button>
-          <p>Primeira vez aqui? <Link to="/register">Registre-se</Link> </p>
+          <p>Primeira vez aqui?  <Link to="/register">Registre-se</Link></p>
+          <p className="forgot-password-link">
+          <Link to="/forgot-password">Esqueci minha senha</Link>
+          </p>
         </form>
       </div>
     </div>
