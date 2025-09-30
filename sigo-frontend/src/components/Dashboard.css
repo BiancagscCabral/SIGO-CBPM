@@ -1,3 +1,9 @@
+.main-content {
+  flex-grow: 1;
+  padding: 40px; 
+  background-color: white;
+}
+
 .dashboard-header {
   margin-bottom: 32px;
 }
@@ -13,12 +19,6 @@
   font-size: 16px;
   color: #7f8c8d;
   margin-top: 4px;
-}
-
-.main-content {
-  flex-grow: 1;
-  padding: 40px;
-  background-color: white;;
 }
 
 .stats-grid {
@@ -119,3 +119,21 @@
 .bg-blue { background-color: #2196f3; }
 .bg-orange { background-color: #ff9800; }
 .bg-gray { background-color: #607d8b; }
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 20px;
+  }
+
+  .quick-access-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-header h1 {
+    font-size: 24px; 
+  }
+
+  .dashboard-header p {
+    font-size: 14px; 
+  }
+}
