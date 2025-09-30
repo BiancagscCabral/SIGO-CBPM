@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
@@ -10,6 +10,8 @@ import Layout from './components/Layout';
 import Relatorios from './components/Relatorios';
 import MinhasOcorrencias from './components/MinhasOcorrencias';
 import Configuracoes from './components/Configuracoes';
+import ForgotPassword from './components/ForgotPassword';
+import VerifyPage from './components/VerifyPage'; 
 
 function App() {
   return (
@@ -17,8 +19,10 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/verify-code" element={<VerifyPage />} /> 
 
-      <Route element={<Layout/>}>
+      <Route element={<Layout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/registro-ocorrencia" element={<RegistroOcorrencia />} />
         <Route path="/relatorios" element={<Relatorios />} />
