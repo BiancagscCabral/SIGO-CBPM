@@ -1,4 +1,3 @@
-import React from "react";
 import logoSigo from "../assets/logosigo.svg";
 import "./Header.css";
 

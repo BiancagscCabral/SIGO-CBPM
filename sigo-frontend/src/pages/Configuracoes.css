@@ -50,7 +50,6 @@
     background-color: #F1F4FF;
     font-size: 1rem;
     box-sizing: border-box;
-
 }
 
 .toggle-item select {
@@ -166,7 +165,6 @@ input:checked+.slider:before {
     border-radius: 50%;
 }
 
-/* MÁGICA DA RESPONSIVIDADE */
 @media (max-width: 768px) {
     .form-grid {
         grid-template-columns: 1fr;

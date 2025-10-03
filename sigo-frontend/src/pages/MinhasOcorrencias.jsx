@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './MinhasOcorrencias.css';
-import Modal from './Modal';
+import Modal from '../components/Modal';
 
 const getStatusClass = (status) => {
     if (status === 'Em andamento') return 'status-andamento';

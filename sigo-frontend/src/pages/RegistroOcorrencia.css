@@ -282,7 +282,6 @@
   filter: none;
 }
 
-/* A MÁGICA DA RESPONSIVIDADE */
 @media (max-width: 768px) {
 
   .registro-ocorrencia-container .input-with-button {
