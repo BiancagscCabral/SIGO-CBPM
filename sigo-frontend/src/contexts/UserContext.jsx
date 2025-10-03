@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import UserProfileService from '../services/UserProfileService';
 
 const UserContext = createContext();
 
@@ -10,6 +11,13 @@ export const UserProvider = ({ children }) => {
     cargo: '',
     telefone: '',
     email: ''
+  });
+
+  const [notificationPreferences, setNotificationPreferences] = useState({
+    incendio: false,
+    emergencia: false,
+    transito: false,
+    outros: false
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -75,17 +83,47 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const fetchNotificationPreferences = async () => {
+    const result = await UserProfileService.getNotificationPreferences();
+    if (result.success) {
+      setNotificationPreferences(result.preferences);
+    }
+    return result;
+  };
+
+  const updateNotificationPreferences = async (preferences) => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const result = await UserProfileService.updateNotificationPreferences(preferences);
+      if (result.success) {
+        setNotificationPreferences(preferences);
+      } else {
+        setError(result.error);
+      }
+      return result;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchUserProfile();
+    fetchNotificationPreferences();
   }, []);
 
   const value = {
     userProfile,
     setUserProfile,
+    notificationPreferences,
+    setNotificationPreferences,
     isLoading,
     error,
     fetchUserProfile,
-    updateUserProfile
+    updateUserProfile,
+    fetchNotificationPreferences,
+    updateNotificationPreferences
   };
 
   return (

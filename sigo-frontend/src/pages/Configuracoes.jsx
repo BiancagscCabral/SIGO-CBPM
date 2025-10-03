@@ -4,7 +4,14 @@ import UserProfileService from '../services/UserProfileService';
 import './Configuracoes.css';
 
 function Configuracoes() {
-  const { userProfile, updateUserProfile, isLoading, error } = useUser();
+  const { 
+    userProfile, 
+    updateUserProfile, 
+    notificationPreferences, 
+    updateNotificationPreferences, 
+    isLoading, 
+    error 
+  } = useUser();
   
   const [profileData, setProfileData] = useState({
     nome: '',
@@ -19,10 +26,18 @@ function Configuracoes() {
   const [saveMessage, setSaveMessage] = useState('');
   const [validationErrors, setValidationErrors] = useState({});
 
-  const [notificacaoIncendio, setNotificacaoIncendio] = useState(true);
-  const [notificacaoEmergencia, setNotificacaoEmergencia] = useState(true);
-  const [notificacaoTransito, setNotificacaoTransito] = useState(true);
-  const [notificacaoOutros, setNotificacaoOutros] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    senhaAtual: '',
+    novaSenha: '',
+    confirmarSenha: ''
+  });
+  const [isEditingPassword, setIsEditingPassword] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [passwordErrors, setPasswordErrors] = useState({});
+  
+  const [notificationSaving, setNotificationSaving] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
   
   const [Tema, setTema] = useState(false);
   const [leitorDeTela, setLeitorDeTela] = useState(false);
@@ -104,6 +119,100 @@ function Configuracoes() {
     setIsEditing(false);
     setValidationErrors({});
     setSaveMessage('');
+  };
+
+  const handlePasswordInputChange = (e) => {
+    const { name, value } = e.target;
+    
+    setPasswordData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    if (passwordErrors[name]) {
+      setPasswordErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const handleChangePassword = async () => {
+   
+    const validation = UserProfileService.validatePasswordData(passwordData);
+    
+    if (!validation.isValid) {
+      setPasswordErrors(validation.errors);
+      setPasswordMessage('Por favor, corrija os erros antes de alterar a senha.');
+      return;
+    }
+
+    setIsChangingPassword(true);
+    setPasswordMessage('');
+    setPasswordErrors({});
+
+    try {
+      const result = await UserProfileService.updatePassword(
+        passwordData.senhaAtual, 
+        passwordData.novaSenha
+      );
+      
+      if (result.success) {
+        setPasswordMessage(result.message);
+        setPasswordData({
+          senhaAtual: '',
+          novaSenha: '',
+          confirmarSenha: ''
+        });
+        setIsEditingPassword(false);
+        
+        setTimeout(() => setPasswordMessage(''), 3000);
+      } else {
+        setPasswordMessage(result.error || 'Erro ao alterar senha');
+      }
+    } catch (error) {
+      setPasswordMessage('Erro ao alterar senha. Tente novamente.');
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
+  const handleCancelPasswordEdit = () => {
+    setPasswordData({
+      senhaAtual: '',
+      novaSenha: '',
+      confirmarSenha: ''
+    });
+    setIsEditingPassword(false);
+    setPasswordErrors({});
+    setPasswordMessage('');
+  };
+
+  const handleNotificationChange = async (notificationType, newValue) => {
+    const updatedPreferences = {
+      ...notificationPreferences,
+      [notificationType]: newValue
+    };
+
+    setNotificationSaving(true);
+    setNotificationMessage('');
+
+    try {
+      const result = await updateNotificationPreferences(updatedPreferences);
+      
+      if (result.success) {
+        setNotificationMessage('Preferências salvas com sucesso!');
+        setTimeout(() => setNotificationMessage(''), 3000);
+      } else {
+        setNotificationMessage(result.error || 'Erro ao salvar preferências');
+        setTimeout(() => setNotificationMessage(''), 5000);
+      }
+    } catch (error) {
+      setNotificationMessage('Erro ao salvar preferências de notificação');
+      setTimeout(() => setNotificationMessage(''), 5000);
+    } finally {
+      setNotificationSaving(false);
+    }
   };
 
   return (
@@ -253,54 +362,154 @@ function Configuracoes() {
 
         <section className="settings-section">
           <h2>Segurança</h2>
+
+          {passwordMessage && (
+            <div className={`save-message ${passwordMessage.includes('sucesso') ? 'success' : 'error'}`}>
+              {passwordMessage}
+            </div>
+          )}
+
           <div className="form-grid">
             <div className="form-group">
-              <label htmlFor="senha-atual">Senha Atual</label>
-              <input type="password" id="senha-atual" />
+              <label htmlFor="senha-atual">Senha Atual *</label>
+              <input 
+                type="password" 
+                id="senha-atual"
+                name="senhaAtual"
+                value={passwordData.senhaAtual}
+                onChange={handlePasswordInputChange}
+                disabled={!isEditingPassword || isChangingPassword}
+                className={passwordErrors.senhaAtual ? 'error' : ''}
+              />
+              {passwordErrors.senhaAtual && (
+                <span className="field-error">{passwordErrors.senhaAtual}</span>
+              )}
             </div>
             <div className="form-group"></div>
             <div className="form-group">
-              <label htmlFor="nova-senha">Nova Senha</label>
-              <input type="password" id="nova-senha" />
+              <label htmlFor="nova-senha">Nova Senha *</label>
+              <input 
+                type="password" 
+                id="nova-senha"
+                name="novaSenha"
+                value={passwordData.novaSenha}
+                onChange={handlePasswordInputChange}
+                disabled={!isEditingPassword || isChangingPassword}
+                className={passwordErrors.novaSenha ? 'error' : ''}
+              />
+              {passwordErrors.novaSenha && (
+                <span className="field-error">{passwordErrors.novaSenha}</span>
+              )}
             </div>
             <div className="form-group">
-              <label htmlFor="confirmar-senha">Confirmar Nova Senha</label>
-              <input type="password" id="confirmar-senha" />
+              <label htmlFor="confirmar-senha">Confirmar Nova Senha *</label>
+              <input 
+                type="password" 
+                id="confirmar-senha"
+                name="confirmarSenha"
+                value={passwordData.confirmarSenha}
+                onChange={handlePasswordInputChange}
+                disabled={!isEditingPassword || isChangingPassword}
+                className={passwordErrors.confirmarSenha ? 'error' : ''}
+              />
+              {passwordErrors.confirmarSenha && (
+                <span className="field-error">{passwordErrors.confirmarSenha}</span>
+              )}
             </div>
           </div>
-           <div className="form-actions">
-            <button className="btn-salvar">Alterar Senha</button>
+          
+          <div className="form-actions">
+            {isEditingPassword ? (
+              <>
+                <button 
+                  className="btn-salvar" 
+                  onClick={handleChangePassword}
+                  disabled={isChangingPassword}
+                >
+                  {isChangingPassword ? 'Alterando...' : 'Alterar Senha'}
+                </button>
+                <button 
+                  className="btn-cancelar" 
+                  onClick={handleCancelPasswordEdit}
+                  disabled={isChangingPassword}
+                >
+                  Cancelar
+                </button>
+              </>
+            ) : (
+              <button 
+                className="btn-editar" 
+                onClick={() => setIsEditingPassword(true)}
+              >
+                Editar Senha
+              </button>
+            )}
           </div>
+
+          {isEditingPassword && (
+            <div className="form-footer">
+              <small>* Campos obrigatórios</small>
+            </div>
+          )}
         </section>
 
         <section className="settings-section">
           <h2>Notificações</h2>
+          
+          {notificationSaving && (
+            <div className="loading-message">
+              Salvando preferências...
+            </div>
+          )}
+          
+          {notificationMessage && (
+            <div className={`message ${notificationMessage.includes('sucesso') ? 'success' : 'error'}`}>
+              {notificationMessage}
+            </div>
+          )}
+          
           <div className="toggle-list">
             <div className="toggle-item">
               <span>Incêndio</span>
               <label className="switch">
-                <input type="checkbox" checked={notificacaoIncendio} onChange={() => setNotificacaoIncendio(!notificacaoIncendio)} />
+                <input 
+                  type="checkbox" 
+                  checked={notificationPreferences.incendio} 
+                  onChange={(e) => handleNotificationChange('incendio', e.target.checked)} 
+                />
                 <span className="slider round"></span>
               </label>
             </div>
             <div className="toggle-item">
               <span>Emergência Médica</span>
               <label className="switch">
-                <input type="checkbox" checked={notificacaoEmergencia} onChange={() => setNotificacaoEmergencia(!notificacaoEmergencia)} />
+                <input 
+                  type="checkbox" 
+                  checked={notificationPreferences.emergencia} 
+                  onChange={(e) => handleNotificationChange('emergencia', e.target.checked)} 
+                />
                 <span className="slider round"></span>
               </label>
             </div>
             <div className="toggle-item">
               <span>Acidentes de Trânsito</span>
               <label className="switch">
-                <input type="checkbox" checked={notificacaoTransito} onChange={() => setNotificacaoTransito(!notificacaoTransito)} />
+                <input 
+                  type="checkbox" 
+                  checked={notificationPreferences.transito} 
+                  onChange={(e) => handleNotificationChange('transito', e.target.checked)} 
+                />
                 <span className="slider round"></span>
               </label>
             </div>
             <div className="toggle-item">
               <span>Outros</span>
               <label className="switch">
-                <input type="checkbox" checked={notificacaoOutros} onChange={() => setNotificacaoOutros(!notificacaoOutros)} />
+                <input 
+                  type="checkbox" 
+                  checked={notificationPreferences.outros} 
+                  onChange={(e) => handleNotificationChange('outros', e.target.checked)} 
+                />
                 <span className="slider round"></span>
               </label>
             </div>
