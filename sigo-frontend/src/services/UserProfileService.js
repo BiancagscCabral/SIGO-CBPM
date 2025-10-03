@@ -32,8 +32,8 @@ class UserProfileService {
       errors.senhaAtual = 'Senha atual é obrigatória';
     }
 
-    if (!passwordData.novaSenha || passwordData.novaSenha.length < 6) {
-      errors.novaSenha = 'Nova senha deve ter pelo menos 6 caracteres';
+    if (!passwordData.novaSenha || passwordData.novaSenha.trim().length === 0) {
+      errors.novaSenha = 'Nova senha é obrigatória';
     }
 
     if (!passwordData.confirmarSenha || passwordData.confirmarSenha.length === 0) {
@@ -104,6 +104,85 @@ class UserProfileService {
       return `(${numbers.substr(0, 2)}) ${numbers.substr(2, 4)}-${numbers.substr(6, 4)}`;
     }
     return phone;
+  }
+
+  static async updateNotificationPreferences(preferences) {
+    try {
+      const response = await fetch('http://localhost:8000/api/user/notification-preferences', {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          incendio: preferences.incendio,
+          emergencia: preferences.emergencia,
+          transito: preferences.transito,
+          outros: preferences.outros
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        return { success: true, message: 'Preferências de notificação salvas com sucesso!' };
+      } else {
+        const errorData = await response.json();
+        return { 
+          success: false, 
+          error: errorData.error || 'Erro ao salvar preferências de notificação' 
+        };
+      }
+    } catch (error) {
+      return { 
+        success: false, 
+        error: 'Erro de conexão. Não foi possível salvar as preferências.' 
+      };
+    }
+  }
+
+  static async getNotificationPreferences() {
+    try {
+      const response = await fetch('http://localhost:8000/api/user/notification-preferences', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const preferences = await response.json();
+        return { 
+          success: true, 
+          preferences: {
+            incendio: preferences.incendio ?? false,
+            emergencia: preferences.emergencia ?? false,
+            transito: preferences.transito ?? false,
+            outros: preferences.outros ?? false
+          }
+        };
+      } else {
+        return { 
+          success: true, 
+          preferences: {
+            incendio: false,
+            emergencia: false,
+            transito: false,
+            outros: false
+          }
+        };
+      }
+    } catch (error) {
+      return { 
+        success: true, 
+        preferences: {
+          incendio: false,
+          emergencia: false,
+          transito: false,
+          outros: false
+        }
+      };
+    }
   }
 }
 
