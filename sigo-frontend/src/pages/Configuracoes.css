@@ -30,6 +30,90 @@
     gap: 1.5rem;
 }
 
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.section-header h2 {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.section-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.save-message {
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.save-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.save-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.form-group input.error,
+.form-group select.error {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+}
+
+.form-group input.readonly {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.field-error {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+}
+
+.form-footer {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.form-footer small {
+    color: #6c757d;
+    font-size: 12px;
+}
+
 .form-group {
     display: flex;
     flex-direction: column;
@@ -71,10 +155,12 @@
 }
 
 .form-actions {
+    display: flex;
+    gap: 15px;
     margin-top: 1.5rem;
 }
 
-.btn-salvar {
+.btn-salvar, .btn-cancelar, .btn-editar {
     background-color: #ff6f00;
     color: white;
     border: 1px solid #ff6f00;
@@ -86,12 +172,34 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-.btn-salvar:hover {
+.btn-salvar:hover, .btn-editar:hover {
     background-color: transparent;
     color: #314697;
     border: 1px solid #314697;
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.btn-cancelar {
+    background-color: #6c757d;
+    border: 1px solid #6c757d;
+}
+
+.btn-cancelar:hover {
+    background-color: transparent;
+    color: #495057;
+    border: 1px solid #495057;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.btn-salvar:disabled, .btn-cancelar:disabled, .btn-editar:disabled {
+    background-color: #d6d8db;
+    color: #6c757d;
+    border: 1px solid #d6d8db;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 /* Estilos para a lista de toggles */
