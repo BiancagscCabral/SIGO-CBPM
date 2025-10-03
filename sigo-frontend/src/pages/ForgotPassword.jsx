@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-import Header from './Header'; 
 import './ForgotPassword.css';
 
 function ForgotPasswordPage() {
@@ -18,7 +16,6 @@ function ForgotPasswordPage() {
   
   return (
     <div className="forgot-password-page"> 
-      <Header />
       <main className="forgot-password-content">
         <div className="form-card">
           <h2>Recuperação de Senha</h2>

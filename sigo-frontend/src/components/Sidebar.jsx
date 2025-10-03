@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FiGrid, FiFilePlus, FiClipboard, FiFileText, FiSettings, FiChevronsLeft, FiChevronsRight, FiLogOut } from 'react-icons/fi';
 import './Sidebar.css';

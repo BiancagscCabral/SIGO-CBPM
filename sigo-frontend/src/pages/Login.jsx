@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {useNavigate, Link} from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import './Login.css';
 import logoSigo from '../assets/logosigo.svg';
 

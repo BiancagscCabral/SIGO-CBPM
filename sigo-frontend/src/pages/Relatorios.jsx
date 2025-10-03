@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Relatorios.css';
 import { FiArrowUp } from 'react-icons/fi';
 

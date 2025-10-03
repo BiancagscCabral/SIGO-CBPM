@@ -163,7 +163,6 @@
   color: #314697;
 }
 
-/* MÁGICA DA RESPONSIVIDADE */
 @media (max-width: 768px) {
 
   .relatorio-container {

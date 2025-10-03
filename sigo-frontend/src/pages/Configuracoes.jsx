@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Configuracoes.css';
 
 function Configuracoes() {
@@ -144,7 +144,6 @@ function Configuracoes() {
             </div>
           </div>
         </section>
-
       </div>
     </main>
   );

@@ -218,7 +218,6 @@
     font-size: 0.9rem;
 }
 
-/* MÁGICA DA RESPONSIVIDADE */
 @media (max-width: 768px) {
 
     .ocorrencia-item {

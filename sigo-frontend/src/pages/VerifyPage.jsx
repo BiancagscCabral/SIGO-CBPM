@@ -1,9 +1,6 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import Header from './Header';
 import './VerifyPage.css'; 
-
-
 
 function VerifyPage() {
   const location = useLocation();
@@ -41,7 +38,6 @@ function VerifyPage() {
 
   return (
     <div className="verify-page-container">
-      <Header />
       <div className="form-card"> 
        
         <h2 className="card-title">Email Enviado!</h2>

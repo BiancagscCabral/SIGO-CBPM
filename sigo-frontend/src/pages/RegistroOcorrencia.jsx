@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import "./RegistroOcorrencia.css";
 import icon_gps from "../assets/icon_gps.svg";

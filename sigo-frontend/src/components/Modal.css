@@ -69,7 +69,6 @@
   margin-top: 10px;
 }
 
-/* MÁGICA DA RESPONSIVIDADE */
 @media (max-width: 768px) {
   .modal-content {
     width: 95%;
