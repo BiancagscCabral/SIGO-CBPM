@@ -137,3 +137,45 @@
     font-size: 14px; 
   }
 }
+
+/* Tema Escuro */
+[data-theme="dark"] .main-content {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .dashboard-header h1 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .dashboard-header p {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .stats-grid .stat-card {
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .stat-card-info h2 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .stat-card-info p {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .quick-access-grid .quick-access-card {
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .quick-access-card h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .quick-access-card p {
+  color: #e0e0e0;
+}

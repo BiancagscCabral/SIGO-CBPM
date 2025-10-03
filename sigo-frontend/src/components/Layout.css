@@ -22,3 +22,18 @@
   padding: 20px;
 }
 
+/* Tema Escuro */
+[data-theme="dark"] .app-layout {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .main-content-area {
+  background-color: #121212;
+}
+
+[data-theme="dark"] .page-content {
+  background-color: #121212;
+  color: #ffffff;
+}
+

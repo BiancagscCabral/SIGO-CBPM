@@ -178,3 +178,79 @@
     width: 100%;
   }
 }
+
+/* Tema Escuro */
+[data-theme="dark"] .relatorios-header h1 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .relatorios-header p {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .analytics-card {
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .analytics-value {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .analytics-title {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .analytics-change {
+  color: #b0b0b0;
+}
+
+[data-theme="dark"] .report-generator {
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+}
+
+[data-theme="dark"] .report-generator h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .report-generator p {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .form-group label {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .form-group select {
+  background-color: #2a2a2a;
+  border: 1px solid #555555;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .available-reports h3 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .available-reports p {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .available-report-card {
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .available-report-card h4 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .available-report-card p {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .report-count {
+  color: #90caf9;
+}

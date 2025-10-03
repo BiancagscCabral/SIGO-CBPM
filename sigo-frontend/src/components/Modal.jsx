@@ -54,6 +54,11 @@ function Modal({ ocorrencia, onClose }) {
             ))}
           </div>
         </div>
+        <div className="modal-footer">
+          <button className="btn btn-secondary" onClick={onClose}>
+            Fechar
+          </button>
+        </div>
       </div>
     </div>
   );

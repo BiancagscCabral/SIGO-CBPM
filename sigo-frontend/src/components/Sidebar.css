@@ -83,3 +83,36 @@
   background-color: rgba(255, 255, 255, 0.1);;
   color: white;
 }
+
+/* Tema Escuro */
+[data-theme="dark"] .sidebar {
+  background-color: #121212;
+  border-right: 1px solid #333;
+}
+
+[data-theme="dark"] .sidebar-header {
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .nav-item {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .nav-item.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .logout-item {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .logout-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useUser } from '../contexts/UserContext';
+import { useAccessibility } from '../contexts/AccessibilityContext';
 import UserProfileService from '../services/UserProfileService';
 import './Configuracoes.css';
 
@@ -12,6 +13,8 @@ function Configuracoes() {
     isLoading, 
     error 
   } = useUser();
+  
+  const { isDarkTheme, toggleDarkTheme } = useAccessibility();
   
   const [profileData, setProfileData] = useState({
     nome: '',
@@ -39,7 +42,6 @@ function Configuracoes() {
   const [notificationSaving, setNotificationSaving] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
   
-  const [Tema, setTema] = useState(false);
   const [leitorDeTela, setLeitorDeTela] = useState(false);
   const [comandoPorVoz, setComandoPorVoz] = useState(false);
   const [tamanhoTexto, setTamanhoTexto] = useState('pequeno');
@@ -522,7 +524,7 @@ function Configuracoes() {
             <div className="toggle-item">
               <span>Tema</span>
               <label className="switch">
-                <input type="checkbox" checked={Tema} onChange={() => setTema(!Tema)} />
+                <input type="checkbox" checked={isDarkTheme} onChange={toggleDarkTheme} />
                 <span className="slider round"></span>
               </label>
             </div>
