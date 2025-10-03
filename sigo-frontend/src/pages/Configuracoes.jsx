@@ -9,10 +9,9 @@ function Configuracoes() {
   const [profileData, setProfileData] = useState({
     nome: '',
     matricula: '',
+    cargo: '',
     telefone: '',
-    email: '',
-    cidade: '',
-    estado: ''
+    email: ''
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -35,10 +34,9 @@ function Configuracoes() {
       setProfileData({
         nome: userProfile.nome || '',
         matricula: userProfile.matricula || '',
+        cargo: userProfile.cargo || '',
         telefone: userProfile.telefone || '',
-        email: userProfile.email || '',
-        cidade: userProfile.cidade || '',
-        estado: userProfile.estado || ''
+        email: userProfile.email || ''
       });
     }
   }, [userProfile]);
@@ -99,10 +97,9 @@ function Configuracoes() {
     setProfileData({
       nome: userProfile.nome || '',
       matricula: userProfile.matricula || '',
+      cargo: userProfile.cargo || '',
       telefone: userProfile.telefone || '',
-      email: userProfile.email || '',
-      cidade: userProfile.cidade || '',
-      estado: userProfile.estado || ''
+      email: userProfile.email || ''
     });
     setIsEditing(false);
     setValidationErrors({});
@@ -128,7 +125,13 @@ function Configuracoes() {
 
           {error && (
             <div className="error-message">
-              Erro ao carregar perfil: {error}
+              {error}
+            </div>
+          )}
+
+          {isLoading && (
+            <div className="loading-message">
+              Carregando dados do perfil...
             </div>
           )}
 
@@ -137,17 +140,17 @@ function Configuracoes() {
               <label htmlFor="nome">Nome Completo *</label>
               <input 
                 type="text" 
-                id="nome" 
-                name="nome"
-                value={profileData.nome} 
-                onChange={handleInputChange}
-                disabled={!isEditing || isLoading}
-                className={validationErrors.nome ? 'error' : ''}
-              />
-              {validationErrors.nome && (
-                <span className="field-error">{validationErrors.nome}</span>
-              )}
-            </div>
+                    id="nome" 
+                    name="nome"
+                    value={profileData.nome} 
+                    onChange={handleInputChange}
+                    disabled={!isEditing || isLoading}
+                    className={validationErrors.nome ? 'error' : ''}
+                  />
+                  {validationErrors.nome && (
+                    <span className="field-error">{validationErrors.nome}</span>
+                  )}
+                </div>
 
             <div className="form-group">
               <label htmlFor="matricula">Matrícula</label>
@@ -160,6 +163,22 @@ function Configuracoes() {
                 disabled={true}
                 className="readonly"
               />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="cargo">Cargo *</label>
+              <input 
+                type="text" 
+                id="cargo" 
+                name="cargo"
+                value={profileData.cargo} 
+                onChange={handleInputChange}
+                disabled={!isEditing || isLoading}
+                className={validationErrors.cargo ? 'error' : ''}
+              />
+              {validationErrors.cargo && (
+                <span className="field-error">{validationErrors.cargo}</span>
+              )}
             </div>
 
             <div className="form-group">
@@ -194,76 +213,42 @@ function Configuracoes() {
                 <span className="field-error">{validationErrors.telefone}</span>
               )}
             </div>
-
-            <div className="form-group">
-              <label htmlFor="cidade">Cidade</label>
-              <input 
-                type="text" 
-                id="cidade" 
-                name="cidade"
-                value={profileData.cidade} 
-                onChange={handleInputChange}
-                disabled={!isEditing || isLoading}
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="estado">Estado</label>
-              <select 
-                id="estado" 
-                name="estado"
-                value={profileData.estado} 
-                onChange={handleInputChange}
-                disabled={!isEditing || isLoading}
-              >
-                <option value="">Selecione o estado</option>
-                <option value="PE">Pernambuco</option>
-                <option value="AL">Alagoas</option>
-                <option value="BA">Bahia</option>
-                <option value="CE">Ceará</option>
-                <option value="MA">Maranhão</option>
-                <option value="PB">Paraíba</option>
-                <option value="PI">Piauí</option>
-                <option value="RN">Rio Grande do Norte</option>
-                <option value="SE">Sergipe</option>
-              </select>
-            </div>
           </div>
 
-          <div className="form-actions">
-            {isEditing ? (
-              <>
-                <button 
-                  className="btn-salvar" 
-                  onClick={handleSaveProfile}
-                  disabled={isSaving}
-                >
-                  {isSaving ? 'Salvando...' : 'Salvar Alterações'}
-                </button>
-                <button 
-                  className="btn-cancelar" 
-                  onClick={handleCancelEdit}
-                  disabled={isSaving}
-                >
-                  Cancelar
-                </button>
-              </>
-            ) : (
-              <button 
-                className="btn-editar" 
-                onClick={() => setIsEditing(true)}
-                disabled={isLoading}
-              >
-                Editar Perfil
-              </button>
-            )}
-          </div>
+              <div className="form-actions">
+                {isEditing ? (
+                  <>
+                    <button 
+                      className="btn-salvar" 
+                      onClick={handleSaveProfile}
+                      disabled={isSaving}
+                    >
+                      {isSaving ? 'Salvando...' : 'Salvar Alterações'}
+                    </button>
+                    <button 
+                      className="btn-cancelar" 
+                      onClick={handleCancelEdit}
+                      disabled={isSaving}
+                    >
+                      Cancelar
+                    </button>
+                  </>
+                ) : (
+                  <button 
+                    className="btn-editar" 
+                    onClick={() => setIsEditing(true)}
+                    disabled={isLoading}
+                  >
+                    Editar Perfil
+                  </button>
+                )}
+              </div>
 
-          {isEditing && (
-            <div className="form-footer">
-              <small>* Campos obrigatórios</small>
-            </div>
-          )}
+              {isEditing && (
+                <div className="form-footer">
+                  <small>* Campos obrigatórios</small>
+                </div>
+              )}
         </section>
 
         <section className="settings-section">
