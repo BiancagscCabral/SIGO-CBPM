@@ -17,3 +17,14 @@ header {
     height: 40px;
 }
 
+/* Tema Escuro */
+[data-theme="dark"] header {
+  background-color: #1e1e1e;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .header-logo {
+  filter: brightness(0) invert(1);
+}
+

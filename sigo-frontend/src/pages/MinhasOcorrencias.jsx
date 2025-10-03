@@ -215,7 +215,9 @@ function MinhasOcorrencias() {
                                 <span className={`status ${getStatusClass(ocorrencia.status)}`}>
                                     {ocorrencia.status}
                                 </span>
-                                <span className="prioridade">Prioridade: {ocorrencia.prioridade}</span>
+                                <span className={`prioridade prioridade-${ocorrencia.prioridade.toLowerCase()}`}>
+                                    Prioridade: {ocorrencia.prioridade}
+                                </span>
                             </strong>
                             <p>{ocorrencia.chamado.tipo}</p>
                             <p className="endereco">

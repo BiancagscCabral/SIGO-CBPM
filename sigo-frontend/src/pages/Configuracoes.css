@@ -289,3 +289,50 @@ input:checked+.slider:before {
         grid-template-columns: 1fr;
     }
 }
+
+/*TEMA ESCURO */
+[data-theme="dark"] .configuracoes-container {
+    background-color: #121212;
+}
+
+[data-theme="dark"] .settings-section {
+    background-color: #1e1e1e;
+    border: 1px solid #333333;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .settings-section h2 {
+    color: #ffffff;
+    border-bottom-color: #333333;
+}
+
+[data-theme="dark"] .form-group label {
+    color: #ffffff;
+}
+
+[data-theme="dark"] .form-group input {
+    background-color: #2a2a2a;
+    border: 1px solid #555555;
+    color: #ffffff;
+}
+
+[data-theme="dark"] .form-group input:focus {
+    border-color: #1976d2;
+}
+
+[data-theme="dark"] .toggle-item span,
+[data-theme="dark"] .toggle-item label {
+    color: #ffffff;
+}
+
+[data-theme="dark"] .slider {
+    background-color: #555555;
+}
+
+[data-theme="dark"] .slider:before {
+    background-color: #ffffff;
+}
+
+[data-theme="dark"] input:checked+.slider {
+    background-color: #1976d2;
+}

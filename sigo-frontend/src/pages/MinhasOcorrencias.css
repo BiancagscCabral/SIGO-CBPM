@@ -34,7 +34,9 @@
     align-items: center;
     padding: 0 8px;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: none;
+    background: transparent;
+    border: none;
 }
 
 .ocorrencia-actions-time a:hover {
@@ -251,4 +253,75 @@
         padding: 0;
     }
 
+}
+
+/* Tema Escuro*/
+[data-theme="dark"] .minhas-ocorrencias-container {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .page-header h1 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .page-header p {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .ordenacao-container {
+  background-color: transparent;
+  border: none;
+}
+
+[data-theme="dark"] .ordenacao-container label {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .ordenacao-container select {
+  background-color: #2a2a2a;
+  border: 1px solid #555555;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .ocorrencia-item {
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .ocorrencia-details strong {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .ocorrencia-details p {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .endereco {
+  color: #b0b0b0;
+}
+
+[data-theme="dark"] .horario {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .ocorrencia-actions-time a {
+  color: #90caf9;
+}
+
+[data-theme="dark"] .ocorrencia-actions-time a:hover {
+  color: #bbdefb;
+}
+
+[data-theme="dark"] .prioridade {
+    background-color: #e9ecef; 
+  color: #333 !important;
+  border-color: #f5c6cb !important;
+}
+
+[data-theme="dark"] .minhas-ocorrencias-actions {
+  box-shadow: none;
+  background: transparent;
+  border: none;
 }

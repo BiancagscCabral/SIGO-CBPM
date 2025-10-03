@@ -69,6 +69,35 @@
   margin-top: 10px;
 }
 
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.modal-footer .btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-footer .btn-secondary:hover {
+  background-color: #5a6268;
+}
+
 @media (max-width: 768px) {
   .modal-content {
     width: 95%;
@@ -79,4 +108,79 @@
   .modal-header h2 {
     font-size: 1.2rem;
   }
+}
+
+/* Tema Escuro */
+[data-theme="dark"] .modal-content {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 1px solid #333;
+}
+
+[data-theme="dark"] .modal-header {
+  border-bottom-color: #333;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .modal-header h2 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .modal-body {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .modal-body input,
+[data-theme="dark"] .modal-body textarea,
+[data-theme="dark"] .modal-body select {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border-color: #444;
+}
+
+[data-theme="dark"] .modal-body input:focus,
+[data-theme="dark"] .modal-body textarea:focus,
+[data-theme="dark"] .modal-body select:focus {
+  border-color: #666;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .modal-footer {
+  border-top-color: #333;
+}
+
+[data-theme="dark"] .info-section h4 {
+  color: #6da3f7;
+  border-bottom-color: #333;
+}
+
+[data-theme="dark"] .info-section p {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .equipe-item {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .close-button {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .close-button:hover {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .modal-footer {
+  border-top-color: #333;
+}
+
+[data-theme="dark"] .modal-footer .btn-secondary {
+  background-color: #6c757d;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .modal-footer .btn-secondary:hover {
+  background-color: #5a6268;
 }

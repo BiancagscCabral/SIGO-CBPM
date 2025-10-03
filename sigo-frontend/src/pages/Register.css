@@ -96,3 +96,50 @@ body {
 .register-section a:hover {
   text-decoration: underline;
 }
+
+/* Forçar modo claro, não sei porque não tá mantendo o estilo sem isso */
+[data-theme="dark"] .page-container {
+  background-color: white !important;
+  color: black !important;
+}
+
+[data-theme="dark"] .register-section {
+  background-color: white !important;
+  color: black !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="dark"] .register-section h2 {
+  color: black !important;
+}
+
+[data-theme="dark"] .register-section label {
+  color: black !important;
+}
+
+[data-theme="dark"] .register-section input,
+[data-theme="dark"] .register-section select {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ccc !important;
+}
+
+[data-theme="dark"] .register-section p {
+  color: black !important;
+}
+
+[data-theme="dark"] .register-section a {
+  color: #314697 !important;
+}
+
+[data-theme="dark"] .logo-section {
+  color: black !important;
+}
+
+[data-theme="dark"] .logo-section h2 {
+  color: #1d3d7c !important;
+}
+
+[data-theme="dark"] .logo-section p {
+  color: #6E5C5C !important;
+}
