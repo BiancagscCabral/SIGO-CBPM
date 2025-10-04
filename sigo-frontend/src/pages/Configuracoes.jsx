@@ -14,7 +14,7 @@ function Configuracoes() {
     error 
   } = useUser();
   
-  const { isDarkTheme, toggleDarkTheme } = useAccessibility();
+  const { isDarkTheme, toggleDarkTheme, textSize, changeTextSize } = useAccessibility();
   
   const [profileData, setProfileData] = useState({
     nome: '',
@@ -44,7 +44,6 @@ function Configuracoes() {
   
   const [leitorDeTela, setLeitorDeTela] = useState(false);
   const [comandoPorVoz, setComandoPorVoz] = useState(false);
-  const [tamanhoTexto, setTamanhoTexto] = useState('pequeno');
 
   useEffect(() => {
     if (userProfile && userProfile.id) {
@@ -544,7 +543,7 @@ function Configuracoes() {
             </div>
             <div className="toggle-item">
                 <label htmlFor="tamanho-texto">Tamanho do Texto</label>
-                 <select id="tamanho-texto" value={tamanhoTexto} onChange={(e) => setTamanhoTexto(e.target.value)}>
+                 <select id="tamanho-texto" value={textSize} onChange={(e) => changeTextSize(e.target.value)}>
                     <option value="pequeno">Pequeno</option>
                     <option value="medio">Médio</option>
                     <option value="grande">Grande</option>

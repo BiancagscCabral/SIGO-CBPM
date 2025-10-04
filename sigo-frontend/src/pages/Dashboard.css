@@ -9,14 +9,14 @@
 }
 
 .dashboard-header h1 {
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 600;
   color: #2c3e50;
   margin: 0;
 }
 
 .dashboard-header p {
-  font-size: 16px;
+  font-size: 1rem;
   color: #7f8c8d;
   margin-top: 4px;
 }
@@ -40,7 +40,7 @@
 }
 
 .stat-card-info h2 {
-  font-size: 28px;
+  font-size: 1.75rem;
   margin: 0;
   color: #333;
 }
@@ -48,18 +48,18 @@
 .stat-card-info p {
   margin: 4px 0 0;
   color: #666;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .stat-card-info .increase {
   color: #00a37a;
-  font-size: 12px;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
 }
 
 .stat-card .icon {
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 
 .quick-access-grid {
@@ -93,26 +93,26 @@
 }
 
 .quick-access-card .icon-background .icon {
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #fff;
 }
 
 .quick-access-card h3 {
   margin: 0 0 8px;
-  font-size: 18px;
+  font-size: 1.125rem;
   color: #333;
 }
 
 .quick-access-card p {
   margin: 0 0 16px;
   color: #666;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .quick-access-card .link {
   color: #ff6f00;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .bg-red { background-color: #f44336; }
@@ -130,11 +130,11 @@
   }
 
   .dashboard-header h1 {
-    font-size: 24px; 
+    font-size: 1.5rem; 
   }
 
   .dashboard-header p {
-    font-size: 14px; 
+    font-size: 0.875rem; 
   }
 }
 
