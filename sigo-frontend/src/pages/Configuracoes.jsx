@@ -14,7 +14,7 @@ function Configuracoes() {
     error 
   } = useUser();
   
-  const { isDarkTheme, toggleDarkTheme, textSize, changeTextSize } = useAccessibility();
+  const { isDarkTheme, toggleDarkTheme, textSize, changeTextSize, isSpeechEnabled, toggleSpeech } = useAccessibility();
   
   const [profileData, setProfileData] = useState({
     nome: '',
@@ -42,7 +42,6 @@ function Configuracoes() {
   const [notificationSaving, setNotificationSaving] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
   
-  const [leitorDeTela, setLeitorDeTela] = useState(false);
   const [comandoPorVoz, setComandoPorVoz] = useState(false);
 
   useEffect(() => {
@@ -528,9 +527,9 @@ function Configuracoes() {
               </label>
             </div>
             <div className="toggle-item">
-              <span>Leitores de Tela</span>
+              <span>Leitura por Voz</span>
               <label className="switch">
-                <input type="checkbox" checked={leitorDeTela} onChange={() => setLeitorDeTela(!leitorDeTela)} />
+                <input type="checkbox" checked={isSpeechEnabled} onChange={toggleSpeech} />
                 <span className="slider round"></span>
               </label>
             </div>

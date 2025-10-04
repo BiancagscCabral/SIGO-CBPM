@@ -5,6 +5,7 @@ const AccessibilityContext = createContext();
 export const AccessibilityProvider = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [textSize, setTextSize] = useState('pequeno');
+  const [isSpeechEnabled, setIsSpeechEnabled] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('darkTheme');
@@ -18,14 +19,29 @@ export const AccessibilityProvider = ({ children }) => {
       setTextSize(savedTextSize);
       document.documentElement.setAttribute('data-text-size', savedTextSize);
     }
+
+    const savedSpeech = localStorage.getItem('speechEnabled');
+    if (savedSpeech === 'true') {
+      setIsSpeechEnabled(true);
+    }
+
+    if (window.speechSynthesis) {
+      const loadVoices = () => {
+        window.speechSynthesis.getVoices();
+      };
+      
+      if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+      }
+      
+      loadVoices();
+    }
   }, []);
 
-  // Função para alternar o tema
   const toggleDarkTheme = () => {
     const newThemeState = !isDarkTheme;
     setIsDarkTheme(newThemeState);
     
-    // Salvar no localStorage
     localStorage.setItem('darkTheme', newThemeState.toString());
     
     if (newThemeState) {
@@ -35,22 +51,64 @@ export const AccessibilityProvider = ({ children }) => {
     }
   };
 
-  // Função para alterar o tamanho do texto
   const changeTextSize = (size) => {
     setTextSize(size);
     
-    // Salvar no localStorage
     localStorage.setItem('textSize', size);
     
-    // Aplicar atributo no HTML
     document.documentElement.setAttribute('data-text-size', size);
+  };
+
+
+  const toggleSpeech = () => {
+    const newSpeechState = !isSpeechEnabled;
+    setIsSpeechEnabled(newSpeechState);
+    
+    localStorage.setItem('speechEnabled', newSpeechState.toString());
+    
+    if (!newSpeechState && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+  };
+
+  const speakText = (text) => {
+    if (!isSpeechEnabled || !text || !window.speechSynthesis) {
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    // Configurações da voz
+    utterance.rate = 0.8; // Velocidade da fala
+    utterance.pitch = 1; // Tom da voz
+    utterance.volume = 0.8; // Volume
+    
+    const voices = window.speechSynthesis.getVoices();
+    const portugueseVoice = voices.find(voice => voice.lang.includes('pt'));
+    if (portugueseVoice) {
+      utterance.voice = portugueseVoice;
+    }
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const stopSpeech = () => {
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
   };
 
   const value = {
     isDarkTheme,
     toggleDarkTheme,
     textSize,
-    changeTextSize
+    changeTextSize,
+    isSpeechEnabled,
+    toggleSpeech,
+    speakText,
+    stopSpeech
   };
 
   return (
