@@ -41,8 +41,6 @@ function Configuracoes() {
   
   const [notificationSaving, setNotificationSaving] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
-  
-  const [comandoPorVoz, setComandoPorVoz] = useState(false);
 
   useEffect(() => {
     if (userProfile && userProfile.id) {
@@ -530,13 +528,6 @@ function Configuracoes() {
               <span>Leitura por Voz</span>
               <label className="switch">
                 <input type="checkbox" checked={isSpeechEnabled} onChange={toggleSpeech} />
-                <span className="slider round"></span>
-              </label>
-            </div>
-            <div className="toggle-item">
-              <span>Comando por voz</span>
-              <label className="switch">
-                <input type="checkbox" checked={comandoPorVoz} onChange={() => setComandoPorVoz(!comandoPorVoz)} />
                 <span className="slider round"></span>
               </label>
             </div>
