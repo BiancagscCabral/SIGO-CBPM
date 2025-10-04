@@ -4,12 +4,19 @@ const AccessibilityContext = createContext();
 
 export const AccessibilityProvider = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [textSize, setTextSize] = useState('pequeno');
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('darkTheme');
     if (savedTheme === 'true') {
       setIsDarkTheme(true);
       document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    const savedTextSize = localStorage.getItem('textSize');
+    if (savedTextSize) {
+      setTextSize(savedTextSize);
+      document.documentElement.setAttribute('data-text-size', savedTextSize);
     }
   }, []);
 
@@ -28,9 +35,22 @@ export const AccessibilityProvider = ({ children }) => {
     }
   };
 
+  // Função para alterar o tamanho do texto
+  const changeTextSize = (size) => {
+    setTextSize(size);
+    
+    // Salvar no localStorage
+    localStorage.setItem('textSize', size);
+    
+    // Aplicar atributo no HTML
+    document.documentElement.setAttribute('data-text-size', size);
+  };
+
   const value = {
     isDarkTheme,
-    toggleDarkTheme
+    toggleDarkTheme,
+    textSize,
+    changeTextSize
   };
 
   return (
