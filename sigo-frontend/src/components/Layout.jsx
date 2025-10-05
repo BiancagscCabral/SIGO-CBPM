@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import { useSpeech } from '../hooks/useSpeech';
 import './Layout.css';
 
 const Layout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    
+    useSpeech();
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
