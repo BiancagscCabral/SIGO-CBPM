@@ -151,7 +151,7 @@ function Register() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="cargo">Cargo Desejado</label>
+            <label htmlFor="cargo">Cargo</label>
             {rolesLoading ? (
               <div className="loading-roles">Carregando cargos disponíveis...</div>
             ) : (
