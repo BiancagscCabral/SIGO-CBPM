@@ -11,7 +11,8 @@ function Configuracoes() {
     notificationPreferences, 
     updateNotificationPreferences, 
     isLoading, 
-    error 
+    error,
+    clearError
   } = useUser();
   
   const { isDarkTheme, toggleDarkTheme, textSize, changeTextSize, isSpeechEnabled, toggleSpeech } = useAccessibility();
@@ -41,6 +42,7 @@ function Configuracoes() {
   
   const [notificationSaving, setNotificationSaving] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
+  const [notificationMessageType, setNotificationMessageType] = useState(''); 
 
   useEffect(() => {
     if (userProfile && userProfile.id) {
@@ -75,32 +77,28 @@ function Configuracoes() {
     }
   };
 
-  const handleSaveProfile = async () => {
-    const validation = UserProfileService.validateProfileData(profileData);
-    
-    if (!validation.isValid) {
-      setValidationErrors(validation.errors);
-      setSaveMessage('Por favor, corrija os erros antes de salvar.');
-      return;
-    }
-
-    setIsSaving(true);
-    setSaveMessage('');
-    setValidationErrors({});
-
+    const handleSaveProfile = async () => {
     try {
-      const result = await updateUserProfile(profileData);
+      setIsSaving(true);
+      setSaveMessage('');
+      clearError(); 
+      
+      const { cargo, ...updatedData } = profileData;
+      
+      const result = await updateUserProfile(updatedData);
       
       if (result.success) {
         setSaveMessage('Perfil atualizado com sucesso!');
         setIsEditing(false);
-        
         setTimeout(() => setSaveMessage(''), 3000);
       } else {
-        setSaveMessage(result.error || 'Erro ao salvar perfil');
+        setSaveMessage(result.error || 'Erro ao atualizar perfil. Tente novamente.');
+        setTimeout(() => setSaveMessage(''), 5000);
       }
     } catch (error) {
-      setSaveMessage('Erro ao salvar perfil. Tente novamente.');
+      console.error('Erro ao atualizar perfil:', error);
+      setSaveMessage('Erro ao atualizar perfil. Tente novamente.');
+      setTimeout(() => setSaveMessage(''), 5000);
     } finally {
       setIsSaving(false);
     }
@@ -194,20 +192,33 @@ function Configuracoes() {
 
     setNotificationSaving(true);
     setNotificationMessage('');
+    setNotificationMessageType('');
 
     try {
       const result = await updateNotificationPreferences(updatedPreferences);
       
       if (result.success) {
         setNotificationMessage('Preferências salvas com sucesso!');
-        setTimeout(() => setNotificationMessage(''), 3000);
+        setNotificationMessageType('success');
+        setTimeout(() => {
+          setNotificationMessage('');
+          setNotificationMessageType('');
+        }, 3000);
       } else {
         setNotificationMessage(result.error || 'Erro ao salvar preferências');
-        setTimeout(() => setNotificationMessage(''), 5000);
+        setNotificationMessageType('error');
+        setTimeout(() => {
+          setNotificationMessage('');
+          setNotificationMessageType('');
+        }, 5000);
       }
     } catch (error) {
       setNotificationMessage('Erro ao salvar preferências de notificação');
-      setTimeout(() => setNotificationMessage(''), 5000);
+      setNotificationMessageType('error');
+      setTimeout(() => {
+        setNotificationMessage('');
+        setNotificationMessageType('');
+      }, 5000);
     } finally {
       setNotificationSaving(false);
     }
@@ -247,19 +258,17 @@ function Configuracoes() {
               <label htmlFor="nome">Nome Completo *</label>
               <input 
                 type="text" 
-                    id="nome" 
-                    name="nome"
-                    value={profileData.nome} 
-                    onChange={handleInputChange}
-                    disabled={!isEditing || isLoading}
-                    className={validationErrors.nome ? 'error' : ''}
-                  />
-                  {validationErrors.nome && (
-                    <span className="field-error">{validationErrors.nome}</span>
-                  )}
-                </div>
-
-            <div className="form-group">
+                id="nome" 
+                name="nome"
+                value={profileData.nome} 
+                onChange={handleInputChange}
+                disabled={!isEditing || isLoading}
+                className={validationErrors.nome ? 'error' : ''}
+              />
+              {validationErrors.nome && (
+                <span className="field-error">{validationErrors.nome}</span>
+              )}
+            </div>            <div className="form-group">
               <label htmlFor="matricula">Matrícula</label>
               <input 
                 type="text" 
@@ -270,21 +279,24 @@ function Configuracoes() {
                 disabled={true}
                 className="readonly"
               />
+              {isEditing && (
+                <small className="field-note">Alterado apenas por administradores</small>
+              )}
             </div>
 
             <div className="form-group">
-              <label htmlFor="cargo">Cargo *</label>
+              <label htmlFor="cargo">Cargo</label>
               <input 
                 type="text" 
                 id="cargo" 
                 name="cargo"
-                value={profileData.cargo} 
+                value={profileData.cargo || 'Não definido'} 
                 onChange={handleInputChange}
-                disabled={!isEditing || isLoading}
-                className={validationErrors.cargo ? 'error' : ''}
+                disabled={true}
+                className="readonly"
               />
-              {validationErrors.cargo && (
-                <span className="field-error">{validationErrors.cargo}</span>
+              {isEditing && (
+                <small className="field-note">Alterado apenas por administradores</small>
               )}
             </div>
 
@@ -461,7 +473,7 @@ function Configuracoes() {
           )}
           
           {notificationMessage && (
-            <div className={`message ${notificationMessage.includes('sucesso') ? 'success' : 'error'}`}>
+            <div className={`message ${notificationMessageType}`}>
               {notificationMessage}
             </div>
           )}

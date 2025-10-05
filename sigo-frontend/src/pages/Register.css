@@ -59,6 +59,39 @@ body {
   font-size: 1rem;
 }
 
+.register-section select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+}
+
+.register-section select:focus {
+  outline: none;
+  border-color: #314697;
+  box-shadow: 0 0 0 2px rgba(49, 70, 151, 0.2);
+}
+
+.loading-roles {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  color: #666;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.field-note {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 2px;
+  font-style: italic;
+}
+
 .register-section button {
   padding: 12px;
   border-radius: 6px;

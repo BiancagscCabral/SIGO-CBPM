@@ -28,7 +28,7 @@ export const UserProvider = ({ children }) => {
     setError(null);
     
     try {
-      const response = await fetch('http://localhost:8000/api/user/profile', {
+      const response = await fetch('/api/user/profile', {
         method: 'GET',
         credentials: 'include'
       });
@@ -56,7 +56,7 @@ export const UserProvider = ({ children }) => {
     setError(null);
     
     try {
-      const response = await fetch('http://localhost:8000/api/user/profile', {
+      const response = await fetch('/api/user/profile', {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -71,12 +71,10 @@ export const UserProvider = ({ children }) => {
         return { success: true, data: updatedUser };
       } else {
         const errorMessage = 'Erro ao atualizar perfil. Tente novamente mais tarde.';
-        setError(errorMessage);
         return { success: false, error: errorMessage };
       }
     } catch (err) {
       const errorMessage = 'Erro de conexão ao atualizar perfil.';
-      setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
       setIsLoading(false);
@@ -108,6 +106,10 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const clearError = () => {
+    setError(null);
+  };
+
   useEffect(() => {
     fetchUserProfile();
     fetchNotificationPreferences();
@@ -120,6 +122,7 @@ export const UserProvider = ({ children }) => {
     setNotificationPreferences,
     isLoading,
     error,
+    clearError,
     fetchUserProfile,
     updateUserProfile,
     fetchNotificationPreferences,

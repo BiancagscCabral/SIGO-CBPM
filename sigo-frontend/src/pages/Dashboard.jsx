@@ -82,10 +82,11 @@ function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const API_URL = 'http://localhost:8000/api/dashboard/stats'; 
+      const API_URL = '/api/dashboard/stats'; 
       
       try {
         const response = await fetch(API_URL, {
+          credentials: 'include',
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,

@@ -7,10 +7,6 @@ class UserProfileService {
       errors.nome = 'Nome deve ter pelo menos 2 caracteres';
     }
 
-    if (!profileData.cargo || profileData.cargo.trim().length < 2) {
-      errors.cargo = 'Cargo é obrigatório';
-    }
-
     if (!profileData.email || !this.isValidEmail(profileData.email)) {
       errors.email = 'Email inválido';
     }
@@ -56,7 +52,7 @@ class UserProfileService {
 
   static async updatePassword(senhaAtual, novaSenha) {
     try {
-      const response = await fetch('http://localhost:8000/api/user/password', {
+      const response = await fetch('/api/user/password', {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -108,7 +104,7 @@ class UserProfileService {
 
   static async updateNotificationPreferences(preferences) {
     try {
-      const response = await fetch('http://localhost:8000/api/user/notification-preferences', {
+      const response = await fetch('/api/user/notification_preferences', {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -142,7 +138,7 @@ class UserProfileService {
 
   static async getNotificationPreferences() {
     try {
-      const response = await fetch('http://localhost:8000/api/user/notification-preferences', {
+      const response = await fetch('/api/user/notification_preferences', {
         method: 'GET',
         credentials: 'include',
         headers: {

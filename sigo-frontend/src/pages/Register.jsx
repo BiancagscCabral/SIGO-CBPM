@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Register.css';
 import logoSigo from '../assets/logosigo.svg';
+import RolesService from '../services/RolesService';
 
 function Register() {
   const navigate = useNavigate();
@@ -12,9 +13,28 @@ function Register() {
     email: '',
     senha: '',
     confirma_senha: '',
+    cargo: '',
   });
+  const [availableRoles, setAvailableRoles] = useState([]);
+  const [rolesLoading, setRolesLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  useEffect(() => {
+    const loadRoles = async () => {
+      try {
+        const roles = await RolesService.getRoles();
+        setAvailableRoles(roles);
+      } catch (error) {
+        console.error('Erro ao carregar roles:', error);
+        setAvailableRoles(['Bombeiro', 'Capitão', 'Sargento', 'Analista']);
+      } finally {
+        setRolesLoading(false);
+      }
+    };
+
+    loadRoles();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,13 +63,22 @@ function Register() {
       return;
     }
 
+    const formDataForBackend = {
+      nome: formData.nome,
+      matricula: formData.matricula,
+      telefone: formData.telefone,
+      email: formData.email,
+      senha: formData.senha,
+      confirma_senha: formData.confirma_senha,
+    };
+
     try {
-      const response = await fetch('http://localhost:8000/api/user/signup', {
+      const response = await fetch('/api/user/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: new URLSearchParams(formData),
+        body: new URLSearchParams(formDataForBackend),
       });
 
       const responseText = await response.text();
@@ -119,6 +148,31 @@ function Register() {
                 required
               />
             </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="cargo">Cargo Desejado</label>
+            {rolesLoading ? (
+              <div className="loading-roles">Carregando cargos disponíveis...</div>
+            ) : (
+              <select
+                id="cargo"
+                name="cargo"
+                value={formData.cargo || ''}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Selecione um cargo</option>
+                {availableRoles.map((role, index) => (
+                  <option key={index} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </select>
+            )}
+            <small className="field-note">
+              O cargo será atribuído após aprovação da administração
+            </small>
           </div>
 
           <div className="form-group">
