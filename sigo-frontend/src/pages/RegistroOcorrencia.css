@@ -69,6 +69,7 @@
   background-color: #F1F4FF;
   color: #333;
   font-size: 1rem;
+  font-family: 'poppins', sans-serif;
   transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
 }
@@ -193,6 +194,7 @@
 .registro-ocorrencia-container .signature-actions small {
   color: #6c757d;
   font-size: 0.85rem;
+  font-style: bold;
 }
 
 .registro-ocorrencia-container .btn-clear-signature {
@@ -236,16 +238,16 @@
   background-color: #ff6f00;
   color: white;
   border: 1px solid #ff6f00;
+  justify-content: center;
+  align-items: center;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra mais leve */
 }
 
 .registro-ocorrencia-container .btn-primary:hover {
-  background-color: transparent;
-  color: #314697;
-  border: 1px solid #314697;
+  background-color: #e66400;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
 }
 
 .registro-ocorrencia-container .btn-primary img {
@@ -261,7 +263,7 @@
   color: white;
   border: 1px solid #314697;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .registro-ocorrencia-container .btn-secondary:hover {
@@ -269,7 +271,7 @@
   color: #314697;
   border: 1px solid #314697;
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .registro-ocorrencia-container .btn-secondary img {
@@ -278,6 +280,186 @@
 
 .registro-ocorrencia-container .btn-secondary:hover img {
   filter: none;
+}
+
+/* Estilos para campos com erro de validação */
+.form-error {
+  border: 2px solid #dc3545 !important;
+  background-color: #fff5f5 !important;
+  animation: shake 0.5s ease-in-out;
+}
+
+.form-error:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25) !important;
+}
+
+/* Animação de shake para campos com erro */
+@keyframes shake {
+  0%, 20%, 40%, 60%, 80% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+}
+
+/* Estilos para lista de arquivos */
+.files-list {
+  margin-top: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+}
+
+.files-list h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.file-item:last-child {
+  margin-bottom: 0;
+}
+
+.file-item:hover {
+  background-color: #f8f9fa;
+  border-color: #adb5bd;
+}
+
+.file-item span {
+  flex: 1;
+  font-size: 0.875rem;
+  color: #495057;
+  word-break: break-all;
+  margin-right: 0.5rem;
+}
+
+.btn-remove-file {
+  background-color: #867879;
+  color: white;
+  border: none;
+  border-radius: 20%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.btn-remove-file:hover {
+  background-color: #c82333;
+}
+
+.btn-remove-file:active {
+  transform: scale(0.95);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-content h3 {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.modal-content p {
+  margin: 0 0 2rem 0;
+  color: #7f8c8d;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.modal-actions .btn-secondary,
+.modal-actions .btn-primary {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 140px;
+}
+
+.modal-actions .btn-secondary {
+  background-color: #314697;
+  color: white;
+}
+
+.modal-actions .btn-secondary:hover {
+  background-color: #091b62;
+  transform: translateY(-2px);
+}
+
+.modal-actions .btn-primary {
+  background-color: #ff6f00;
+  color: white;
+}
+
+.modal-actions .btn-primary:hover {
+  background-color: #ca5a04;
+  transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
@@ -501,4 +683,53 @@
 
 [data-theme="dark"] .registro-ocorrencia-container .form-group input:required:valid {
   border-color: #28a745;
+}
+
+/* Tema escuro para lista de arquivos */
+[data-theme="dark"] .files-list {
+  background-color: #2d2d2d;
+  border-color: #404040;
+}
+
+[data-theme="dark"] .files-list h4 {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .file-item {
+  background-color: #1e1e1e;
+  border-color: #404040;
+}
+
+[data-theme="dark"] .file-item:hover {
+  background-color: #2d2d2d;
+  border-color: #555555;
+}
+
+[data-theme="dark"] .file-item span {
+  color: #e0e0e0;
+}
+
+/* Tema escuro para campos com erro */
+[data-theme="dark"] .form-error {
+  border: 2px solid #dc3545 !important;
+  background-color: #2d1e1e !important;
+}
+
+[data-theme="dark"] .form-error:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25) !important;
+}
+
+/* Tema escuro para modal */
+[data-theme="dark"] .modal-content {
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+}
+
+[data-theme="dark"] .modal-content h3 {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .modal-content p {
+  color: #b0b0b0;
 }

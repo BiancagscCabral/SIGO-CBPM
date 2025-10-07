@@ -111,14 +111,15 @@
 
 .quick-access-card .link {
   color: #ff6f00;
+  justify-content: center;
   font-weight: 500;
   font-size: 0.875rem;
 }
 
-.bg-red { background-color: #f44336; }
-.bg-blue { background-color: #2196f3; }
-.bg-orange { background-color: #ff9800; }
-.bg-gray { background-color: #607d8b; }
+.bg-red { background-color: #314696; }
+.bg-blue { background-color: #ff6f00; }
+.bg-orange { background-color: #28a745; }
+.bg-gray { background-color: #6c757d; }
 
 @media (max-width: 768px) {
   .main-content {
