@@ -69,6 +69,7 @@
   background-color: #F1F4FF;
   color: #333;
   font-size: 1rem;
+  font-family: 'poppins', sans-serif;
   transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
 }
@@ -193,6 +194,7 @@
 .registro-ocorrencia-container .signature-actions small {
   color: #6c757d;
   font-size: 0.85rem;
+  font-style: bold;
 }
 
 .registro-ocorrencia-container .btn-clear-signature {
@@ -236,16 +238,16 @@
   background-color: #ff6f00;
   color: white;
   border: 1px solid #ff6f00;
+  justify-content: center;
+  align-items: center;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra mais leve */
 }
 
 .registro-ocorrencia-container .btn-primary:hover {
-  background-color: transparent;
-  color: #314697;
-  border: 1px solid #314697;
+  background-color: #e66400;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
 }
 
 .registro-ocorrencia-container .btn-primary img {
@@ -261,7 +263,7 @@
   color: white;
   border: 1px solid #314697;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .registro-ocorrencia-container .btn-secondary:hover {
@@ -269,7 +271,7 @@
   color: #314697;
   border: 1px solid #314697;
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .registro-ocorrencia-container .btn-secondary img {

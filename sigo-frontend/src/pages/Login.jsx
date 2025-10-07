@@ -55,7 +55,7 @@ function Login() {
 
       <div className="login-section">
         <form onSubmit={handleLogin}>
-          <h2>Identifique-se para acessar o sistema</h2>
+          <h2><strong>Identifique-se para acessar o sistema</strong></h2>
 
           <label htmlFor="matricula">Matrícula</label>
           <input 

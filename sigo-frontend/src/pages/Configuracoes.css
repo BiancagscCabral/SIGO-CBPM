@@ -179,6 +179,8 @@
     width: 20%;
     max-width: 150px;
     padding: 12px 14px;
+    justify-content: space-between;
+    align-items: center;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background-color: #F1F4FF;
@@ -212,11 +214,11 @@
 }
 
 .btn-salvar:hover, .btn-editar:hover {
-    background-color: transparent;
-    color: #314697;
-    border: 1px solid #314697;
+    background-color: #e66400;
+    color: white;
+    border: 1px solid #e66400;
     transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .btn-cancelar {

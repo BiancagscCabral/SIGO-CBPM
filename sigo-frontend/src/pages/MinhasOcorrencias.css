@@ -147,19 +147,19 @@
 }
 
 .btn-editar {
-    background-color: transparent;
-    color: #314697;
+    background-color: #ff6f00;
+    color: #ffffff;
     border: 1px solid #314697;
     transform: translateY(-1px);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .btn-editar:hover {
-    background-color: #ff6f00;
-    color: white;
-    border: 1px solid #ff6f00;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+     background-color: #e66400;
+     color: white;
+     transition: all 0.2s ease;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+     transform: translateY(-1px);
 }
 
 .status {
@@ -171,18 +171,18 @@
 }
 
 .status-andamento {
-    background-color: #f8a5a5;
-    color: #b91c1c;
+    background-color: #E3F2FD;
+    color: #0D47A1;
 }
 
 .status-reforco {
-    background-color: #fde68a;
-    color: #ca8a04;
+    background-color: #FFF8E1;
+    color: #E65100;
 }
 
 .status-finalizada {
-    background-color: #a7f3d0;
-    color: #065f46;
+    background-color: #E8F5E9;
+    color: #1B5E20;
 }
 
 .prioridade {
@@ -214,6 +214,8 @@
 
 .ordenacao-container select {
     padding: 8px 12px;
+    justify-content: space-between;
+    align-items: center;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: white;
