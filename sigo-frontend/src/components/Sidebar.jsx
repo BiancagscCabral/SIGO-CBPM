@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FiGrid, FiFilePlus, FiClipboard, FiFileText, FiSettings, FiChevronsLeft, FiChevronsRight, FiLogOut } from 'react-icons/fi';
+import { FiGrid, FiFilePlus, FiClipboard, FiFileText, FiSettings, FiUsers, FiChevronsLeft, FiChevronsRight, FiLogOut } from 'react-icons/fi';
 import './Sidebar.css';
 import logoSigo from '../assets/logosigo.svg';
 
@@ -38,6 +38,10 @@ const Sidebar = ({ isOpen, toggle }) => {
           <NavLink to="/configuracoes" className="nav-item">
             <FiSettings className="nav-icon" />
             {isOpen && <span className="nav-text">Configurações</span>}
+          </NavLink>
+          <NavLink to="/painel-administrativo" className="nav-item">
+            <FiUsers className="nav-icon" />
+            {isOpen && <span className="nav-text">Painel Administrativo</span>}
           </NavLink>
         </nav>
       </div>

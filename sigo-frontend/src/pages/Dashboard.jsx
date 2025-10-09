@@ -103,7 +103,7 @@ function Dashboard() {
           totalOcorrencias: data.totalOcorrencias.value || 'N/A',
           ocorrenciasHoje: data.ocorrenciasHoje.value || 'N/A',
           emAndamento: data.emAndamento.value || 'N/A',
-          equipesAtivas: data.equipesAtivas.value || 'N/A',
+          equipesAtivas: `${data.equipesAtivas.ativas || 0}/${data.equipesAtivas.total || 0}`,
           percentChange: data.totalOcorrencias.increase || null,
         });
 

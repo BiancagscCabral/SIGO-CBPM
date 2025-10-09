@@ -227,11 +227,7 @@
 }
 
 .btn-cancelar:hover {
-    background-color: transparent;
-    color: #495057;
-    border: 1px solid #495057;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+    background-color: #5a6268;
 }
 
 .btn-salvar:disabled, .btn-cancelar:disabled, .btn-editar:disabled {
@@ -243,7 +239,6 @@
     box-shadow: none;
 }
 
-/* Estilos para a lista de toggles */
 .toggle-list {
     display: flex;
     flex-direction: column;
@@ -262,7 +257,6 @@
     color: #333;
 }
 
-/* Toggle Switch (liga/desliga) */
 .switch {
     position: relative;
     display: inline-block;
