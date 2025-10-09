@@ -16,13 +16,12 @@ function RegistroOcorrencia() {
   const { userProfile } = useUser();
   const navigate = useNavigate();
   
-  const [nomeSolicitante, setNomeSolicitante] = useState("");
-  const [matricula, setMatricula] = useState("");
   const [endereco, setEndereco] = useState("");
   const [pontoReferencia, setPontoReferencia] = useState("");
   const [gps, setGps] = useState("");
   const [tipoOcorrencia, setTipoOcorrencia] = useState("");
   const [subtipoOcorrencia, setSubtipoOcorrencia] = useState("");
+  const [prioridade, setPrioridade] = useState("");
   const [codigoViatura, setCodigoViatura] = useState("");
   const [membrosEquipe, setMembrosEquipe] = useState("");
   const [descricaoInicial, setDescricaoInicial] = useState("");
@@ -34,7 +33,6 @@ function RegistroOcorrencia() {
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Mapeamento dos tipos de ocorrência e seus subtipos
   const subtipoOptions = {
     "aph": ["Parada cardíaca", "Convulsão", "Ferimento grave", "Intoxicação"],
     "incendio": ["Residencial", "Comercial", "Vegetação", "Veículo"],
@@ -42,22 +40,13 @@ function RegistroOcorrencia() {
     "outros": ["Queda de árvore", "Alagamento", "Animal ferido", "Resgate"]
   };
 
-  // referência para o componente de assinatura
   const sigCanvas = useRef({});
-
-  // Auto-preenchimento dos dados do usuário
-  useEffect(() => {
-    if (userProfile) {
-      setNomeSolicitante(userProfile.nome || "");
-      setMatricula(userProfile.matricula || "");
-    }
-  }, [userProfile]);
 
   // Função para lidar com mudança no tipo de ocorrência
   const handleTipoChange = (e) => {
     const selectedTipo = e.target.value;
     setTipoOcorrencia(selectedTipo);
-    setSubtipoOcorrencia(""); // Reset subtipo when tipo changes
+    setSubtipoOcorrencia(""); 
   };
 
   // Função para capturar localização usando Navigator Geolocation
@@ -219,16 +208,13 @@ function RegistroOcorrencia() {
 
   // Função para resetar o formulário
   const resetarFormulario = () => {
-    // Manter apenas os dados do usuário logado
-    setNomeSolicitante(userProfile?.nome || "");
-    setMatricula(userProfile?.matricula || "");
-    
-    // Limpar outros campos
+    // Limpar todos os campos (dados do usuário vêm automaticamente do backend)
     setEndereco("");
     setPontoReferencia("");
     setGps("");
     setTipoOcorrencia("");
     setSubtipoOcorrencia("");
+    setPrioridade("");
     setCodigoViatura("");
     setMembrosEquipe("");
     setDescricaoInicial("");
@@ -283,10 +269,6 @@ function RegistroOcorrencia() {
       // Estrutura para salvamento local
       const ocorrenciaLocal = {
         id: Date.now(),
-        solicitante: {
-          nome: nomeSolicitante,
-          matricula: matricula
-        },
         localizacao: {
           endereco: endereco,
           pontoReferencia: pontoReferencia || null,
@@ -295,7 +277,8 @@ function RegistroOcorrencia() {
         ocorrencia: {
           tipo: tipoOcorrencia,
           subtipo: subtipoOcorrencia,
-          descricao: descricaoInicial,
+          prioridade: prioridade,
+          descricao: descricaoInicial || null,
           codigoViatura: codigoViatura || null,
           membrosEquipe: membrosEquipe || null
         },
@@ -343,12 +326,10 @@ function RegistroOcorrencia() {
   // Função para validar campos obrigatórios
   const validarCamposObrigatorios = () => {
     const camposObrigatorios = [
-      { campo: nomeSolicitante, nome: 'nomeSolicitante', label: 'Nome do Solicitante' },
-      { campo: matricula, nome: 'matricula', label: 'Matrícula' },
       { campo: endereco, nome: 'endereco', label: 'Endereço da Ocorrência' },
       { campo: tipoOcorrencia, nome: 'tipoOcorrencia', label: 'Tipo de Ocorrência' },
       { campo: subtipoOcorrencia, nome: 'subtipoOcorrencia', label: 'Subtipo de Ocorrência' },
-      { campo: descricaoInicial, nome: 'descricaoInicial', label: 'Descrição Inicial' }
+      { campo: prioridade, nome: 'prioridade', label: 'Prioridade' }
     ];
 
     const camposVazios = camposObrigatorios.filter(item => !item.campo.trim());
@@ -429,12 +410,6 @@ function RegistroOcorrencia() {
 
       // Estrutura JSON completa para o backend
       const ocorrenciaData = {
-        // Dados do solicitante
-        solicitante: {
-          nome: nomeSolicitante,
-          matricula: matricula
-        },
-        
         // Localização
         localizacao: {
           endereco: endereco,
@@ -446,7 +421,8 @@ function RegistroOcorrencia() {
         ocorrencia: {
           tipo: tipoOcorrencia,
           subtipo: subtipoOcorrencia,
-          descricao: descricaoInicial,
+          prioridade: prioridade,
+          descricao: descricaoInicial || null,
           codigoViatura: codigoViatura || null,
           membrosEquipe: membrosEquipe || null
         },
@@ -506,16 +482,6 @@ function RegistroOcorrencia() {
             <h2 className="form-section-title">Informações da Ocorrência</h2>
 
             <div className="form-group full-width">
-              <label htmlFor="nomeSolicitante">Nome do Solicitante *</label>
-              <input type="text" id="nomeSolicitante" name="nomeSolicitante" placeholder="Nome Completo" value={nomeSolicitante} onChange={(e) => setNomeSolicitante(e.target.value)} required />
-            </div>
-
-            <div className="form-group full-width">
-              <label htmlFor="matricula">Matrícula *</label>
-              <input type="text" id="matricula" name="matricula" placeholder="Matrícula" value={matricula} onChange={(e) => setMatricula(e.target.value)} required />
-            </div>
-
-            <div className="form-group full-width">
               <label htmlFor="endereco">Endereço da Ocorrência *</label>
               <input type="text" id="endereco" name="endereco" placeholder="Será preenchido automaticamente com a captura GPS" value={endereco} onChange={(e) => setEndereco(e.target.value)} required />
             </div>
@@ -564,6 +530,16 @@ function RegistroOcorrencia() {
             </div>
 
             <div className="form-group full-width">
+              <label htmlFor="prioridade">Prioridade *</label>
+              <select id="prioridade" name="prioridade" value={prioridade} onChange={(e) => setPrioridade(e.target.value)} required>
+                <option value="">Selecione a prioridade</option>
+                <option value="alta">Alta - Situação crítica, risco iminente</option>
+                <option value="media">Média - Situação que requer atenção</option>
+                <option value="baixa">Baixa - Situação estável, não urgente</option>
+              </select>
+            </div>
+
+            <div className="form-group full-width">
               <label htmlFor="codigoViatura">Código da Viatura *</label>
               <input type="text" id="codigoViatura" placeholder="Ex: VRT-0303" value={codigoViatura} onChange={(e) => setCodigoViatura(e.target.value)} required />
             </div>
@@ -574,8 +550,8 @@ function RegistroOcorrencia() {
             </div>
 
             <div className="form-group full-width">
-              <label htmlFor="descricaoInicial">Descrição Inicial *</label>
-              <textarea id="descricaoInicial" name="descricaoInicial" rows="5" placeholder="Descreva os detalhes da ocorrência" value={descricaoInicial} onChange={(e) => setDescricaoInicial(e.target.value)} required></textarea>
+              <label htmlFor="descricaoInicial">Descrição Inicial</label>
+              <textarea id="descricaoInicial" name="descricaoInicial" rows="5" placeholder="Descreva os detalhes da ocorrência (pode ser preenchido posteriormente)" value={descricaoInicial} onChange={(e) => setDescricaoInicial(e.target.value)}></textarea>
             </div>
 
             <div className="upload-row">

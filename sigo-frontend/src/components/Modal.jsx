@@ -42,7 +42,7 @@ function Modal({ ocorrencia, onClose }) {
             <h4>Detalhes do Chamado</h4>
             <p><strong>Tipo:</strong> {ocorrencia.chamado.tipo}</p>
             <p><strong>Detalhes:</strong> {ocorrencia.chamado.detalhes}</p>
-            {ocorrencia.chamado.solicitante && <p><strong>Solicitante:</strong> {`${ocorrencia.chamado.solicitante.nome} - ${ocorrencia.chamado.solicitante.telefone}`}</p>}
+            {ocorrencia.chamado.solicitante?.nome && <p><strong>Solicitante:</strong> {ocorrencia.chamado.solicitante.nome}</p>}
           </div>
           <div className="info-section">
             <h4>Equipes Designadas</h4>
