@@ -89,7 +89,6 @@ function Dashboard() {
           credentials: 'include',
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
           },
         });
@@ -100,11 +99,11 @@ function Dashboard() {
         const data = await response.json();
 
         setDashboardData({
-          totalOcorrencias: data.totalOcorrencias.value || 'N/A',
-          ocorrenciasHoje: data.ocorrenciasHoje.value || 'N/A',
-          emAndamento: data.emAndamento.value || 'N/A',
-          equipesAtivas: `${data.equipesAtivas.ativas || 0}/${data.equipesAtivas.total || 0}`,
-          percentChange: data.totalOcorrencias.increase || null,
+          totalOcorrencias: data.totalOcorrencias || 'N/A',
+          ocorrenciasHoje: data.ocorrenciasHoje || 'N/A',
+          emAndamento: data.emAndamento || 'N/A',
+          equipesAtivas: `${data.equipesAtivas || 0}/${data.equipesAtivas || 0}`,
+          percentChange: data.percentChange || null,
         });
 
       } catch (err) {

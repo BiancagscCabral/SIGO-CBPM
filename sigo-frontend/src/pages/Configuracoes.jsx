@@ -120,16 +120,48 @@ function Configuracoes() {
   const handlePasswordInputChange = (e) => {
     const { name, value } = e.target;
     
-    setPasswordData(prev => ({
-      ...prev,
+    const updatedPasswordData = {
+      ...passwordData,
       [name]: value
-    }));
+    };
+    
+    setPasswordData(updatedPasswordData);
 
     if (passwordErrors[name]) {
       setPasswordErrors(prev => ({
         ...prev,
         [name]: ''
       }));
+    }
+
+    if (name === 'confirmarSenha' || (name === 'novaSenha' && updatedPasswordData.confirmarSenha)) {
+      if (updatedPasswordData.novaSenha && updatedPasswordData.confirmarSenha && 
+          updatedPasswordData.novaSenha !== updatedPasswordData.confirmarSenha) {
+        setPasswordErrors(prev => ({
+          ...prev,
+          confirmarSenha: 'Nova senha e confirmação não coincidem'
+        }));
+      } else {
+        setPasswordErrors(prev => ({
+          ...prev,
+          confirmarSenha: ''
+        }));
+      }
+    }
+
+    if (name === 'novaSenha' || (name === 'senhaAtual' && updatedPasswordData.novaSenha)) {
+      if (updatedPasswordData.senhaAtual && updatedPasswordData.novaSenha && 
+          updatedPasswordData.senhaAtual === updatedPasswordData.novaSenha) {
+        setPasswordErrors(prev => ({
+          ...prev,
+          novaSenha: 'Nova senha deve ser diferente da senha atual'
+        }));
+      } else if (name === 'novaSenha' && passwordErrors.novaSenha === 'Nova senha deve ser diferente da senha atual') {
+        setPasswordErrors(prev => ({
+          ...prev,
+          novaSenha: ''
+        }));
+      }
     }
   };
 
