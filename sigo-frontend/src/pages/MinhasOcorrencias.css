@@ -155,11 +155,11 @@
 }
 
 .btn-editar:hover {
-     background-color: #e66400;
-     color: white;
-     transition: all 0.2s ease;
-     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-     transform: translateY(-1px);
+    background-color: #e66400;
+    color: white;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
 }
 
 .status {
@@ -326,4 +326,233 @@
   box-shadow: none;
   background: transparent;
   border: none;
+}
+
+/* Estilos para Modal de Edição */
+.modal-editar {
+  max-width: 900px;
+  width: 95%;
+  max-height: 85vh;
+  overflow: hidden;
+}
+
+.modal-editar .modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 15px 0;
+}
+
+.form-section {
+  margin-bottom: 15px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.form-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.form-section h3 {
+  margin: 0 0 12px 0;
+  color: #314697;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+  color: #2c3e50;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #314697;
+  box-shadow: 0 0 0 2px rgba(49, 70, 151, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: #314697;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2a3a7e;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Tema escuro para modal de edição */
+[data-theme="dark"] .form-section {
+  border-bottom-color: #333;
+}
+
+[data-theme="dark"] .form-section h3 {
+  color: #6da3f7;
+}
+
+[data-theme="dark"] .form-group label {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group select,
+[data-theme="dark"] .form-group textarea {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .form-group select:focus,
+[data-theme="dark"] .form-group textarea:focus {
+  border-color: #6da3f7;
+  box-shadow: 0 0 0 2px rgba(109, 163, 247, 0.1);
+}
+
+[data-theme="dark"] .modal-footer {
+  border-top-color: #333;
+}
+
+/* Estilos adicionais para formulário expandido */
+.form-subsection {
+  background-color: #f8f9fa;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 12px;
+}
+
+.form-subsection h4 {
+  margin: 0 0 8px 0;
+  color: #495057;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.equipe-form {
+  background-color: #f8f9fa;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  border-left: 4px solid #314697;
+}
+
+.equipe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.equipe-header h4 {
+  margin: 0;
+  color: #314697;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.btn-remove-equipe {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  transition: background-color 0.2s;
+}
+
+.btn-remove-equipe:hover {
+  background-color: #c82333;
+}
+
+.btn-add-equipe {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  margin-top: 10px;
+}
+
+.btn-add-equipe:hover {
+  background-color: #218838;
+}
+
+/* Tema escuro para novos elementos */
+[data-theme="dark"] .form-subsection {
+  background-color: #2a2a2a;
+}
+
+[data-theme="dark"] .form-subsection h4 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .equipe-form {
+  background-color: #2a2a2a;
+  border-left-color: #6da3f7;
+}
+
+[data-theme="dark"] .equipe-header h4 {
+  color: #6da3f7;
 }
