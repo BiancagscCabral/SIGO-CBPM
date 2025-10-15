@@ -18,10 +18,10 @@ function Configuracoes() {
   const { isDarkTheme, toggleDarkTheme, textSize, changeTextSize, isSpeechEnabled, toggleSpeech } = useAccessibility();
   
   const [profileData, setProfileData] = useState({
-    nome: '',
-    matricula: '',
-    cargo: '',
-    telefone: '',
+    full_name: '',
+    registration: '',
+    user_role: '',
+    phone: '',
     email: ''
   });
 
@@ -58,10 +58,10 @@ function Configuracoes() {
         if (resultado.success) {
           const userData = resultado.data;
           setProfileData({
-            nome: userData.nome || '',
-            matricula: userData.matricula || '',
-            cargo: userData.cargo || '',
-            telefone: userData.telefone || '',
+            full_name: userData.full_name || '',
+            registration: userData.registration || '',
+            user_role: userData.user_role || '',
+            phone: userData.phone || '',
             email: userData.email || ''
           });
           
@@ -73,10 +73,10 @@ function Configuracoes() {
 
           if (userProfile && userProfile.id) {
             setProfileData({
-              nome: userProfile.nome || '',
-              matricula: userProfile.matricula || '',
-              cargo: userProfile.cargo || '',
-              telefone: userProfile.telefone || '',
+              full_name: userProfile.full_name || '',
+              registration: userProfile.registration || '',
+              user_role: userProfile.user_role || '',
+              phone: userProfile.phone || '',
               email: userProfile.email || ''
             });
           }
@@ -338,7 +338,7 @@ function Configuracoes() {
                 type="text" 
                 id="nome" 
                 name="nome"
-                value={profileData.nome} 
+                value={profileData.full_name} 
                 onChange={handleInputChange}
                 disabled={!isEditing || isLoading}
                 className={validationErrors.nome ? 'error' : ''}
@@ -352,7 +352,7 @@ function Configuracoes() {
                 type="text" 
                 id="matricula" 
                 name="matricula"
-                value={profileData.matricula} 
+                value={profileData.registration} 
                 onChange={handleInputChange}
                 disabled={true}
                 className="readonly"
@@ -368,7 +368,7 @@ function Configuracoes() {
                 type="text" 
                 id="cargo" 
                 name="cargo"
-                value={profileData.cargo || 'Não definido'} 
+                value={profileData.user_role || 'Não definido'} 
                 onChange={handleInputChange}
                 disabled={true}
                 className="readonly"
@@ -400,7 +400,7 @@ function Configuracoes() {
                 type="tel" 
                 id="telefone" 
                 name="telefone"
-                value={profileData.telefone} 
+                value={profileData.phone} 
                 onChange={handleInputChange}
                 disabled={!isEditing || isLoading}
                 placeholder="(XX) XXXXX-XXXX"

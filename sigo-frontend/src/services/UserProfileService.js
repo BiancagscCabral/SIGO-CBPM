@@ -13,18 +13,18 @@ class UserProfileService {
       if (response.ok) {
         const profileData = await response.json();
 
-        return {
-          success: true,
-          data: {
-            id: profileData.id,
-            nome: profileData.full_name,
-            matricula: profileData.registration,
-            cargo: profileData.user_role,
-            email: profileData.email,
-            telefone: profileData.phone
-          },
-          message: 'Perfil carregado com sucesso!'
-        };
+          return {
+            success: true,
+            data: {
+              id: profileData.id,
+              full_name: profileData.full_name,
+              registration: profileData.registration,
+              user_role: profileData.user_role,
+              email: profileData.email,
+              phone: profileData.phone
+            },
+            message: 'Perfil carregado com sucesso!'
+          };
       } else {
         const errorText = await response.text();
         return {
@@ -46,16 +46,16 @@ class UserProfileService {
   static validateProfileData(profileData) {
     const errors = {};
 
-    if (!profileData.nome || profileData.nome.trim().length < 2) {
-      errors.nome = 'Nome deve ter pelo menos 2 caracteres';
+    if (!profileData.full_name || profileData.full_name.trim().length < 2) {
+      errors.full_name = 'Nome deve ter pelo menos 2 caracteres';
     }
 
     if (!profileData.email || !this.isValidEmail(profileData.email)) {
       errors.email = 'Email inválido';
     }
 
-    if (profileData.telefone && !this.isValidPhone(profileData.telefone)) {
-      errors.telefone = 'Telefone inválido';
+    if (profileData.phone && !this.isValidPhone(profileData.phone)) {
+      errors.phone = 'Telefone inválido';
     }
 
     return {
