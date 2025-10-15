@@ -44,17 +44,63 @@ function Configuracoes() {
   const [notificationMessage, setNotificationMessage] = useState('');
   const [notificationMessageType, setNotificationMessageType] = useState(''); 
 
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [profileError, setProfileError] = useState(null);
+
   useEffect(() => {
-    if (userProfile && userProfile.id) {
-      setProfileData({
-        nome: userProfile.nome || '',
-        matricula: userProfile.matricula || '',
-        cargo: userProfile.cargo || '',
-        telefone: userProfile.telefone || '',
-        email: userProfile.email || ''
-      });
-    }
-  }, [userProfile]);
+    const carregarPerfilUsuario = async () => {
+      try {
+        setProfileLoading(true);
+        setProfileError(null);
+        
+        const resultado = await UserProfileService.getUserProfile();
+        
+        if (resultado.success) {
+          const userData = resultado.data;
+          setProfileData({
+            nome: userData.nome || '',
+            matricula: userData.matricula || '',
+            cargo: userData.cargo || '',
+            telefone: userData.telefone || '',
+            email: userData.email || ''
+          });
+          
+          if (updateUserProfile) {
+            updateUserProfile(userData);
+          }
+        } else {
+          setProfileError(resultado.error || 'Erro ao carregar perfil');
+
+          if (userProfile && userProfile.id) {
+            setProfileData({
+              nome: userProfile.nome || '',
+              matricula: userProfile.matricula || '',
+              cargo: userProfile.cargo || '',
+              telefone: userProfile.telefone || '',
+              email: userProfile.email || ''
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao carregar perfil:', error);
+        setProfileError('Erro de conexão ao carregar perfil');
+        
+        if (userProfile && userProfile.id) {
+          setProfileData({
+            nome: userProfile.nome || '',
+            matricula: userProfile.matricula || '',
+            cargo: userProfile.cargo || '',
+            telefone: userProfile.telefone || '',
+            email: userProfile.email || ''
+          });
+        }
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+
+    carregarPerfilUsuario();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -1,5 +1,48 @@
 class UserProfileService {
 
+  static async getUserProfile() {
+    try {
+      const response = await fetch('http://localhost:8000/user/profile', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const profileData = await response.json();
+
+        return {
+          success: true,
+          data: {
+            id: profileData.id,
+            nome: profileData.full_name,
+            matricula: profileData.registration,
+            cargo: profileData.user_role,
+            email: profileData.email,
+            telefone: profileData.phone
+          },
+          message: 'Perfil carregado com sucesso!'
+        };
+      } else {
+        const errorText = await response.text();
+        return {
+          success: false,
+          error: `Erro ${response.status}: ${errorText}`,
+          message: 'Erro ao carregar perfil do usuário'
+        };
+      }
+    } catch (error) {
+      console.error('Erro ao buscar perfil do usuário:', error);
+      return {
+        success: false,
+        error: error.message,
+        message: 'Erro de conexão ao carregar perfil'
+      };
+    }
+  }
+
   static validateProfileData(profileData) {
     const errors = {};
 

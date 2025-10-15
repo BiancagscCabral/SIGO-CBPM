@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PainelAdministrativo.css';
 import RolesService from '../services/RolesService';
+import AdminService from '../services/AdminService';
+import editbIcon from '../assets/editb.svg';
+import editwIcon from '../assets/editw.svg';
+import trashbIcon from '../assets/trashb.svg';
+import trashwIcon from '../assets/trashw.svg';
 
 function PainelAdministrativo() {
   const navigate = useNavigate();
@@ -21,10 +26,20 @@ function PainelAdministrativo() {
   const [success, setSuccess] = useState('');
   
   const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [userError, setUserError] = useState('');
   const [userSuccess, setUserSuccess] = useState('');
+  const [selectedLetter, setSelectedLetter] = useState(''); 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    full_name: '',
+    email: '',
+    user_role: '',
+    registration: '',
+    is_active: true
+  });
 
   const [teams, setTeams] = useState([]);
   const [teamsLoading, setTeamsLoading] = useState(false);
@@ -61,47 +76,116 @@ function PainelAdministrativo() {
     setUserError('');
     
     try {
-      const response = await fetch('/api/admin/users', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const usersData = await response.json();
-        setUsers(usersData);
+      const result = await AdminService.getAllUsers();
+      
+      if (result.success) {
+        setAllUsers(result.data);
+        filterUsersByLetter(result.data, selectedLetter);
+        setUserError('');
       } else {
-        setUserError('Erro ao carregar usuários');
+        setUserError(result.error || 'Erro ao carregar usuários');
+        setUsers([]);
+        setAllUsers([]);
       }
     } catch (error) {
       console.error('Erro ao carregar usuários:', error);
       setUserError('Não foi possível conectar ao servidor');
+      setUsers([]);
+      setAllUsers([]);
     } finally {
       setUsersLoading(false);
     }
   };
 
-  const handleUserStatusChange = async (userId, newStatus) => {
-    try {
-      const response = await fetch(`/api/admin/users/${userId}/status`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ status: newStatus }),
-      });
 
-      if (response.ok) {
-        setUserSuccess('Status do usuário atualizado com sucesso!');
-        loadUsers(); 
+  const filterUsersByLetter = (usersList, letter) => {
+    if (!letter) {
+      setUsers(usersList); 
+      return;
+    }
+    
+    const filtered = usersList.filter(user => 
+      user.full_name && user.full_name.toLowerCase().startsWith(letter.toLowerCase())
+    );
+    setUsers(filtered);
+  };
+
+  const handleLetterFilter = (letter) => {
+    setSelectedLetter(letter);
+    filterUsersByLetter(allUsers, letter);
+  };
+
+  const handleEditUser = (user) => {
+    setEditingUser(user);
+    setEditFormData({
+      full_name: user.full_name || '',
+      email: user.email || '',
+      user_role: user.user_role || '',
+      registration: user.registration || '',
+      is_active: user.is_active
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    console.log('Fechando modal de edição...');
+    setIsEditModalOpen(false);
+    setEditingUser(null);
+    setEditFormData({
+      full_name: '',
+      email: '',
+      user_role: '',
+      registration: '',
+      is_active: true
+    });
+    setUserError('');
+    setUserSuccess('');
+  };
+
+  const handleEditFormChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData(prev => ({
+      ...prev,
+      [name]: name === 'is_active' ? value === 'true' : value
+    }));
+  };
+
+  const handleSaveUser = async () => {
+    if (!editingUser) return;
+
+    try {
+      const result = await AdminService.updateUser(editingUser.id, editFormData);
+      
+      if (result.success) {
+        setUserSuccess('Usuário atualizado com sucesso!');
+        setUserError('');
+        handleCloseEditModal();
+        loadUsers();
       } else {
-        setUserError('Erro ao atualizar status do usuário');
+        setUserError(result.error || 'Erro ao atualizar usuário');
+        setUserSuccess('');
       }
     } catch (error) {
+      console.error('Erro ao atualizar usuário:', error);
       setUserError('Não foi possível conectar ao servidor');
+      setUserSuccess('');
+    }
+  };  const handleUserStatusChange = async (userId, newStatus) => {
+    try {
+      const result = await AdminService.updateUserStatus(userId, newStatus);
+      
+      if (result.success) {
+        setUserSuccess('Status do usuário atualizado com sucesso!');
+        setUserError('');
+        loadUsers(); 
+      } else {
+        setUserError(result.error || 'Erro ao atualizar status do usuário');
+        setUserSuccess('');
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar status:', error);
+      setUserError('Não foi possível conectar ao servidor');
+      setUserSuccess('');
     }
   };
 
@@ -111,22 +195,20 @@ function PainelAdministrativo() {
     }
 
     try {
-      const response = await fetch(`/api/admin/users/${userId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
-
-      if (response.ok) {
+      const result = await AdminService.deleteUser(userId);
+      
+      if (result.success) {
         setUserSuccess('Usuário excluído com sucesso!');
+        setUserError('');
         loadUsers();
       } else {
-        setUserError('Erro ao excluir usuário');
+        setUserError(result.error || 'Erro ao excluir usuário');
+        setUserSuccess('');
       }
     } catch (error) {
+      console.error('Erro ao excluir usuário:', error);
       setUserError('Não foi possível conectar ao servidor');
+      setUserSuccess('');
     }
   };
 
@@ -515,6 +597,38 @@ function PainelAdministrativo() {
           {userError && <div className="error-message">{userError}</div>}
           {userSuccess && <div className="success-message">{userSuccess}</div>}
 
+          <div className="alphabet-filter">
+            <h4>Filtrar por inicial:</h4>
+            <div className="alphabet-buttons">
+              <button 
+                className={`alphabet-btn ${selectedLetter === '' ? 'active' : ''}`}
+                onClick={() => handleLetterFilter('')}
+              >
+                Todos
+              </button>
+              {Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ').map(letter => {
+                const count = allUsers.filter(user => 
+                  user.full_name && user.full_name.toLowerCase().startsWith(letter.toLowerCase())
+                ).length;
+                return (
+                  <button 
+                    key={letter}
+                    className={`alphabet-btn ${selectedLetter === letter ? 'active' : ''}`}
+                    onClick={() => handleLetterFilter(letter)}
+                    disabled={count === 0}
+                  >
+                    {letter}
+                  </button>
+                );
+              })}
+            </div>
+            {selectedLetter && (
+              <p className="filter-info">
+                Mostrando {users.length} usuário(s) com nomes iniciados em "{selectedLetter.toUpperCase()}"
+              </p>
+            )}
+          </div>
+
           {usersLoading ? (
             <div className="loading-message">Carregando usuários...</div>
           ) : users.length === 0 ? (
@@ -522,52 +636,44 @@ function PainelAdministrativo() {
               <p>Nenhum usuário encontrado.</p>
             </div>
           ) : (
-            <div className="users-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Matrícula</th>
-                    <th>Email</th>
-                    <th>Cargo</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user.id}>
-                      <td>{user.nome}</td>
-                      <td>{user.matricula}</td>
-                      <td>{user.email}</td>
-                      <td>{user.cargo}</td>
-                      <td>
-                        <span className={`status-badge ${user.ativo ? 'active' : 'inactive'}`}>
-                          {user.ativo ? 'Ativo' : 'Inativo'}
+            <div className="users-cards">
+              {users.map((user) => (
+                <div key={user.id} className="user-card">
+                  <div className="user-card-content">
+                    <div className="user-header">
+                      <div className="user-name-status">
+                        <h4 className="user-name">{user.full_name}</h4>
+                        <span className={`status-badge ${user.is_active ? 'active' : 'inactive'}`}>
+                          {user.is_active ? 'Ativo' : 'Inativo'}
                         </span>
-                      </td>
-                      <td>
-                        <div className="action-buttons">
-                          <button
-                            className="btn-action btn-toggle"
-                            onClick={() => handleUserStatusChange(user.id, !user.ativo)}
-                            title={user.ativo ? 'Desativar usuário' : 'Ativar usuário'}
-                          >
-                            {user.ativo ? 'Desativar' : 'Ativar'}
-                          </button>
-                          <button
-                            className="btn-action btn-delete"
-                            onClick={() => handleDeleteUser(user.id)}
-                            title="Excluir usuário"
-                          >
-                            Excluir
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </div>
+                    </div>
+                    <div className="user-details">
+                      <p className="user-registration">Matrícula: {user.registration}</p>
+                      <p className="user-role">Cargo: {user.user_role}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="user-card-actions">
+                    <button
+                      className="action-icon edit-icon"
+                      onClick={() => handleEditUser(user)}
+                      title="Editar usuário"
+                    >
+                      <img src={editbIcon} alt="Editar" className="icon-normal" />
+                      <img src={editwIcon} alt="Editar" className="icon-hover" />
+                    </button>
+                    <button
+                      className="action-icon delete-icon"
+                      onClick={() => handleDeleteUser(user.id)}
+                      title="Excluir usuário"
+                    >
+                      <img src={trashbIcon} alt="Excluir" className="icon-normal" />
+                      <img src={trashwIcon} alt="Excluir" className="icon-hover" />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -626,7 +732,7 @@ function PainelAdministrativo() {
                     <option value="">Selecione um líder</option>
                     {users.map((user) => (
                       <option key={user.id} value={user.id}>
-                        {user.nome} - {user.cargo}
+                        {user.full_name} - {user.user_role}
                       </option>
                     ))}
                   </select>
@@ -657,8 +763,8 @@ function PainelAdministrativo() {
                                 onChange={() => handleMemberToggle(user.id)}
                               />
                               <div className="member-info">
-                                <span className="member-name">{user.nome}</span>
-                                <span className="member-role">{user.cargo}</span>
+                                <span className="member-name">{user.full_name}</span>
+                                <span className="member-role">{user.user_role}</span>
                               </div>
                             </label>
                           </div>
@@ -747,6 +853,114 @@ function PainelAdministrativo() {
           )}
         </div>
       </div>
+
+      {isEditModalOpen && (
+        <div className="modal-overlay" onClick={handleCloseEditModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Editar Usuário</h3>
+              <button 
+                type="button"
+                className="close-button"
+                onClick={handleCloseEditModal}
+                title="Fechar"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="modal-body">
+              <div className="form-group">
+                <label htmlFor="edit_full_name">Nome Completo</label>
+                <input
+                  type="text"
+                  id="edit_full_name"
+                  name="full_name"
+                  value={editFormData.full_name}
+                  onChange={handleEditFormChange}
+                  placeholder="Digite o nome completo"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="edit_registration">Matrícula</label>
+                <input
+                  type="text"
+                  id="edit_registration"
+                  name="registration"
+                  value={editFormData.registration}
+                  onChange={handleEditFormChange}
+                  placeholder="Digite a matrícula"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="edit_email">E-mail</label>
+                <input
+                  type="email"
+                  id="edit_email"
+                  name="email"
+                  value={editFormData.email}
+                  onChange={handleEditFormChange}
+                  placeholder="Digite o e-mail"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="edit_user_role">Cargo</label>
+                <select
+                  id="edit_user_role"
+                  name="user_role"
+                  value={editFormData.user_role}
+                  onChange={handleEditFormChange}
+                  required
+                >
+                  <option value="">Selecione um cargo</option>
+                  {!rolesLoading && availableRoles.map((role, index) => (
+                    <option key={index} value={role}>
+                      {role}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="edit_is_active">Status</label>
+                <select
+                  id="edit_is_active"
+                  name="is_active"
+                  value={editFormData.is_active}
+                  onChange={handleEditFormChange}
+                  required
+                >
+                  <option value={true}>Ativo</option>
+                  <option value={false}>Inativo</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button 
+                type="button"
+                className="btn-cancelar"
+                onClick={handleCloseEditModal}
+              >
+                Cancelar
+              </button>
+              <button 
+                type="button"
+                className="btn-salvar"
+                onClick={handleSaveUser}
+              >
+                Salvar Alterações
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

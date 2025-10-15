@@ -66,19 +66,19 @@
 .ocorrencia-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
 }
 
 .ocorrencia-item {
     background-color: #fff;
-    padding: 15px;
+    padding: 20px;
     border-radius: 8px;
     border: 1px solid #e0e0e0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 20px;
+    gap: 24px;
 }
 
 .ocorrencia-details {
@@ -89,7 +89,7 @@
 }
 
 .ocorrencia-details strong {
-    font-size: 1rem;
+    font-size: 1.1rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -99,12 +99,12 @@
 .ocorrencia-details p {
     margin: 0;
     color: #555;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 .ocorrencia-details p.endereco {
     color: #777;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
 }
 
 .ocorrencia-actions-time {
@@ -118,11 +118,11 @@
 .ocorrencia-actions-time .horario {
     font-weight: bold;
     color: #333;
-    font-size: 0.95rem;
+    font-size: 1rem;
 }
 
 .ocorrencia-actions-time a {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #314697;
     text-decoration: none;
     margin-bottom: 8px;
@@ -138,7 +138,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: bold;
     transition: background-color 0.3s ease;
     display: flex;
@@ -317,7 +317,7 @@
 }
 
 [data-theme="dark"] .prioridade {
-    background-color: #e9ecef; 
+    background-color: #eecef9; 
   color: #333 !important;
   border-color: #f5c6cb !important;
 }
@@ -330,7 +330,7 @@
 
 /* Estilos para Modal de Edição */
 .modal-editar {
-  max-width: 900px;
+  max-width: 1100px;
   width: 95%;
   max-height: 85vh;
   overflow: hidden;
@@ -340,7 +340,7 @@
   max-height: 60vh;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 15px 0;
+  padding: 15px 20px 15px 0;
 }
 
 .form-section {
