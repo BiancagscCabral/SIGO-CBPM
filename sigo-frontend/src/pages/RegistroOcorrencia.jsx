@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { useUser } from "../contexts/UserContext";
-import { useOcorrencias } from "../contexts/OcorrenciasContext";
 import { useNavigate } from "react-router-dom";
 import "./RegistroOcorrencia.css";
 import icon_gps from "../assets/icon_gps.svg";
@@ -15,7 +14,6 @@ import lixo from "../assets/lixo.svg";
 
 function RegistroOcorrencia() {
   const { userProfile } = useUser();
-  const { adicionarOcorrencia, loading: ocorrenciasLoading } = useOcorrencias();
   const navigate = useNavigate();
   
   const [endereco, setEndereco] = useState("");
@@ -36,10 +34,30 @@ function RegistroOcorrencia() {
   const [isLoading, setIsLoading] = useState(false);
 
   const subtipoOptions = {
-    "aph": ["Parada cardíaca", "Convulsão", "Ferimento grave", "Intoxicação"],
-    "incendio": ["Residencial", "Comercial", "Vegetação", "Veículo"],
-    "acidente_transito": ["Colisão", "Atropelamento", "Capotamento", "Queda de motocicleta"],
-    "outros": ["Queda de árvore", "Alagamento", "Animal ferido", "Resgate"]
+    "medic_emergency": [
+      { value: "heart_stop", label: "Parada cardíaca" },
+      { value: "seizure", label: "Convulsão" },
+      { value: "serious_injury", label: "Ferimento grave" },
+      { value: "intoxication", label: "Intoxicação" },
+      { value: "pre_hospital_care", label: "Atendimento Pré-Hospitalar" }
+    ],
+    "fire": [
+      { value: "residential", label: "Residencial" },
+      { value: "comercial", label: "Comercial" },
+      { value: "vegetation", label: "Vegetação" },
+      { value: "vehicle", label: "Veículo" }
+    ],
+    "traffic_accident": [
+      { value: "collision", label: "Colisão" },
+      { value: "run_over", label: "Atropelamento" },
+      { value: "rollover", label: "Capotamento" },
+      { value: "motorcycle_crash", label: "Queda de motocicleta" }
+    ],
+    "other": [
+      { value: "tree_crash", label: "Queda de árvore" },
+      { value: "flood", label: "Alagamento" },
+      { value: "injured_animal", label: "Animal ferido" }
+    ]
   };
 
   const sigCanvas = useRef({});
@@ -122,7 +140,7 @@ function RegistroOcorrencia() {
     
     selectedFiles.forEach(file => {
       if (file.type.startsWith('image/')) {
-        if (file.size <= 10 * 1024 * 1024) { // 10MB
+        if (file.size <= 10 * 1024 * 1024) { 
           validFiles.push(file);
         } else {
           alert(`A foto ${file.name} é muito grande. Máximo 10MB.`);
@@ -135,19 +153,17 @@ function RegistroOcorrencia() {
     setFotos(prev => [...prev, ...validFiles]);
   };
 
-  // Função para remover foto
   const removeFoto = (indexToRemove) => {
     setFotos(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
-  // Função para gerenciar vídeos
   const handleVideosChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const validFiles = [];
     
     selectedFiles.forEach(file => {
       if (file.type.startsWith('video/')) {
-        if (file.size <= 50 * 1024 * 1024) { // 50MB
+        if (file.size <= 50 * 1024 * 1024) { 
           validFiles.push(file);
         } else {
           alert(`O vídeo ${file.name} é muito grande. Máximo 50MB.`);
@@ -160,14 +176,12 @@ function RegistroOcorrencia() {
     setVideos(prev => [...prev, ...validFiles]);
   };
 
-  // Função para remover vídeo
   const removeVideo = (indexToRemove) => {
     setVideos(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
   // Função para resetar o formulário
   const resetarFormulario = () => {
-    // Limpar todos os campos (dados do usuário vêm automaticamente do backend)
     setEndereco("");
     setPontoReferencia("");
     setGps("");
@@ -188,7 +202,6 @@ function RegistroOcorrencia() {
 
   // Função para salvar localmente (para uso offline)
   const salvarLocalmente = async () => {
-    // Validação robusta dos campos obrigatórios
     if (!validarCamposObrigatorios()) {
       return;
     }
@@ -260,7 +273,7 @@ function RegistroOcorrencia() {
       ocorrenciasSalvas.push(ocorrenciaLocal);
       localStorage.setItem('ocorrencias_offline', JSON.stringify(ocorrenciasSalvas));
 
-      setSuccessMessage("Ocorrência salva localmente com sucesso! Será enviada automaticamente quando a conexão retornar.");
+      setSuccessMessage("Ocorrência salva localmente com sucesso!");
       setShowSuccessModal(true);
 
     } catch (error) {
@@ -336,91 +349,64 @@ function RegistroOcorrencia() {
     setIsLoading(true);
 
     try {
-      // Preparar dados da assinatura
-      const assinaturaData = sigCanvas.current.isEmpty()
-        ? null
-        : sigCanvas.current.toDataURL();
-
-      // Converter arquivos para base64 (para fotos pequenas) ou preparar para FormData
-      const fotosData = await Promise.all(
-        fotos.map(async (foto) => {
-          return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              resolve({
-                nome: foto.name,
-                tamanho: foto.size,
-                tipo: foto.type,
-                dados: e.target.result // base64
-              });
-            };
-            reader.readAsDataURL(foto);
-          });
-        })
-      );
-
-      const videosData = videos.map((video) => ({
-        nome: video.name,
-        tamanho: video.size,
-        tipo: video.type,
-        // Para vídeos, não convertemos para base64 devido ao tamanho
-        // Eles serão enviados via FormData separadamente
-      }));
-
-      // Estrutura JSON completa para o backend
-      const ocorrenciaData = {
-        // Localização
-        localizacao: {
-          endereco: endereco,
-          pontoReferencia: pontoReferencia || null,
-          coordenadas: gps || null
-        },
-        
-        // Dados da ocorrência
-        ocorrencia: {
-          tipo: tipoOcorrencia,
-          subtipo: subtipoOcorrencia,
-          prioridade: prioridade,
-          descricao: descricaoInicial || null,
-          codigoViatura: codigoViatura || null,
-          membrosEquipe: membrosEquipe || null
-        },
-        
-        // Anexos
-        anexos: {
-          fotos: fotosData,
-          videos: videosData,
-          quantidadeFotos: fotos.length,
-          quantidadeVideos: videos.length,
-          fotosOriginais: fotos,
-          videosOriginais: videos
-        },
-        
-        // Assinatura
-        assinatura: assinaturaData,
-        
-        // Metadados
-        metadata: {
-          dataRegistro: new Date().toISOString(),
-          versaoFormulario: "1.0",
-          navegador: navigator.userAgent,
-          dispositivoMovel: /Mobi|Android/i.test(navigator.userAgent)
-        }
+      const formData = new FormData();
+      const tipoParaCategoria = {
+        "medic_emergency": "medic_emergency",
+        "fire": "fire", 
+        "traffic_accident": "traffic_accident",
+        "other": "other"
       };
 
-      console.log("DADOS JSON PARA BACKEND:", JSON.stringify(ocorrenciaData, null, 2));
+      let locationArray = [];
+      if (gps) {
+        const coords = gps.split(',').map(coord => parseFloat(coord.trim()));
+        if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+          locationArray = coords;
+        }
+      }
+
+      const participantesArray = membrosEquipe ? membrosEquipe.split(',').map(nome => nome.trim()) : [];
+
+
+      formData.append('categoria', tipoParaCategoria[tipoOcorrencia] || tipoOcorrencia);
+      formData.append('subcategoria', subtipoOcorrencia);
+      formData.append('descricao', descricaoInicial || '');
+      formData.append('pontoDeReferencia', pontoReferencia || '');
+      formData.append('codigoViatura', codigoViatura || '');
       
-      ocorrenciaData.anexos.fotosOriginais = fotos;
-      ocorrenciaData.anexos.videosOriginais = videos;
+      locationArray.forEach(coord => {
+        formData.append('gps', coord.toString());
+      });
       
-      const novaOcorrenciaId = await adicionarOcorrencia(ocorrenciaData);
+      participantesArray.forEach(participante => {
+        formData.append('participantes', participante);
+      });
+
+      console.log("📋 Dados sendo enviados:");
+      for (let [key, value] of formData.entries()) {
+        console.log(`   ${key}: ${value}`);
+      }
+
+      const response = await fetch('/api/occurrence/new', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Erro HTTP ${response.status}: ${errorText}`);
+      }
+
+      const resultado = await response.json();
+      console.log("✅ Resposta do backend:", resultado);
       
-      setSuccessMessage(`Ocorrência registrada com sucesso! ID: ${novaOcorrenciaId}`);
+      setSuccessMessage(`Ocorrência registrada com sucesso! ID: ${resultado.id}`);
       setShowSuccessModal(true);
       
     } catch (error) {
-      console.error("Erro ao processar dados:", error);
-      alert("Erro ao processar os dados do formulário.");
+      console.error("❌ Erro ao enviar ocorrência:", error);
+      alert(`Erro ao enviar ocorrência: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -463,10 +449,10 @@ function RegistroOcorrencia() {
               <label htmlFor="tipoOcorrencia">Tipos de Ocorrência *</label>
               <select id="tipoOcorrencia" name="tipoOcorrencia" value={tipoOcorrencia} onChange={handleTipoChange} required>
                 <option value="">Selecione o tipo</option>
-                <option value="aph">Atendimento Pré-Hospitalar (APH)</option>
-                <option value="incendio">Incêndio</option>
-                <option value="acidente_transito">Acidente de Trânsito</option>
-                <option value="outros">Outros</option>
+                <option value="medic_emergency">Emergência Médica</option>
+                <option value="fire">Incêndio</option>
+                <option value="traffic_accident">Acidente de Trânsito</option>
+                <option value="other">Outros</option>
               </select>
             </div>
 
@@ -482,7 +468,7 @@ function RegistroOcorrencia() {
               >
                 <option value="">Selecione o subtipo</option>
                 {tipoOcorrencia && subtipoOptions[tipoOcorrencia]?.map((subtipo) => (
-                  <option key={subtipo} value={subtipo}>{subtipo}</option>
+                  <option key={subtipo.value} value={subtipo.value}>{subtipo.label}</option>
                 ))}
               </select>
             </div>
@@ -587,18 +573,18 @@ function RegistroOcorrencia() {
                 type="button" 
                 className="btn-secondary"
                 onClick={salvarLocalmente}
-                disabled={isLoading || ocorrenciasLoading}
+                disabled={isLoading}
               >
                 <img src={save} alt="salvar" />
-                {(isLoading || ocorrenciasLoading) ? 'Salvando...' : 'Salvar Localmente'}
+                {isLoading ? 'Salvando...' : 'Salvar Localmente'}
               </button>
               <button 
                 type="submit" 
                 className="btn-primary"
-                disabled={isLoading || ocorrenciasLoading}
+                disabled={isLoading}
               >
                 <img src={send} alt="enviar" />
-                {(isLoading || ocorrenciasLoading) ? 'Enviando...' : 'Enviar Online'}
+                {isLoading ? 'Enviando...' : 'Enviar Online'}
               </button>
             </div>
           </form>
@@ -617,12 +603,6 @@ function RegistroOcorrencia() {
                 className="btn-secondary"
               >
                 Registrar Nova
-              </button>
-              <button 
-                onClick={() => navigate('/minhas-ocorrencias')}
-                className="btn-secondary"
-              >
-                Ver Minhas Ocorrências
               </button>
               <button 
                 onClick={voltarDashboard}
