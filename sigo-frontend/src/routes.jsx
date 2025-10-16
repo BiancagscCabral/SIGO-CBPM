@@ -4,7 +4,7 @@ import Dashboard from './pages/Dashboard';
 import RegistroOcorrencia from './pages/RegistroOcorrencia'; 
 import Layout from './components/Layout';
 import Relatorios from './pages/Relatorios';
-import MinhasOcorrencias from './pages/MinhasOcorrencias';
+import Ocorrencias from './pages/Ocorrencias';
 import Configuracoes from './pages/Configuracoes';
 import PainelAdministrativo from './pages/PainelAdministrativo';
 import ForgotPassword from './pages/ForgotPassword';
@@ -31,7 +31,7 @@ function AppRoutes() {
             </ProtectedRoute>
           } 
         />
-        <Route path="/minhas-ocorrencias" element={<MinhasOcorrencias />} />
+        <Route path="/minhas-ocorrencias" element={<Ocorrencias />} />
         <Route path="/configuracoes" element={<Configuracoes />} />
         <Route 
           path="/painel-administrativo" 

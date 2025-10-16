@@ -21,6 +21,21 @@ export function verificarAcessoRelatorios(cargo) {
   return hasAccess;
 }
 
+export function verificarPermissaoEdicaoOcorrencia(cargo, isOwner = false) {
+  console.log('Verificando permissão de edição de ocorrência para cargo:', cargo, 'isOwner:', isOwner);
+  
+  // Desenvolvedor pode editar qualquer ocorrência
+  if (cargo === CARGOS.DESENVOLVEDOR) {
+    console.log('Resultado: true (desenvolvedor)');
+    return true;
+  }
+  
+  // Outros usuários só podem editar suas próprias ocorrências
+  const hasAccess = isOwner;
+  console.log('Resultado:', hasAccess);
+  return hasAccess;
+}
+
 export function verificarAcesso(cargo, allowedRoles) {
   return allowedRoles.includes(cargo);
 }

@@ -96,6 +96,10 @@
   font-size: 0.875rem;
   font-weight: 500;
   transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .modal-footer .btn-secondary {

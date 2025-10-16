@@ -6,6 +6,7 @@ import { LuFilePlus } from "react-icons/lu";
 import './Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
+import { useOcorrencias } from '../contexts/OcorrenciasContext';
 
 const StatCard = ({ icon, value, title, subtext, increase, iconBgColor }) => (
   <div className="stat-card">
@@ -43,8 +44,8 @@ const QuickAccessSection = ({ navigate, handleRegistroClick }) => (
     />
     <QuickAccessCard
       icon={<FiClipboard />}
-      title="Minhas Ocorrências"
-      description="Visualizar ocorrências registradas por mim"
+      title="Ocorrências"
+      description="Visualizar ocorrências registradas no sistema"
       bgColor="bg-blue"
       onClick={() => navigate('/minhas-ocorrencias')}
     />
@@ -69,6 +70,7 @@ const QuickAccessSection = ({ navigate, handleRegistroClick }) => (
 function Dashboard() {
   const navigate = useNavigate();
   const { fetchUserProfile } = useUser();
+  const { ocorrencias } = useOcorrencias();
 
   const defaultStats = {
     totalOcorrencias: '--',
@@ -82,10 +84,54 @@ function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Função para calcular estatísticas das ocorrências locais
+  const calcularEstatisticasLocais = () => {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    
+    const totalOcorrencias = ocorrencias.length;
+    
+    const ocorrenciasHoje = ocorrencias.filter(ocorrencia => {
+      const dataOcorrencia = new Date(ocorrencia.timestamps.abertura);
+      dataOcorrencia.setHours(0, 0, 0, 0);
+      return dataOcorrencia.getTime() === hoje.getTime();
+    }).length;
+    
+    const emAndamento = ocorrencias.filter(ocorrencia => 
+      ocorrencia.status === 'Em andamento' || ocorrencia.status === 'Reforço Solicitado'
+    ).length;
+    
+    const equipesUnicas = new Set();
+    ocorrencias.forEach(ocorrencia => {
+      ocorrencia.equipes?.forEach(equipe => {
+        if (equipe.id) equipesUnicas.add(equipe.id);
+      });
+    });
+    
+    return {
+      totalOcorrencias,
+      ocorrenciasHoje,
+      emAndamento,
+      equipesAtivas: equipesUnicas.size
+    };
+  };
+
   useEffect(() => {
     console.log('Dashboard: Forçando atualização do perfil do usuário...');
     fetchUserProfile();
   }, []);
+
+  // Atualizar estatísticas quando as ocorrências mudarem
+  useEffect(() => {
+    const estatisticasLocais = calcularEstatisticasLocais();
+    setDashboardData(prev => ({
+      ...prev,
+      totalOcorrencias: estatisticasLocais.totalOcorrencias,
+      ocorrenciasHoje: estatisticasLocais.ocorrenciasHoje,
+      emAndamento: estatisticasLocais.emAndamento,
+      equipesAtivas: `${estatisticasLocais.equipesAtivas}/${estatisticasLocais.equipesAtivas}`
+    }));
+  }, [ocorrencias]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,30 +146,45 @@ function Dashboard() {
           },
         });
 
-        if (!response.ok) {
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Combinar dados do backend com estatísticas locais
+          const estatisticasLocais = calcularEstatisticasLocais();
+          
+          setDashboardData({
+            totalOcorrencias: (data.totalOcorrencias || 0) + estatisticasLocais.totalOcorrencias,
+            ocorrenciasHoje: (data.ocorrenciasHoje || 0) + estatisticasLocais.ocorrenciasHoje,
+            emAndamento: (data.emAndamento || 0) + estatisticasLocais.emAndamento,
+            equipesAtivas: `${((data.equipesAtivas || 0) + estatisticasLocais.equipesAtivas)}/${((data.equipesAtivas || 0) + estatisticasLocais.equipesAtivas)}`,
+            percentChange: data.percentChange || null,
+          });
+        } else {
           throw new Error(`Falha ao buscar dados: ${response.statusText}`);
         }
-        const data = await response.json();
-
-        setDashboardData({
-          totalOcorrencias: data.totalOcorrencias || 'N/A',
-          ocorrenciasHoje: data.ocorrenciasHoje || 'N/A',
-          emAndamento: data.emAndamento || 'N/A',
-          equipesAtivas: `${data.equipesAtivas || 0}/${data.equipesAtivas || 0}`,
-          percentChange: data.percentChange || null,
-        });
 
       } catch (err) {
         console.error("Erro ao buscar dados do dashboard:", err);
-        setError("Não foi possível carregar os dados. Verifique a conexão.");
-        setDashboardData(defaultStats);
+        
+        // Se der erro no backend, usar apenas dados locais
+        const estatisticasLocais = calcularEstatisticasLocais();
+        
+        setDashboardData({
+          totalOcorrencias: estatisticasLocais.totalOcorrencias,
+          ocorrenciasHoje: estatisticasLocais.ocorrenciasHoje,
+          emAndamento: estatisticasLocais.emAndamento,
+          equipesAtivas: `${estatisticasLocais.equipesAtivas}/${estatisticasLocais.equipesAtivas}`,
+          percentChange: null,
+        });
+        
+        setError("Exibindo apenas dados locais. Verifique a conexão para dados completos.");
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [ocorrencias]); // Adicionar ocorrencias como dependência
 
   const handleRegistroClick = () => {
     navigate('/registro-ocorrencia');
@@ -168,6 +229,7 @@ function Dashboard() {
           iconBgColor="#4caf50"
         />
       </section>
+      
       <QuickAccessSection navigate={navigate} handleRegistroClick={handleRegistroClick}/>
     </main>
   );

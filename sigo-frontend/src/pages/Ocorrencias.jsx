@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import './MinhasOcorrencias.css';
+import { useOcorrencias } from '../contexts/OcorrenciasContext';
+import { useUser } from '../contexts/UserContext';
+import { verificarPermissaoEdicaoOcorrencia } from '../utils/permissions';
+import './Ocorrencias.css';
 import Modal from '../components/Modal';
 
 const getStatusClass = (status) => {
@@ -8,130 +11,6 @@ const getStatusClass = (status) => {
     if (status === 'Finalizada') return 'status-finalizada';
     return '';
 };
-
-// DADOS
-const dadosIniciaisMinhasOcorrencias = [
-    {
-        id: '025',
-        status: 'Reforço Solicitado',
-        prioridade: 'Média',
-        timestamps: {
-            abertura: '2025-09-13T14:33:00-03:00',
-            finalizacao: null
-        },
-        endereco: {
-            logradouro: 'Av. Principal',
-            numero: '456',
-            bairro: 'Boa Viagem',
-            cidade: 'Recife',
-            uf: 'PE'
-        },
-        chamado: {
-            tipo: 'Acidente de Trânsito',
-            detalhes: 'Colisão entre dois veículos.'
-        },
-        equipes: [
-            {
-                id: 'UR-05',
-                viatura: 'Unidade de Resgate',
-                efetivo: 3
-            }
-        ]
-    },
-    {
-        id: '007',
-        status: 'Finalizada',
-        prioridade: 'Média',
-        timestamps: {
-            abertura: '2025-09-13T12:45:00-03:00',
-            finalizacao: '2025-09-13T13:50:00-03:00'
-        },
-        endereco: {
-            logradouro: 'Rua do Sertão',
-            numero: '789',
-            bairro: 'Pina',
-            cidade: 'Recife',
-            uf: 'PE'
-        },
-        chamado: {
-            tipo: 'Salvamento Aquático',
-            detalhes: 'Banhista com dificuldades de retornar à praia.'
-        },
-        equipes: [
-            {
-                id: 'AE-02',
-                viatura: 'Auto Escada',
-                efetivo: 4
-            }
-        ]
-    },
-    {
-        id: '037',
-        status: 'Em andamento',
-        prioridade: 'Alta',
-        timestamps: {
-            abertura: '2025-09-13T16:05:00-03:00',
-            finalizacao: null
-        },
-        endereco: {
-            logradouro: 'Rua das Laranjeiras',
-            numero: '10',
-            bairro: 'Graças',
-            cidade: 'Recife',
-            uf: 'PE'
-        },
-        chamado: {
-            tipo: 'Vazamento de Gás',
-            detalhes: 'Forte cheiro de gás em edifício residencial.'
-        },
-        equipes: [
-            {
-                id: 'ABT-05',
-                viatura: 'Auto Bomba Tanque',
-                efetivo: 4
-            },
-            {
-                id: 'AR-12',
-                viatura: 'Auto Resgate',
-                efetivo: 3
-            }
-        ]
-    },
-    {
-        id: '016',
-        status: 'Finalizada',
-        prioridade: 'Baixa',
-        timestamps: {
-            abertura: '2025-09-13T18:10:00-03:00',
-            chegadaNoLocal: '2025-09-13T18:25:00-03:00',
-            finalizacao: '2025-09-13T18:55:00-03:00'
-        },
-        endereco: {
-            logradouro: 'Rua da Aurora',
-            numero: '550',
-            bairro: 'Santo Amaro',
-            cidade: 'Recife',
-            uf: 'PE',
-            pontoReferencia: 'Próximo ao Ginásio Pernambucano'
-        },
-        chamado: {
-            tipo: 'Incêndio em Veículo',
-            detalhes: 'Carro pegando fogo no acostamento, sem vítimas aparentes.',
-            solicitante: {
-                nome: 'Pedro Henrique',
-                telefone: '(81) 99123-4567'
-            }
-        },
-        equipes: [
-            {
-                id: 'ABT-09',
-                viatura: 'Auto Bomba Tanque',
-                lider: 'Sgt. Lima',
-                efetivo: 4
-            }
-        ]
-    },
-];
 
 const formatarHorario = (timestamp) => {
     if (!timestamp) return '-';
@@ -147,11 +26,12 @@ const prioridadeValor = {
     'Baixa': 1,
 };
 
-function MinhasOcorrencias() {
-    const [ocorrencias, setOcorrencias] = useState(dadosIniciaisMinhasOcorrencias);
+function Ocorrencias() {
+    const { ocorrencias, loading, error, atualizarOcorrencia, removerOcorrencia } = useOcorrencias();
+    const { userProfile } = useUser();
     const [ordenacao, setOrdenacao] = useState('horario-recente');
+    const [filtroUsuario, setFiltroUsuario] = useState('minhas');
 
-    // CONTROLE DO MODAL
     const [modalVisivel, setModalVisivel] = useState(false);
     const [modalEditarVisivel, setModalEditarVisivel] = useState(false);
     const [ocorrenciaSelecionada, setOcorrenciaSelecionada] = useState(null);
@@ -167,11 +47,7 @@ function MinhasOcorrencias() {
 
     const handleSalvarEdicao = () => {
         if (ocorrenciaEditando) {
-            setOcorrencias(prevOcorrencias => 
-                prevOcorrencias.map(o => 
-                    o.id === ocorrenciaEditando.id ? ocorrenciaEditando : o
-                )
-            );
+            atualizarOcorrencia(ocorrenciaEditando.id, ocorrenciaEditando);
             setModalEditarVisivel(false);
             setOcorrenciaEditando(null);
         }
@@ -180,6 +56,14 @@ function MinhasOcorrencias() {
     const handleCancelarEdicao = () => {
         setModalEditarVisivel(false);
         setOcorrenciaEditando(null);
+    };
+
+    const handleExcluirOcorrencia = () => {
+        if (ocorrenciaEditando && window.confirm('Tem certeza que deseja excluir esta ocorrência? Esta ação não pode ser desfeita.')) {
+            removerOcorrencia(ocorrenciaEditando.id);
+            setModalEditarVisivel(false);
+            setOcorrenciaEditando(null);
+        }
     };
 
     const handleInputChange = (campo, valor) => {
@@ -250,7 +134,6 @@ function MinhasOcorrencias() {
                 ...prev.equipes,
                 {
                     id: '',
-                    viatura: '',
                     lider: '',
                     efetivo: 1
                 }
@@ -265,13 +148,30 @@ function MinhasOcorrencias() {
         }));
     };
 
-    // ABRIR O MODAL
     const handleVerDetalhes = (ocorrencia) => {
         setOcorrenciaSelecionada(ocorrencia);
         setModalVisivel(true);
     };
 
-    const ocorrenciasOrdenadas = [...ocorrencias].sort((a, b) => {
+    const podeEditar = (ocorrencia) => {
+
+        if (!userProfile?.id) {
+            return false;
+        }
+        
+        let isOwner = false;
+        if (ocorrencia.metadata && ocorrencia.metadata.usuarioId) {
+            const usuarioOcorrencia = String(ocorrencia.metadata.usuarioId);
+            const usuarioLogado = String(userProfile.id);
+            isOwner = usuarioOcorrencia === usuarioLogado;
+        }
+        
+        return verificarPermissaoEdicaoOcorrencia(userProfile.user_role, isOwner);
+    };
+
+    const ocorrenciasFiltradas = filtroUsuario === 'minhas' 
+        ? ocorrencias.filter(ocorrencia => podeEditar(ocorrencia))
+        : ocorrencias;    const ocorrenciasOrdenadas = [...ocorrenciasFiltradas].sort((a, b) => {
         switch (ordenacao) {
             case 'id-crescente':
                 return parseInt(a.id) - parseInt(b.id);
@@ -291,13 +191,28 @@ function MinhasOcorrencias() {
     });
 
     return (
-        <div className="minhas-ocorrencias-container">
+        <div className="ocorrencias-container">
             <div className="page-header">
-                <h1>Minhas Ocorrências</h1>
-                <p>Visualize e gerencie as ocorrências que você registrou</p>
+                <h1>Ocorrências</h1>
+                <p>Visualize e gerencie as ocorrências do sistema</p>
             </div>
 
-            <div className="minhas-ocorrencias-actions">
+            <div className="ocorrencias-actions">
+                <div className="filters-container">
+                    <div className="filter-group">
+                        <label htmlFor="filtro-usuario-select">Filtrar por:</label>
+                        <select 
+                            id="filtro-usuario-select"
+                            value={filtroUsuario} 
+                            onChange={(e) => setFiltroUsuario(e.target.value)}
+                            className="filter-select"
+                        >
+                            <option value="minhas">Minhas Ocorrências</option>
+                            <option value="geral">Todas as Ocorrências</option>
+                        </select>
+                    </div>
+                </div>
+                
                 <div className="ordenacao-container">
                     <label htmlFor="ordenacao-select">Ordenar por:</label>
                     <select
@@ -315,7 +230,37 @@ function MinhasOcorrencias() {
             </div>
 
             <div className="ocorrencia-list">
-                {ocorrenciasOrdenadas.map((ocorrencia) => (
+                {loading ? (
+                    <div className="empty-state">
+                        <h3>Carregando ocorrências...</h3>
+                        <p>Aguarde enquanto buscamos suas ocorrências.</p>
+                    </div>
+                ) : error ? (
+                    <div className="empty-state">
+                        <h3>Erro ao carregar ocorrências</h3>
+                        <p>{error}</p>
+                        <p>Exibindo dados salvos localmente, se disponíveis.</p>
+                    </div>
+                ) : ocorrenciasFiltradas.length === 0 ? (
+                    <div className="empty-state">
+                        <h3>
+                            {filtroUsuario === 'minhas' 
+                                ? 'Nenhuma ocorrência registrada por você'
+                                : 'Nenhuma ocorrência encontrada'
+                            }
+                        </h3>
+                        <p>
+                            {filtroUsuario === 'minhas' 
+                                ? 'Você ainda não registrou nenhuma ocorrência. Quando você registrar uma nova ocorrência, ela aparecerá aqui.'
+                                : 'Não há ocorrências cadastradas no sistema no momento.'
+                            }
+                        </p>
+                        <a href="/registro-ocorrencia" className="btn btn-primary">
+                            Registrar Nova Ocorrência
+                        </a>
+                    </div>
+                ) : (
+                    ocorrenciasOrdenadas.map((ocorrencia) => (
                     <div key={ocorrencia.id} className="ocorrencia-item">
                         <div className="ocorrencia-details">
                             <strong>
@@ -331,17 +276,28 @@ function MinhasOcorrencias() {
                             <p className="endereco">
                                 {`${ocorrencia.endereco.logradouro}, ${ocorrencia.endereco.numero} - ${ocorrencia.endereco.bairro}`}
                             </p>
+                            {ocorrencia.metadata && (ocorrencia.metadata.nomeUsuario || ocorrencia.metadata.matriculaUsuario) && (
+                                <p className="registrado-por">
+                                    Registrado por: {ocorrencia.metadata.nomeUsuario || 'N/A'} 
+                                    {ocorrencia.metadata.matriculaUsuario && (
+                                        <span className="matricula"> (Mat: {ocorrencia.metadata.matriculaUsuario})</span>
+                                    )}
+                                </p>
+                            )}
                         </div>
 
                         <div className="ocorrencia-actions-time">
                             <span className="horario">{formatarHorario(ocorrencia.timestamps.abertura)}</span>
                             <div className="item-buttons">
-                                <button className="btn btn-editar" onClick={() => handleEdit(ocorrencia.id)}>Editar</button>
+                                {podeEditar(ocorrencia) && (
+                                    <button className="btn btn-editar" onClick={() => handleEdit(ocorrencia.id)}>Editar</button>
+                                )}
                             </div>
                             <a href="#" onClick={() => handleVerDetalhes(ocorrencia)}>Ver Detalhes da Ocorrência</a>
                         </div>
                     </div>
-                ))}
+                    ))
+                )}
             </div>
 
             {modalEditarVisivel && ocorrenciaEditando && (
@@ -537,29 +493,13 @@ function MinhasOcorrencias() {
                                         </div>
                                         
                                         <div className="form-group">
-                                            <label>ID da Viatura:</label>
+                                            <label>Viatura:</label>
                                             <input 
                                                 type="text"
                                                 value={equipe.id} 
                                                 onChange={(e) => handleEquipeChange(index, 'id', e.target.value)}
                                                 placeholder="Ex: ABT-05"
                                             />
-                                        </div>
-                                        
-                                        <div className="form-group">
-                                            <label>Tipo de Viatura:</label>
-                                            <select 
-                                                value={equipe.viatura} 
-                                                onChange={(e) => handleEquipeChange(index, 'viatura', e.target.value)}
-                                            >
-                                                <option value="">Selecione o tipo</option>
-                                                <option value="Auto Bomba Tanque">Auto Bomba Tanque</option>
-                                                <option value="Auto Escada">Auto Escada</option>
-                                                <option value="Auto Resgate">Auto Resgate</option>
-                                                <option value="Unidade de Resgate">Unidade de Resgate</option>
-                                                <option value="Ambulância">Ambulância</option>
-                                                <option value="Outros">Outros</option>
-                                            </select>
                                         </div>
                                         
                                         <div className="form-group">
@@ -596,12 +536,17 @@ function MinhasOcorrencias() {
                         </div>
 
                         <div className="modal-footer">
-                            <button className="btn btn-secondary" onClick={handleCancelarEdicao}>
-                                Cancelar
+                            <button className="btn btn-danger" onClick={handleExcluirOcorrencia}>
+                                Excluir Ocorrência
                             </button>
-                            <button className="btn btn-primary" onClick={handleSalvarEdicao}>
-                                Salvar Alterações
-                            </button>
+                            <div className="modal-footer-right">
+                                <button className="btn btn-secondary" onClick={handleCancelarEdicao}>
+                                    Cancelar
+                                </button>
+                                <button className="btn btn-primary" onClick={handleSalvarEdicao}>
+                                    Salvar Alterações
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -617,4 +562,4 @@ function MinhasOcorrencias() {
     );
 }
 
-export default MinhasOcorrencias;
+export default Ocorrencias;

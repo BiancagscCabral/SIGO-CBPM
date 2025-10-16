@@ -2,7 +2,7 @@
     padding: 100px;
 }
 
-.minhas-ocorrencias-container {
+.ocorrencias-container {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -28,7 +28,7 @@
     margin-top: 4px;
 }
 
-.minhas-ocorrencias-actions {
+.ocorrencias-actions {
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -48,6 +48,49 @@
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+/* Container para filtros */
+.filters-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.filter-select:hover {
+    border-color: #999;
+}
+
+/* Ajuste para a ação container */
+.ocorrencias-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .ordenacao-container label {
@@ -105,6 +148,18 @@
 .ocorrencia-details p.endereco {
     color: #777;
     font-size: 0.95rem;
+}
+
+.ocorrencia-details p.registrado-por {
+    color: #666;
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+.ocorrencia-details p.registrado-por .matricula {
+    color: #888;
+    font-weight: 500;
 }
 
 .ocorrencia-actions-time {
@@ -194,7 +249,7 @@
     border: 1px solid #dee2e6;
 }
 
-.minhas-ocorrencias-actions {
+.ocorrencias-actions {
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -249,7 +304,7 @@
         margin-bottom: -16px;
     }
 
-    .minhas-ocorrencias-actions {
+    .ocorrencias-actions {
         justify-content: flex-start;
         flex-wrap: wrap;
         padding: 0;
@@ -258,7 +313,7 @@
 }
 
 /* Tema Escuro*/
-[data-theme="dark"] .minhas-ocorrencias-container {
+[data-theme="dark"] .ocorrencias-container {
   background-color: #121212;
   color: #ffffff;
 }
@@ -304,6 +359,14 @@
   color: #b0b0b0;
 }
 
+[data-theme="dark"] .registrado-por {
+  color: #bbb !important;
+}
+
+[data-theme="dark"] .registrado-por .matricula {
+  color: #999 !important;
+}
+
 [data-theme="dark"] .horario {
   color: #ffffff;
 }
@@ -322,13 +385,12 @@
   border-color: #f5c6cb !important;
 }
 
-[data-theme="dark"] .minhas-ocorrencias-actions {
+[data-theme="dark"] .ocorrencias-actions {
   box-shadow: none;
   background: transparent;
   border: none;
 }
 
-/* Estilos para Modal de Edição */
 .modal-editar {
   max-width: 1100px;
   width: 95%;
@@ -436,7 +498,6 @@
   background-color: #5a6268;
 }
 
-/* Tema escuro para modal de edição */
 [data-theme="dark"] .form-section {
   border-bottom-color: #333;
 }
@@ -468,7 +529,6 @@
   border-top-color: #333;
 }
 
-/* Estilos adicionais para formulário expandido */
 .form-subsection {
   background-color: #f8f9fa;
   padding: 12px;
@@ -539,7 +599,6 @@
   background-color: #218838;
 }
 
-/* Tema escuro para novos elementos */
 [data-theme="dark"] .form-subsection {
   background-color: #2a2a2a;
 }
@@ -555,4 +614,133 @@
 
 [data-theme="dark"] .equipe-header h4 {
   color: #6da3f7;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.empty-state h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.empty-state p {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.empty-state .btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.empty-state .btn:hover {
+  background-color: #0056b3;
+}
+
+[data-theme="dark"] .empty-state {
+  color: #ccc;
+}
+
+[data-theme="dark"] .empty-state h3 {
+  color: #fff;
+}
+
+[data-theme="dark"] .empty-state p {
+  color: #ccc;
+}
+
+/* Estilos para o footer do modal */
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-top: 1px solid #e1e5e9;
+}
+
+.modal-footer-right {
+  display: flex;
+  gap: 10px;
+}
+
+/* Botão de excluir */
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: 1px solid #dc3545;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+/* Tema escuro para novos elementos */
+[data-theme="dark"] .modal-footer {
+  border-top-color: #444;
+}
+
+[data-theme="dark"] .btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+[data-theme="dark"] .btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.modal-footer .btn {
+  animation: none !important;
+  transform: none !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.modal-footer .btn:hover {
+  animation: none !important;
+  transform: none !important;
+}
+
+.modal-footer .btn:active {
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Tema escuro para filtros */
+[data-theme="dark"] .filter-select {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #fff;
+}
+
+[data-theme="dark"] .filter-select:hover {
+  border-color: #666;
+}
+
+[data-theme="dark"] .filter-select:focus {
+  border-color: #6da3f7;
+}
+
+[data-theme="dark"] .filter-group label {
+  color: #fff;
 }

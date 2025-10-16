@@ -72,7 +72,7 @@ const Sidebar = ({ isOpen, toggle }) => {
           </NavLink>
           <NavLink to="/minhas-ocorrencias" className="nav-item">
             <FiClipboard className="nav-icon" />
-            {isOpen && <span className="nav-text">Minhas Ocorrências</span>}
+            {isOpen && <span className="nav-text">Ocorrências</span>}
           </NavLink>
           {permissions.relatorios && (
             <NavLink to="/relatorios" className="nav-item">
