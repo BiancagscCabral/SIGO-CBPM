@@ -8,10 +8,11 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "http://127.0.0.1:8000",
+        changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
-        // --------------------------
-        // http://127.0.0.1:8000/api
-        // ╰╌ http://127.0.0.1:8000/
+        // Remove /api do path para o backend
+        // http://localhost:5173/api/user/profile
+        // ╰╌ http://127.0.0.1:8000/user/profile
       },
     },
   },

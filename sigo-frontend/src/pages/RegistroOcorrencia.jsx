@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { useUser } from "../contexts/UserContext";
+import { useOcorrencias } from "../contexts/OcorrenciasContext";
 import { useNavigate } from "react-router-dom";
 import "./RegistroOcorrencia.css";
 import icon_gps from "../assets/icon_gps.svg";
@@ -14,6 +15,7 @@ import lixo from "../assets/lixo.svg";
 
 function RegistroOcorrencia() {
   const { userProfile } = useUser();
+  const { adicionarOcorrencia, loading: ocorrenciasLoading } = useOcorrencias();
   const navigate = useNavigate();
   
   const [endereco, setEndereco] = useState("");
@@ -163,49 +165,6 @@ function RegistroOcorrencia() {
     setVideos(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
-  // Função para enviar dados ao backend
-  const enviarParaBackend = async (dados) => {
-    try {
-      // Preparar FormData para arquivos grandes (vídeos)
-      const formData = new FormData();
-      
-      // Adicionar dados JSON
-      formData.append('dados', JSON.stringify(dados));
-      
-      // Adicionar arquivos de vídeo separadamente
-      videos.forEach((video, index) => {
-        formData.append(`video_${index}`, video);
-      });
-      
-      // Adicionar arquivos de foto separadamente (opcional, se preferir não usar base64)
-      fotos.forEach((foto, index) => {
-        formData.append(`foto_${index}`, foto);
-      });
-
-      // Configurar endpoint do backend
-      const response = await fetch('/api/ocorrencias', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include', // Incluir cookies na requisição
-        headers: {
-          // Não definir Content-Type aqui, deixe o browser definir automaticamente para FormData
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erro HTTP: ${response.status}`);
-      }
-
-      const resultado = await response.json();
-      console.log("Resposta do backend:", resultado);
-      
-      return resultado;
-    } catch (error) {
-      console.error("Erro ao enviar para o backend:", error);
-      throw error;
-    }
-  };
-
   // Função para resetar o formulário
   const resetarFormulario = () => {
     // Limpar todos os campos (dados do usuário vêm automaticamente do backend)
@@ -227,7 +186,7 @@ function RegistroOcorrencia() {
     }
   };
 
-  // Função para salvar localmente
+  // Função para salvar localmente (para uso offline)
   const salvarLocalmente = async () => {
     // Validação robusta dos campos obrigatórios
     if (!validarCamposObrigatorios()) {
@@ -301,7 +260,7 @@ function RegistroOcorrencia() {
       ocorrenciasSalvas.push(ocorrenciaLocal);
       localStorage.setItem('ocorrencias_offline', JSON.stringify(ocorrenciasSalvas));
 
-      setSuccessMessage("Ocorrência salva localmente com sucesso!");
+      setSuccessMessage("Ocorrência salva localmente com sucesso! Será enviada automaticamente quando a conexão retornar.");
       setShowSuccessModal(true);
 
     } catch (error) {
@@ -432,7 +391,9 @@ function RegistroOcorrencia() {
           fotos: fotosData,
           videos: videosData,
           quantidadeFotos: fotos.length,
-          quantidadeVideos: videos.length
+          quantidadeVideos: videos.length,
+          fotosOriginais: fotos,
+          videosOriginais: videos
         },
         
         // Assinatura
@@ -449,16 +410,13 @@ function RegistroOcorrencia() {
 
       console.log("DADOS JSON PARA BACKEND:", JSON.stringify(ocorrenciaData, null, 2));
       
-      // Enviar para o backend
-      try {
-        const resultado = await enviarParaBackend(ocorrenciaData);
-        setSuccessMessage("Ocorrência registrada com sucesso!");
-        setShowSuccessModal(true);
-        
-      } catch (backendError) {
-        console.error("Erro no envio:", backendError);
-        alert("Erro ao enviar ocorrência para o servidor. Tente novamente ou salve localmente.");
-      }
+      ocorrenciaData.anexos.fotosOriginais = fotos;
+      ocorrenciaData.anexos.videosOriginais = videos;
+      
+      const novaOcorrenciaId = await adicionarOcorrencia(ocorrenciaData);
+      
+      setSuccessMessage(`Ocorrência registrada com sucesso! ID: ${novaOcorrenciaId}`);
+      setShowSuccessModal(true);
       
     } catch (error) {
       console.error("Erro ao processar dados:", error);
@@ -629,18 +587,18 @@ function RegistroOcorrencia() {
                 type="button" 
                 className="btn-secondary"
                 onClick={salvarLocalmente}
-                disabled={isLoading}
+                disabled={isLoading || ocorrenciasLoading}
               >
                 <img src={save} alt="salvar" />
-                {isLoading ? 'Salvando...' : 'Salvar Localmente'}
+                {(isLoading || ocorrenciasLoading) ? 'Salvando...' : 'Salvar Localmente'}
               </button>
               <button 
                 type="submit" 
                 className="btn-primary"
-                disabled={isLoading}
+                disabled={isLoading || ocorrenciasLoading}
               >
                 <img src={send} alt="enviar" />
-                {isLoading ? 'Enviando...' : 'Enviar Online'}
+                {(isLoading || ocorrenciasLoading) ? 'Enviando...' : 'Enviar Online'}
               </button>
             </div>
           </form>
@@ -659,6 +617,12 @@ function RegistroOcorrencia() {
                 className="btn-secondary"
               >
                 Registrar Nova
+              </button>
+              <button 
+                onClick={() => navigate('/minhas-ocorrencias')}
+                className="btn-secondary"
+              >
+                Ver Minhas Ocorrências
               </button>
               <button 
                 onClick={voltarDashboard}

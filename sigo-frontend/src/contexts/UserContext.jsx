@@ -6,10 +6,10 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState({
     id: null,
-    nome: '',
-    matricula: '',
-    cargo: '',
-    telefone: '',
+    full_name: '',
+    registration: '',
+    user_role: '',
+    phone: '',
     email: ''
   });
 
@@ -22,23 +22,37 @@ export const UserProvider = ({ children }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
+
+  const getUserIdFromCookie = () => {
+    const cookie = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('USER_ID='));
+    return cookie ? cookie.split('=')[1] : null;
+  };
 
   const fetchUserProfile = async () => {
     setIsLoading(true);
     setError(null);
     
     try {
-      const response = await fetch('/api/user/profile', {
-        method: 'GET',
-        credentials: 'include'
-      });
-
-      if (response.ok) {
-        const userData = await response.json();
+      const result = await UserProfileService.getUserProfile();
+      
+      if (result.success) {
+        const userData = result.data;
+        const hasProfileChanged = !userProfile.id || 
+          userProfile.id !== userData.id || 
+          userProfile.user_role !== userData.user_role;
+        
         setUserProfile(userData);
+      
+        if (hasProfileChanged) {
+          console.log('Perfil de usuário atualizado:', userData);
+        }
+        
         return { success: true, data: userData };
       } else {
-        const errorMessage = 'Não foi possível localizar o usuário. Verifique sua conexão.';
+        const errorMessage = result.error || 'Não foi possível localizar o usuário.';
         setError(errorMessage);
         return { success: false, error: errorMessage };
       }
@@ -113,7 +127,63 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     fetchUserProfile();
     fetchNotificationPreferences();
-  }, []);
+    
+    const initialUserId = getUserIdFromCookie();
+    setCurrentUserId(initialUserId);
+    
+    const interval = setInterval(() => {
+      const newUserId = getUserIdFromCookie();
+      
+      if (newUserId !== currentUserId) {
+        console.log('UserContext: Mudança detectada no USER_ID:', { 
+          anterior: currentUserId, 
+          novo: newUserId 
+        });
+        
+        setCurrentUserId(newUserId);
+        
+        if (newUserId) {
+          console.log('UserContext: Atualizando perfil para novo usuário...');
+          setTimeout(() => {
+            fetchUserProfile();
+            fetchNotificationPreferences();
+          }, 200); 
+        } else {
+          console.log('UserContext: Logout detectado, limpando dados...');
+          setUserProfile({
+            id: null,
+            full_name: '',
+            registration: '',
+            user_role: '',
+            phone: '',
+            email: ''
+          });
+          setNotificationPreferences({
+            incendio: false,
+            emergencia: false,
+            transito: false,
+            outros: false
+          });
+        }
+      }
+    }, 300); 
+    
+    const handleFocus = () => {
+      fetchUserProfile();
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [currentUserId]);
+
+  const refreshUserSession = async () => {
+    await fetchUserProfile();
+    await fetchNotificationPreferences();
+  };
 
   const value = {
     userProfile,
@@ -126,7 +196,8 @@ export const UserProvider = ({ children }) => {
     fetchUserProfile,
     updateUserProfile,
     fetchNotificationPreferences,
-    updateNotificationPreferences
+    updateNotificationPreferences,
+    refreshUserSession
   };
 
   return (
@@ -144,4 +215,5 @@ export const useUser = () => {
   return context;
 };
 
+export { UserContext };
 export default UserContext;

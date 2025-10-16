@@ -18,10 +18,10 @@ function Configuracoes() {
   const { isDarkTheme, toggleDarkTheme, textSize, changeTextSize, isSpeechEnabled, toggleSpeech } = useAccessibility();
   
   const [profileData, setProfileData] = useState({
-    nome: '',
-    matricula: '',
-    cargo: '',
-    telefone: '',
+    full_name: '',
+    registration: '',
+    user_role: '',
+    phone: '',
     email: ''
   });
 
@@ -44,23 +44,69 @@ function Configuracoes() {
   const [notificationMessage, setNotificationMessage] = useState('');
   const [notificationMessageType, setNotificationMessageType] = useState(''); 
 
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [profileError, setProfileError] = useState(null);
+
   useEffect(() => {
-    if (userProfile && userProfile.id) {
-      setProfileData({
-        nome: userProfile.nome || '',
-        matricula: userProfile.matricula || '',
-        cargo: userProfile.cargo || '',
-        telefone: userProfile.telefone || '',
-        email: userProfile.email || ''
-      });
-    }
-  }, [userProfile]);
+    const carregarPerfilUsuario = async () => {
+      try {
+        setProfileLoading(true);
+        setProfileError(null);
+        
+        const resultado = await UserProfileService.getUserProfile();
+        
+        if (resultado.success) {
+          const userData = resultado.data;
+          setProfileData({
+            full_name: userData.full_name || '',
+            registration: userData.registration || '',
+            user_role: userData.user_role || '',
+            phone: userData.phone || '',
+            email: userData.email || ''
+          });
+          
+          if (updateUserProfile) {
+            updateUserProfile(userData);
+          }
+        } else {
+          setProfileError(resultado.error || 'Erro ao carregar perfil');
+
+          if (userProfile && userProfile.id) {
+            setProfileData({
+              full_name: userProfile.full_name || '',
+              registration: userProfile.registration || '',
+              user_role: userProfile.user_role || '',
+              phone: userProfile.phone || '',
+              email: userProfile.email || ''
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao carregar perfil:', error);
+        setProfileError('Erro de conexão ao carregar perfil');
+        
+        if (userProfile && userProfile.id) {
+          setProfileData({
+            full_name: userProfile.full_name || '',
+            registration: userProfile.registration || '',
+            user_role: userProfile.user_role || '',
+            phone: userProfile.phone || '',
+            email: userProfile.email || ''
+          });
+        }
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+
+    carregarPerfilUsuario();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     
     let formattedValue = value;
-    if (name === 'telefone') {
+    if (name === 'phone') {
       formattedValue = UserProfileService.formatPhone(value);
     }
     
@@ -77,13 +123,23 @@ function Configuracoes() {
     }
   };
 
-    const handleSaveProfile = async () => {
+  const handleSaveProfile = async () => {
     try {
       setIsSaving(true);
       setSaveMessage('');
       clearError(); 
       
-      const { cargo, ...updatedData } = profileData;
+      const validation = UserProfileService.validateProfileData(profileData);
+      if (!validation.isValid) {
+        setValidationErrors(validation.errors);
+        setSaveMessage('Por favor, corrija os erros nos campos destacados.');
+        setTimeout(() => setSaveMessage(''), 5000);
+        return;
+      }
+      
+      setValidationErrors({});
+      
+      const { user_role, registration, ...updatedData } = profileData;
       
       const result = await updateUserProfile(updatedData);
       
@@ -106,10 +162,10 @@ function Configuracoes() {
 
   const handleCancelEdit = () => {
     setProfileData({
-      nome: userProfile.nome || '',
-      matricula: userProfile.matricula || '',
-      cargo: userProfile.cargo || '',
-      telefone: userProfile.telefone || '',
+      full_name: userProfile.full_name || '',
+      registration: userProfile.registration || '',
+      user_role: userProfile.user_role || '',
+      phone: userProfile.phone || '',
       email: userProfile.email || ''
     });
     setIsEditing(false);
@@ -120,16 +176,48 @@ function Configuracoes() {
   const handlePasswordInputChange = (e) => {
     const { name, value } = e.target;
     
-    setPasswordData(prev => ({
-      ...prev,
+    const updatedPasswordData = {
+      ...passwordData,
       [name]: value
-    }));
+    };
+    
+    setPasswordData(updatedPasswordData);
 
     if (passwordErrors[name]) {
       setPasswordErrors(prev => ({
         ...prev,
         [name]: ''
       }));
+    }
+
+    if (name === 'confirmarSenha' || (name === 'novaSenha' && updatedPasswordData.confirmarSenha)) {
+      if (updatedPasswordData.novaSenha && updatedPasswordData.confirmarSenha && 
+          updatedPasswordData.novaSenha !== updatedPasswordData.confirmarSenha) {
+        setPasswordErrors(prev => ({
+          ...prev,
+          confirmarSenha: 'Nova senha e confirmação não coincidem'
+        }));
+      } else {
+        setPasswordErrors(prev => ({
+          ...prev,
+          confirmarSenha: ''
+        }));
+      }
+    }
+
+    if (name === 'novaSenha' || (name === 'senhaAtual' && updatedPasswordData.novaSenha)) {
+      if (updatedPasswordData.senhaAtual && updatedPasswordData.novaSenha && 
+          updatedPasswordData.senhaAtual === updatedPasswordData.novaSenha) {
+        setPasswordErrors(prev => ({
+          ...prev,
+          novaSenha: 'Nova senha deve ser diferente da senha atual'
+        }));
+      } else if (name === 'novaSenha' && passwordErrors.novaSenha === 'Nova senha deve ser diferente da senha atual') {
+        setPasswordErrors(prev => ({
+          ...prev,
+          novaSenha: ''
+        }));
+      }
     }
   };
 
@@ -259,14 +347,14 @@ function Configuracoes() {
               <input 
                 type="text" 
                 id="nome" 
-                name="nome"
-                value={profileData.nome} 
+                name="full_name"
+                value={profileData.full_name} 
                 onChange={handleInputChange}
                 disabled={!isEditing || isLoading}
-                className={validationErrors.nome ? 'error' : ''}
+                className={validationErrors.full_name ? 'error' : ''}
               />
-              {validationErrors.nome && (
-                <span className="field-error">{validationErrors.nome}</span>
+              {validationErrors.full_name && (
+                <span className="field-error">{validationErrors.full_name}</span>
               )}
             </div>            <div className="form-group">
               <label htmlFor="matricula">Matrícula</label>
@@ -274,7 +362,7 @@ function Configuracoes() {
                 type="text" 
                 id="matricula" 
                 name="matricula"
-                value={profileData.matricula} 
+                value={profileData.registration} 
                 onChange={handleInputChange}
                 disabled={true}
                 className="readonly"
@@ -290,7 +378,7 @@ function Configuracoes() {
                 type="text" 
                 id="cargo" 
                 name="cargo"
-                value={profileData.cargo || 'Não definido'} 
+                value={profileData.user_role || 'Não definido'} 
                 onChange={handleInputChange}
                 disabled={true}
                 className="readonly"
@@ -321,15 +409,15 @@ function Configuracoes() {
               <input 
                 type="tel" 
                 id="telefone" 
-                name="telefone"
-                value={profileData.telefone} 
+                name="phone"
+                value={profileData.phone} 
                 onChange={handleInputChange}
                 disabled={!isEditing || isLoading}
                 placeholder="(XX) XXXXX-XXXX"
-                className={validationErrors.telefone ? 'error' : ''}
+                className={validationErrors.phone ? 'error' : ''}
               />
-              {validationErrors.telefone && (
-                <span className="field-error">{validationErrors.telefone}</span>
+              {validationErrors.phone && (
+                <span className="field-error">{validationErrors.phone}</span>
               )}
             </div>
           </div>

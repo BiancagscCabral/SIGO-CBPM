@@ -241,7 +241,7 @@
   justify-content: center;
   align-items: center;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra mais leve */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .registro-ocorrencia-container .btn-primary:hover {
@@ -255,7 +255,7 @@
 }
 
 .registro-ocorrencia-container .btn-primary:hover img {
-  filter: none;
+  filter: brightness(0) invert(1);
 }
 
 .registro-ocorrencia-container .btn-secondary {
@@ -267,9 +267,9 @@
 }
 
 .registro-ocorrencia-container .btn-secondary:hover {
-  background-color: transparent;
-  color: #314697;
-  border: 1px solid #314697;
+  background-color: #27377a;
+  color: white;
+  border: 1px solid #27377a;
   transform: translateY(-1px);
    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -279,7 +279,7 @@
 }
 
 .registro-ocorrencia-container .btn-secondary:hover img {
-  filter: none;
+  filter: brightness(0) invert(1);
 }
 
 /* Estilos para campos com erro de validação */
@@ -588,14 +588,15 @@
 }
 
 [data-theme="dark"] .registro-ocorrencia-container .btn-secondary {
-  background-color: #6c757d !important;
+  background-color: #314697 !important;
   color: #ffffff !important;
-  border-color: #6c757d !important;
+  border-color: #314697 !important;
 }
 
 [data-theme="dark"] .registro-ocorrencia-container .btn-secondary:hover {
-  background-color: #5a6268 !important;
-  border-color: #5a6268 !important;
+  background-color: #27377a !important;
+  color: #ffffff !important;
+  border-color: #27377a !important;
 }
 
 [data-theme="dark"] .registro-ocorrencia-container .btn-capture {
@@ -665,6 +666,11 @@
 
 [data-theme="dark"] .registro-ocorrencia-container .btn-primary img,
 [data-theme="dark"] .registro-ocorrencia-container .btn-secondary img {
+  filter: brightness(0) invert(1);
+}
+
+[data-theme="dark"] .registro-ocorrencia-container .btn-primary:hover img,
+[data-theme="dark"] .registro-ocorrencia-container .btn-secondary:hover img {
   filter: brightness(0) invert(1);
 }
 

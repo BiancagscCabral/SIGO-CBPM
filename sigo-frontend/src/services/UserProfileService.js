@@ -1,18 +1,61 @@
 class UserProfileService {
 
+  static async getUserProfile() {
+    try {
+      const response = await fetch('/api/user/profile', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const profileData = await response.json();
+
+          return {
+            success: true,
+            data: {
+              id: profileData.id,
+              full_name: profileData.full_name,
+              registration: profileData.registration,
+              user_role: profileData.user_role,
+              email: profileData.email,
+              phone: profileData.phone
+            },
+            message: 'Perfil carregado com sucesso!'
+          };
+      } else {
+        const errorText = await response.text();
+        return {
+          success: false,
+          error: `Erro ${response.status}: ${errorText}`,
+          message: 'Erro ao carregar perfil do usuário'
+        };
+      }
+    } catch (error) {
+      console.error('Erro ao buscar perfil do usuário:', error);
+      return {
+        success: false,
+        error: error.message,
+        message: 'Erro de conexão ao carregar perfil'
+      };
+    }
+  }
+
   static validateProfileData(profileData) {
     const errors = {};
 
-    if (!profileData.nome || profileData.nome.trim().length < 2) {
-      errors.nome = 'Nome deve ter pelo menos 2 caracteres';
+    if (!profileData.full_name || profileData.full_name.trim().length < 2) {
+      errors.full_name = 'Nome deve ter pelo menos 2 caracteres';
     }
 
     if (!profileData.email || !this.isValidEmail(profileData.email)) {
       errors.email = 'Email inválido';
     }
 
-    if (profileData.telefone && !this.isValidPhone(profileData.telefone)) {
-      errors.telefone = 'Telefone inválido';
+    if (profileData.phone && !this.isValidPhone(profileData.phone)) {
+      errors.phone = 'Telefone inválido';
     }
 
     return {
@@ -32,15 +75,17 @@ class UserProfileService {
       errors.novaSenha = 'Nova senha é obrigatória';
     }
 
-    if (!passwordData.confirmarSenha || passwordData.confirmarSenha.length === 0) {
+    if (!passwordData.confirmarSenha || passwordData.confirmarSenha.trim().length === 0) {
       errors.confirmarSenha = 'Confirmação de senha é obrigatória';
     }
 
-    if (passwordData.novaSenha && passwordData.confirmarSenha && passwordData.novaSenha !== passwordData.confirmarSenha) {
-      errors.confirmarSenha = 'Senhas não coincidem';
+    if (passwordData.novaSenha && passwordData.confirmarSenha && 
+        passwordData.novaSenha !== passwordData.confirmarSenha) {
+      errors.confirmarSenha = 'Nova senha e confirmação não coincidem';
     }
 
-    if (passwordData.senhaAtual && passwordData.novaSenha && passwordData.senhaAtual === passwordData.novaSenha) {
+    if (passwordData.senhaAtual && passwordData.novaSenha && 
+        passwordData.senhaAtual === passwordData.novaSenha) {
       errors.novaSenha = 'Nova senha deve ser diferente da senha atual';
     }
 
@@ -52,26 +97,46 @@ class UserProfileService {
 
   static async updatePassword(senhaAtual, novaSenha) {
     try {
+      const formData = new FormData();
+      formData.append('senhaAtual', senhaAtual);
+      formData.append('novaSenha', novaSenha);
+      formData.append('confirmarSenha', novaSenha);
+
       const response = await fetch('/api/user/password', {
         method: 'PUT',
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ 
-          currentPassword: senhaAtual, 
-          newPassword: novaSenha 
-        })
+        body: formData
       });
 
       if (response.ok) {
-        const result = await response.json();
-        return { success: true, message: 'Senha alterada com sucesso!' };
+        const resultText = await response.text();
+        return { success: true, message: resultText || 'Senha alterada com sucesso!' };
       } else {
-        const errorData = await response.json();
+        const errorText = await response.text();
+        
+        let errorMessage = 'Erro ao alterar senha';
+        
+        if (response.status === 400) {
+          if (errorText.includes('Senha incorreta')) {
+            errorMessage = 'Senha atual incorreta';
+          } else if (errorText.includes('diferente')) {
+            errorMessage = 'Nova senha deve ser diferente da senha atual';
+          } else if (errorText.includes('Formulário inválido')) {
+            errorMessage = 'Dados do formulário inválidos';
+          } else {
+            errorMessage = errorText || 'Dados inválidos';
+          }
+        } else if (response.status === 401) {
+          errorMessage = 'Sessão expirada. Faça login novamente';
+        } else if (response.status === 500) {
+          errorMessage = 'Erro interno do servidor. Tente novamente mais tarde';
+        } else {
+          errorMessage = errorText || 'Erro desconhecido';
+        }
+        
         return { 
           success: false, 
-          error: errorData.error || 'Erro ao alterar senha' 
+          error: errorMessage 
         };
       }
     } catch (error) {
