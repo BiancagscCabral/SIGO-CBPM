@@ -27,7 +27,10 @@ function Login() {
       });
 
       if (response.ok) {
-        navigate('/dashboard')
+        console.log('Login bem-sucedido, navegando para dashboard...');
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 100);
       } else {
         const errorMessage = await response.text();
         setError(errorMessage);

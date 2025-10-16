@@ -5,6 +5,7 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 import { LuFilePlus } from "react-icons/lu";
 import './Dashboard.css';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../contexts/UserContext';
 
 const StatCard = ({ icon, value, title, subtext, increase, iconBgColor }) => (
   <div className="stat-card">
@@ -67,6 +68,7 @@ const QuickAccessSection = ({ navigate, handleRegistroClick }) => (
 
 function Dashboard() {
   const navigate = useNavigate();
+  const { fetchUserProfile } = useUser();
 
   const defaultStats = {
     totalOcorrencias: '--',
@@ -79,6 +81,11 @@ function Dashboard() {
   const [dashboardData, setDashboardData] = useState(defaultStats);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    console.log('Dashboard: Forçando atualização do perfil do usuário...');
+    fetchUserProfile();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

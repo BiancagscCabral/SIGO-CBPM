@@ -1,5 +1,5 @@
 class AdminService {
-  static baseUrl = 'http://localhost:8000';
+  static baseUrl = '/api';
 
   static async getAllUsers() {
     try {

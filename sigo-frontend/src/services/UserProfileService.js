@@ -2,7 +2,7 @@ class UserProfileService {
 
   static async getUserProfile() {
     try {
-      const response = await fetch('http://localhost:8000/user/profile', {
+      const response = await fetch('/api/user/profile', {
         method: 'GET',
         credentials: 'include',
         headers: {

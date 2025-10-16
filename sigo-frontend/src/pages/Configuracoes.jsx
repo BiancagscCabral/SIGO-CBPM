@@ -87,10 +87,10 @@ function Configuracoes() {
         
         if (userProfile && userProfile.id) {
           setProfileData({
-            nome: userProfile.nome || '',
-            matricula: userProfile.matricula || '',
-            cargo: userProfile.cargo || '',
-            telefone: userProfile.telefone || '',
+            full_name: userProfile.full_name || '',
+            registration: userProfile.registration || '',
+            user_role: userProfile.user_role || '',
+            phone: userProfile.phone || '',
             email: userProfile.email || ''
           });
         }
@@ -106,7 +106,7 @@ function Configuracoes() {
     const { name, value } = e.target;
     
     let formattedValue = value;
-    if (name === 'telefone') {
+    if (name === 'phone') {
       formattedValue = UserProfileService.formatPhone(value);
     }
     
@@ -123,13 +123,23 @@ function Configuracoes() {
     }
   };
 
-    const handleSaveProfile = async () => {
+  const handleSaveProfile = async () => {
     try {
       setIsSaving(true);
       setSaveMessage('');
       clearError(); 
       
-      const { cargo, ...updatedData } = profileData;
+      const validation = UserProfileService.validateProfileData(profileData);
+      if (!validation.isValid) {
+        setValidationErrors(validation.errors);
+        setSaveMessage('Por favor, corrija os erros nos campos destacados.');
+        setTimeout(() => setSaveMessage(''), 5000);
+        return;
+      }
+      
+      setValidationErrors({});
+      
+      const { user_role, registration, ...updatedData } = profileData;
       
       const result = await updateUserProfile(updatedData);
       
@@ -152,10 +162,10 @@ function Configuracoes() {
 
   const handleCancelEdit = () => {
     setProfileData({
-      nome: userProfile.nome || '',
-      matricula: userProfile.matricula || '',
-      cargo: userProfile.cargo || '',
-      telefone: userProfile.telefone || '',
+      full_name: userProfile.full_name || '',
+      registration: userProfile.registration || '',
+      user_role: userProfile.user_role || '',
+      phone: userProfile.phone || '',
       email: userProfile.email || ''
     });
     setIsEditing(false);
@@ -337,14 +347,14 @@ function Configuracoes() {
               <input 
                 type="text" 
                 id="nome" 
-                name="nome"
+                name="full_name"
                 value={profileData.full_name} 
                 onChange={handleInputChange}
                 disabled={!isEditing || isLoading}
-                className={validationErrors.nome ? 'error' : ''}
+                className={validationErrors.full_name ? 'error' : ''}
               />
-              {validationErrors.nome && (
-                <span className="field-error">{validationErrors.nome}</span>
+              {validationErrors.full_name && (
+                <span className="field-error">{validationErrors.full_name}</span>
               )}
             </div>            <div className="form-group">
               <label htmlFor="matricula">Matrícula</label>
@@ -399,15 +409,15 @@ function Configuracoes() {
               <input 
                 type="tel" 
                 id="telefone" 
-                name="telefone"
+                name="phone"
                 value={profileData.phone} 
                 onChange={handleInputChange}
                 disabled={!isEditing || isLoading}
                 placeholder="(XX) XXXXX-XXXX"
-                className={validationErrors.telefone ? 'error' : ''}
+                className={validationErrors.phone ? 'error' : ''}
               />
-              {validationErrors.telefone && (
-                <span className="field-error">{validationErrors.telefone}</span>
+              {validationErrors.phone && (
+                <span className="field-error">{validationErrors.phone}</span>
               )}
             </div>
           </div>
