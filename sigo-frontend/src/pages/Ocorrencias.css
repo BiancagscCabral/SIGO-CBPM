@@ -470,14 +470,19 @@
   margin-top: 20px;
 }
 
-.btn {
+.btn,
+.btn:hover,
+.btn:focus,
+.btn:active {
   padding: 10px 20px;
-  border: none;
+  border: none !important;
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .btn-primary {
