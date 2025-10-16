@@ -24,14 +24,14 @@ function PainelAdministrativo() {
   const [rolesLoading, setRolesLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  
+
   const [users, setUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [userError, setUserError] = useState('');
   const [userSuccess, setUserSuccess] = useState('');
-  const [selectedLetter, setSelectedLetter] = useState(''); 
+  const [selectedLetter, setSelectedLetter] = useState('');
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editFormData, setEditFormData] = useState({
     full_name: '',
@@ -67,17 +67,17 @@ function PainelAdministrativo() {
     };
 
     loadRoles();
-    loadUsers(); 
-    loadTeams(); 
+    loadUsers();
+    loadTeams();
   }, []);
 
   const loadUsers = async () => {
     setUsersLoading(true);
     setUserError('');
-    
+
     try {
       const result = await AdminService.getAllUsers();
-      
+
       if (result.success) {
         setAllUsers(result.data);
         filterUsersByLetter(result.data, selectedLetter);
@@ -100,11 +100,11 @@ function PainelAdministrativo() {
 
   const filterUsersByLetter = (usersList, letter) => {
     if (!letter) {
-      setUsers(usersList); 
+      setUsers(usersList);
       return;
     }
-    
-    const filtered = usersList.filter(user => 
+
+    const filtered = usersList.filter(user =>
       user.full_name && user.full_name.toLowerCase().startsWith(letter.toLowerCase())
     );
     setUsers(filtered);
@@ -153,39 +153,40 @@ function PainelAdministrativo() {
   const handleSaveUser = async () => {
     if (!editingUser) return;
 
+    setUserError('');
+    setUserSuccess('');
+
+    const profileData = {
+      full_name: editFormData.full_name,
+      email: editFormData.email,
+      user_role: editFormData.user_role,
+      registration: editFormData.registration,
+    };
+
+    const newStatus = editFormData.is_active;
+
     try {
-      const result = await AdminService.updateUser(editingUser.id, editFormData);
-      
-      if (result.success) {
-        setUserSuccess('Usuário atualizado com sucesso!');
-        setUserError('');
-        handleCloseEditModal();
-        loadUsers();
-      } else {
-        setUserError(result.error || 'Erro ao atualizar usuário');
-        setUserSuccess('');
+      const profileResult = await AdminService.updateUser(editingUser.id, profileData);
+
+      if (!profileResult.success) {
+        setUserError(profileResult.error || 'Erro ao atualizar dados do perfil.');
+        return;
       }
-    } catch (error) {
-      console.error('Erro ao atualizar usuário:', error);
-      setUserError('Não foi possível conectar ao servidor');
-      setUserSuccess('');
-    }
-  };  const handleUserStatusChange = async (userId, newStatus) => {
-    try {
-      const result = await AdminService.updateUserStatus(userId, newStatus);
-      
-      if (result.success) {
-        setUserSuccess('Status do usuário atualizado com sucesso!');
-        setUserError('');
-        loadUsers(); 
-      } else {
-        setUserError(result.error || 'Erro ao atualizar status do usuário');
-        setUserSuccess('');
+
+      const statusResult = await AdminService.updateUserStatus(editingUser.id, newStatus);
+
+      if (!statusResult.success) {
+        setUserError(statusResult.error || 'Dados do perfil atualizados, mas falha ao atualizar status.');
+        return;
       }
+
+      setUserSuccess('Usuário atualizado com sucesso!');
+      handleCloseEditModal();
+      loadUsers();
+
     } catch (error) {
-      console.error('Erro ao atualizar status:', error);
-      setUserError('Não foi possível conectar ao servidor');
-      setUserSuccess('');
+      console.error('Erro ao salvar usuário:', error);
+      setUserError('Ocorreu um erro inesperado. Tente novamente.');
     }
   };
 
@@ -196,7 +197,7 @@ function PainelAdministrativo() {
 
     try {
       const result = await AdminService.deleteUser(userId);
-      
+
       if (result.success) {
         setUserSuccess('Usuário excluído com sucesso!');
         setUserError('');
@@ -215,7 +216,7 @@ function PainelAdministrativo() {
   const loadTeams = async () => {
     setTeamsLoading(true);
     setTeamError('');
-    
+
     try {
       const response = await fetch('/api/admin/teams', {
         method: 'GET',
@@ -447,11 +448,11 @@ function PainelAdministrativo() {
 
         <div className="settings-section">
           <h2>Cadastrar Novo Usuário</h2>
-          
+
           {!isEditing ? (
             <div className="form-actions">
-              <button 
-                className="btn-editar" 
+              <button
+                className="btn-editar"
                 onClick={() => setIsEditing(true)}
               >
                 Cadastrar Usuário
@@ -570,8 +571,8 @@ function PainelAdministrativo() {
                 <button type="submit" className="btn-salvar">
                   Salvar Alterações
                 </button>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="btn-cancelar"
                   onClick={handleCancel}
                 >
@@ -585,7 +586,7 @@ function PainelAdministrativo() {
         <div className="settings-section">
           <div className="section-header">
             <h2>Gerenciar Usuários</h2>
-            <button 
+            <button
               className="btn-editar"
               onClick={loadUsers}
               disabled={usersLoading}
@@ -600,18 +601,18 @@ function PainelAdministrativo() {
           <div className="alphabet-filter">
             <h4>Filtrar por inicial:</h4>
             <div className="alphabet-buttons">
-              <button 
+              <button
                 className={`alphabet-btn ${selectedLetter === '' ? 'active' : ''}`}
                 onClick={() => handleLetterFilter('')}
               >
                 Todos
               </button>
               {Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ').map(letter => {
-                const count = allUsers.filter(user => 
+                const count = allUsers.filter(user =>
                   user.full_name && user.full_name.toLowerCase().startsWith(letter.toLowerCase())
                 ).length;
                 return (
-                  <button 
+                  <button
                     key={letter}
                     className={`alphabet-btn ${selectedLetter === letter ? 'active' : ''}`}
                     onClick={() => handleLetterFilter(letter)}
@@ -653,7 +654,7 @@ function PainelAdministrativo() {
                       <p className="user-role">Cargo: {user.user_role}</p>
                     </div>
                   </div>
-                  
+
                   <div className="user-card-actions">
                     <button
                       className="action-icon edit-icon"
@@ -683,14 +684,14 @@ function PainelAdministrativo() {
             <h2>Gerenciar Equipes</h2>
             <div className="header-buttons">
               {!isCreatingTeam && (
-                <button 
+                <button
                   className="btn-editar"
                   onClick={() => setIsCreatingTeam(true)}
                 >
                   Criar Nova Equipe
                 </button>
               )}
-              <button 
+              <button
                 className="btn-editar"
                 onClick={loadTeams}
                 disabled={teamsLoading}
@@ -744,8 +745,8 @@ function PainelAdministrativo() {
                     {users.length === 0 ? (
                       <div className="no-users-message">
                         <p>Nenhum usuário disponível. Carregue a lista de usuários primeiro.</p>
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           className="btn-editar"
                           onClick={loadUsers}
                         >
@@ -795,8 +796,8 @@ function PainelAdministrativo() {
                 <button type="submit" className="btn-salvar">
                   Criar Equipe
                 </button>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="btn-cancelar"
                   onClick={handleCancelTeam}
                 >
@@ -822,7 +823,7 @@ function PainelAdministrativo() {
                       {team.status === 'ativa' ? 'Ativa' : 'Inativa'}
                     </span>
                   </div>
-                  
+
                   <div className="team-info">
                     <p><strong>Líder:</strong> {team.lider_nome || 'Não definido'}</p>
                     <p><strong>Membros:</strong> {team.total_membros || 0}</p>
@@ -859,7 +860,7 @@ function PainelAdministrativo() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>Editar Usuário</h3>
-              <button 
+              <button
                 type="button"
                 className="close-button"
                 onClick={handleCloseEditModal}
@@ -868,7 +869,7 @@ function PainelAdministrativo() {
                 ×
               </button>
             </div>
-            
+
             <div className="modal-body">
               <div className="form-group">
                 <label htmlFor="edit_full_name">Nome Completo</label>
@@ -943,14 +944,14 @@ function PainelAdministrativo() {
             </div>
 
             <div className="modal-footer">
-              <button 
+              <button
                 type="button"
                 className="btn-cancelar"
                 onClick={handleCloseEditModal}
               >
                 Cancelar
               </button>
-              <button 
+              <button
                 type="button"
                 className="btn-salvar"
                 onClick={handleSaveUser}
