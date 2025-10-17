@@ -113,6 +113,10 @@ function Relatorios() {
               <option value="" disabled>Selecione o tipo</option>
               <option value="equipes">Por Equipes</option>
               <option value="tipo_ocorrencia">Por Tipo de Ocorrência</option>
+               <option value="analise_geografica">Análise Geográfica</option>
+               <option value="analise_temporal">Análise Temporal</option>
+
+
             </select>
           </div>
           <div className="form-group">
@@ -121,6 +125,9 @@ function Relatorios() {
               <option value="" disabled>Selecione o período</option>
               <option value="hoje">Hoje</option>
               <option value="ultima_semana">Última Semana</option>
+              <option value="ultimo_mes">Último Mês</option>
+              <option value="ultimo_trimestre">Último Trimestre</option>
+              <option value="personalizado">Último Ano</option>
             </select>
           </div>
           <div className="form-group">
@@ -129,13 +136,19 @@ function Relatorios() {
               <option value="" disabled>Formato de saída</option>
               <option value="pdf">PDF</option>
               <option value="excel">Excel</option>
+               <option value="csv">CSV</option>
             </select>
           </div>
+          
+          <div className="form-group">
+          <label>&nbsp;</label> 
           <button type="submit" className="btn-gerar">Gerar Relatório</button>
+          </div>
         </form>
       </section>
 
       {/* Seção 3: Relatórios Disponíveis */}
+      
       <section className="available-reports">
         <h3>Relatórios Disponíveis</h3>
         <p>Acesse relatórios gerados anteriormente</p>

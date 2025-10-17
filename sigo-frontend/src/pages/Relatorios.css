@@ -70,15 +70,15 @@
 }
 
 .report-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: flex;
+  align-items: flex-start; /* Alinha os 'pacotes' pelo topo */
   gap: 20px;
-  align-items: flex-end;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  flex: 1; /* Faz cada 'pacote' ocupar o mesmo espaço */
 }
 
 .form-group label {
@@ -105,9 +105,9 @@
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  height: 41px;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+  
+  /* A altura agora será igual à dos selects, pois o padding é o mesmo */
+  /* Removemos 'align-self' e 'height' fixa */
 }
 
 .btn-gerar:hover {
@@ -256,3 +256,4 @@
 [data-theme="dark"] .report-count {
   color: #90caf9;
 }
+
