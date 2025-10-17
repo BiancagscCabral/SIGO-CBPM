@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { useUser } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import { useOcorrencias } from "../contexts/OcorrenciasContext"; 
 import "./RegistroOcorrencia.css";
 import icon_gps from "../assets/icon_gps.svg";
 import icon_gpsb from "../assets/icon_gpsb.svg";
@@ -14,6 +15,7 @@ import lixo from "../assets/lixo.svg";
 
 function RegistroOcorrencia() {
   const { userProfile } = useUser();
+  const { adicionarOcorrencia } = useOcorrencias(); 
   const navigate = useNavigate();
   
   const [endereco, setEndereco] = useState("");
@@ -23,12 +25,11 @@ function RegistroOcorrencia() {
   const [subtipoOcorrencia, setSubtipoOcorrencia] = useState("");
   const [prioridade, setPrioridade] = useState("");
   const [codigoViatura, setCodigoViatura] = useState("");
-  const [membrosEquipe, setMembrosEquipe] = useState("");
+  const [idEquipe, setIdEquipe] = useState("");
   const [descricaoInicial, setDescricaoInicial] = useState("");
   const [fotos, setFotos] = useState([]);
   const [videos, setVideos] = useState([]);
 
-  // Estados para modal e carregamento
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -62,23 +63,19 @@ function RegistroOcorrencia() {
 
   const sigCanvas = useRef({});
 
-  // Função para lidar com mudança no tipo de ocorrência
   const handleTipoChange = (e) => {
     const selectedTipo = e.target.value;
     setTipoOcorrencia(selectedTipo);
     setSubtipoOcorrencia(""); 
   };
 
-  // Função para capturar localização usando Navigator Geolocation
   const captureLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
-          // Preencher apenas as coordenadas no campo GPS
           setGps(`${latitude}, ${longitude}`);
           
-          // Fazer geocoding reverso para obter o endereço formatado
           try {
             const response = await fetch(
               `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
@@ -86,11 +83,9 @@ function RegistroOcorrencia() {
             const data = await response.json();
             
             if (data && data.address) {
-              // Extrair informações específicas do endereço
               const address = data.address;
               let enderecoFormatado = '';
               
-              // Construir endereço formatado: Rua, Número, Bairro, CEP
               if (address.road || address.street) {
                 enderecoFormatado += address.road || address.street;
               }
@@ -108,11 +103,9 @@ function RegistroOcorrencia() {
                 enderecoFormatado += `, CEP: ${address.postcode}`;
               }
               
-              // Se conseguiu formar um endereço estruturado, usar ele
               if (enderecoFormatado.trim()) {
                 setEndereco(enderecoFormatado);
               } else if (data.display_name) {
-                // Fallback para o endereço completo se não conseguir extrair partes específicas
                 setEndereco(data.display_name);
               }
             } else if (data.display_name) {
@@ -120,7 +113,6 @@ function RegistroOcorrencia() {
             }
           } catch (error) {
             console.error("Erro ao fazer geocoding reverso:", error);
-            // Não mostrar erro ao usuário, pois as coordenadas já foram capturadas
           }
         },
         (error) => {
@@ -133,7 +125,6 @@ function RegistroOcorrencia() {
     }
   };
 
-  // Função para gerenciar fotos
   const handleFotosChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const validFiles = [];
@@ -180,7 +171,6 @@ function RegistroOcorrencia() {
     setVideos(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
-  // Função para resetar o formulário
   const resetarFormulario = () => {
     setEndereco("");
     setPontoReferencia("");
@@ -189,18 +179,16 @@ function RegistroOcorrencia() {
     setSubtipoOcorrencia("");
     setPrioridade("");
     setCodigoViatura("");
-    setMembrosEquipe("");
+    setIdEquipe("");
     setDescricaoInicial("");
     setFotos([]);
     setVideos([]);
     
-    // Limpar assinatura
     if (sigCanvas.current) {
       sigCanvas.current.clear();
     }
   };
 
-  // Função para salvar localmente (para uso offline)
   const salvarLocalmente = async () => {
     if (!validarCamposObrigatorios()) {
       return;
@@ -209,12 +197,10 @@ function RegistroOcorrencia() {
     setIsLoading(true);
 
     try {
-      // Preparar dados da assinatura
       const assinaturaData = sigCanvas.current.isEmpty()
         ? null
         : sigCanvas.current.toDataURL();
 
-      // Converter fotos para base64
       const fotosData = await Promise.all(
         fotos.map(async (foto) => {
           return new Promise((resolve) => {
@@ -238,7 +224,6 @@ function RegistroOcorrencia() {
         tipo: video.type,
       }));
 
-      // Estrutura para salvamento local
       const ocorrenciaLocal = {
         id: Date.now(),
         localizacao: {
@@ -252,7 +237,7 @@ function RegistroOcorrencia() {
           prioridade: prioridade,
           descricao: descricaoInicial || null,
           codigoViatura: codigoViatura || null,
-          membrosEquipe: membrosEquipe || null
+          idsEquipe: idEquipe || null 
         },
         anexos: {
           fotos: fotosData,
@@ -268,7 +253,6 @@ function RegistroOcorrencia() {
         }
       };
 
-      // Salvar no localStorage
       const ocorrenciasSalvas = JSON.parse(localStorage.getItem('ocorrencias_offline') || '[]');
       ocorrenciasSalvas.push(ocorrenciaLocal);
       localStorage.setItem('ocorrencias_offline', JSON.stringify(ocorrenciasSalvas));
@@ -284,48 +268,42 @@ function RegistroOcorrencia() {
     }
   };
 
-  // Função para registrar nova ocorrência
   const registrarNova = () => {
     resetarFormulario();
     setShowSuccessModal(false);
   };
 
-  // Função para voltar ao dashboard
   const voltarDashboard = () => {
     navigate('/dashboard');
   };
 
-  // Função para validar campos obrigatórios
   const validarCamposObrigatorios = () => {
     const camposObrigatorios = [
       { campo: endereco, nome: 'endereco', label: 'Endereço da Ocorrência' },
       { campo: tipoOcorrencia, nome: 'tipoOcorrencia', label: 'Tipo de Ocorrência' },
       { campo: subtipoOcorrencia, nome: 'subtipoOcorrencia', label: 'Subtipo de Ocorrência' },
-      { campo: prioridade, nome: 'prioridade', label: 'Prioridade' }
+      { campo: prioridade, nome: 'prioridade', label: 'Prioridade' },
+      { campo: idEquipe, nome: 'idEquipe', label: 'Equipe Responsável' }
     ];
 
     const camposVazios = camposObrigatorios.filter(item => !item.campo.trim());
 
     if (camposVazios.length > 0) {
-      // Adicionar classe de erro aos campos vazios
       camposVazios.forEach(item => {
         const elemento = document.querySelector(`[name="${item.nome}"]`);
         if (elemento) {
           elemento.classList.add('form-error');
-          // Remover a classe após 3 segundos
           setTimeout(() => {
             elemento.classList.remove('form-error');
           }, 3000);
         }
       });
 
-      // Focar no primeiro campo vazio
       const primeiroElemento = document.querySelector(`[name="${camposVazios[0].nome}"]`);
       if (primeiroElemento) {
         primeiroElemento.focus();
       }
 
-      // Mostrar alerta com lista dos campos vazios
       alert(`Por favor, preencha os seguintes campos obrigatórios:\n${camposVazios.map(item => `- ${item.label}`).join('\n')}`);
       return false;
     }
@@ -333,7 +311,6 @@ function RegistroOcorrencia() {
     return true;
   };
 
-  // Função para limpar a assinatura
   const clearSignature = () => {
     sigCanvas.current.clear();
   };
@@ -341,71 +318,54 @@ function RegistroOcorrencia() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    // Validação robusta dos campos obrigatórios
     if (!validarCamposObrigatorios()) {
+      return;
+    }
+
+    if (sigCanvas.current.isEmpty()) {
+      alert("Por favor, forneça a assinatura digital.");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      const formData = new FormData();
-      const tipoParaCategoria = {
-        "medic_emergency": "medic_emergency",
-        "fire": "fire", 
-        "traffic_accident": "traffic_accident",
-        "other": "other"
-      };
-
+      const prioridadeParaBackend = { "alta": "high", "media": "medium", "baixa": "low" };
       let locationArray = [];
       if (gps) {
         const coords = gps.split(',').map(coord => parseFloat(coord.trim()));
         if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
-          locationArray = coords;
+          locationArray = [coords[0], coords[1]];
         }
       }
 
-      const participantesArray = membrosEquipe ? membrosEquipe.split(',').map(nome => nome.trim()) : [];
+      const assinaturaBase64 = sigCanvas.current.toDataURL("image/png");
 
+      const dadosOcorrencia = {
+        categoria: tipoOcorrencia,
+        subcategoria: subtipoOcorrencia,
+        prioridade: prioridadeParaBackend[prioridade] || prioridade,
+        descricao: descricaoInicial || '',
+        pontoDeReferencia: pontoReferencia || '',
+        codigoViatura: codigoViatura || '',
+        gps: locationArray, 
+        idEquipe: idEquipe || '', 
+        assinatura: assinaturaBase64,
+        anexos: {
+          fotosOriginais: fotos, 
+          videosOriginais: videos  
+        }
+      };
 
-      formData.append('categoria', tipoParaCategoria[tipoOcorrencia] || tipoOcorrencia);
-      formData.append('subcategoria', subtipoOcorrencia);
-      formData.append('descricao', descricaoInicial || '');
-      formData.append('pontoDeReferencia', pontoReferencia || '');
-      formData.append('codigoViatura', codigoViatura || '');
+      console.log("Enviando dados para o OcorrenciasService:", dadosOcorrencia);
+
+      const novoId = await adicionarOcorrencia(dadosOcorrencia);
       
-      locationArray.forEach(coord => {
-        formData.append('gps', coord.toString());
-      });
-      
-      participantesArray.forEach(participante => {
-        formData.append('participantes', participante);
-      });
-
-      console.log("📋 Dados sendo enviados:");
-      for (let [key, value] of formData.entries()) {
-        console.log(`   ${key}: ${value}`);
-      }
-
-      const response = await fetch('/api/occurrence/new', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Erro HTTP ${response.status}: ${errorText}`);
-      }
-
-      const resultado = await response.json();
-      console.log("✅ Resposta do backend:", resultado);
-      
-      setSuccessMessage(`Ocorrência registrada com sucesso! ID: ${resultado.id}`);
+      setSuccessMessage(`Ocorrência registrada com sucesso! ID: ${novoId}`);
       setShowSuccessModal(true);
       
     } catch (error) {
-      console.error("❌ Erro ao enviar ocorrência:", error);
+      console.error("Erro ao enviar ocorrência:", error);
       alert(`Erro ao enviar ocorrência: ${error.message}`);
     } finally {
       setIsLoading(false);
@@ -489,8 +449,8 @@ function RegistroOcorrencia() {
             </div>
 
             <div className="form-group full-width">
-              <label htmlFor="membrosEquipe">Membros da Equipe</label>
-              <input type="text" id="membrosEquipe" placeholder="Ex: João Gabriel, Carla Santana" value={membrosEquipe} onChange={(e) => setMembrosEquipe(e.target.value)} />
+              <label htmlFor="idEquipe">ID da Equipe</label>
+              <input type="text" id="idEquipe" placeholder="Ex: Id da Equipe" value={idEquipe} onChange={(e) => setIdEquipe(e.target.value)} />
             </div>
 
             <div className="form-group full-width">
@@ -590,8 +550,7 @@ function RegistroOcorrencia() {
           </form>
         </div>
       </div>
-      
-      {/* Modal de Sucesso */}
+    
       {showSuccessModal && (
         <div className="modal-overlay">
           <div className="modal-content">

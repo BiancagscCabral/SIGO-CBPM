@@ -1,29 +1,41 @@
 class OcorrenciasService {
 
+  static _converterArquivoParaBase64(arquivo) {
+    return new Promise((resolve, reject) => {
+      const leitor = new FileReader();
+      leitor.onload = () => resolve(leitor.result);
+      leitor.onerror = (erro) => reject(erro);
+      leitor.readAsDataURL(arquivo);
+    });
+  }
+
   static async criarOcorrencia(dados) {
     try {
-      const formData = new FormData();
-      
       const { anexos, ...dadosSemAnexos } = dados;
-      
-      formData.append('dados', JSON.stringify(dadosSemAnexos));
-      
-      if (anexos?.fotosOriginais) {
-        anexos.fotosOriginais.forEach((foto, index) => {
-          formData.append(`foto_${index}`, foto, foto.name);
-        });
-      }
-      
-      if (anexos?.videosOriginais) {
-        anexos.videosOriginais.forEach((video, index) => {
-          formData.append(`video_${index}`, video, video.name);
-        });
-      }
+
+      const fotosBase64 = anexos?.fotosOriginais
+        ? await Promise.all(anexos.fotosOriginais.map(foto => OcorrenciasService._converterArquivoParaBase64(foto)))
+        : [];
+
+      const videosBase64 = anexos?.videosOriginais
+        ? await Promise.all(anexos.videosOriginais.map(video => OcorrenciasService._converterArquivoParaBase64(video)))
+        : [];
+
+      const payload = {
+        ...dadosSemAnexos,
+        anexos: {
+          fotos: fotosBase64,
+          videos: videosBase64
+        }
+      };
 
       const response = await fetch('/api/occurrence/new', {
         method: 'POST',
-        body: formData,
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
       });
 
       if (response.ok) {
