@@ -489,8 +489,8 @@ function RegistroOcorrencia() {
             </div>
 
             <div className="form-group full-width">
-              <label htmlFor="membrosEquipe">Membros da Equipe *</label>
-              <input type="text" id="membrosEquipe" placeholder="Ex: João Gabriel, Carla Santana" value={membrosEquipe} onChange={(e) => setMembrosEquipe(e.target.value)} required />
+              <label htmlFor="membrosEquipe">Membros da Equipe</label>
+              <input type="text" id="membrosEquipe" placeholder="Ex: João Gabriel, Carla Santana" value={membrosEquipe} onChange={(e) => setMembrosEquipe(e.target.value)} />
             </div>
 
             <div className="form-group full-width">
