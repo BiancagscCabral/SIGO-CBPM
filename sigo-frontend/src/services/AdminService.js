@@ -35,7 +35,7 @@ class AdminService {
 
   static async updateUserStatus(userId, status) {
     try {
-      const response = await fetch(`${this.baseUrl}/admin/user/${userId}/status`, {
+      const response = await fetch(`${this.baseUrl}/admin/users/${userId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
