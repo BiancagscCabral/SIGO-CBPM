@@ -77,7 +77,29 @@ function Relatorios() {
 
   const handleGerarRelatorio = async (e) => {
     e.preventDefault();
-    
+//criando a função de gerar relatório
+// 1. Validação
+  if (!tipoRelatorio || !periodo || !formato) {
+    alert('Por favor, selecione todas as opções para gerar o relatório.');
+    return; 
+  }
+
+  // por enquanto tá sendo um "alerta" e depois limpa os campos que foram preenchidos
+  // aqui entrará a chamada de API para o backend (onde vamos colocar a chamada da API futuramente pra poder gerar os relatórios)
+  const mensagem = `
+    Relatório sendo gerado com os seguintes filtros:
+    --------------------------------------------------
+    Tipo: ${tipoRelatorio}
+    Período: ${periodo}
+    Formato: ${formato}
+  `;
+  alert(mensagem);
+
+  // Limpa os campos após gerar o relatório
+  setTipoRelatorio('');
+  setPeriodo('');
+  setFormato('');
+
   };
 
   return (
@@ -103,49 +125,46 @@ function Relatorios() {
       </section>
 
       {/* Seção 2: Gerador de Relatório */}
-      <section className="report-generator">
-        <h3>Gerar Novo Relatório</h3>
-        <p>Personalize e gere relatórios específicos</p>
-        <form className="report-form" onSubmit={handleGerarRelatorio}>
-          <div className="form-group">
-            <label>Tipo de Relatório</label>
-            <select value={tipoRelatorio} onChange={(e) => setTipoRelatorio(e.target.value)} required>
-              <option value="" disabled>Selecione o tipo</option>
-              <option value="equipes">Por Equipes</option>
-              <option value="tipo_ocorrencia">Por Tipo de Ocorrência</option>
-               <option value="analise_geografica">Análise Geográfica</option>
-               <option value="analise_temporal">Análise Temporal</option>
-
-
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Período</label>
-            <select value={periodo} onChange={(e) => setPeriodo(e.target.value)} required>
-              <option value="" disabled>Selecione o período</option>
-              <option value="hoje">Hoje</option>
-              <option value="ultima_semana">Última Semana</option>
-              <option value="ultimo_mes">Último Mês</option>
-              <option value="ultimo_trimestre">Último Trimestre</option>
-              <option value="personalizado">Último Ano</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Formato</label>
-            <select value={formato} onChange={(e) => setFormato(e.target.value)} required>
-              <option value="" disabled>Formato de saída</option>
-              <option value="pdf">PDF</option>
-              <option value="excel">Excel</option>
-               <option value="csv">CSV</option>
-            </select>
-          </div>
-          
-          <div className="form-group">  
-          <label>&nbsp;</label> 
-          <button type="submit" className="btn-gerar">Gerar Relatório</button>
-          </div>
-        </form>
-      </section>
+<section className="report-generator">
+  <h3>Gerar Novo Relatório</h3>
+  <p>Personalize e gere relatórios específicos</p>
+  <form className="report-form" onSubmit={handleGerarRelatorio}>
+    <div className="form-group">
+      <label>Tipo de Relatório</label>
+      <select value={tipoRelatorio} onChange={(e) => setTipoRelatorio(e.target.value)} required>
+        <option value="" disabled>Selecione o tipo</option>
+        <option value="equipes">Por Equipes</option>
+        <option value="tipo_ocorrencia">Por Tipo de Ocorrência</option>
+        <option value="analise_geografica">Análise Geográfica</option>
+        <option value="analise_temporal">Análise Temporal</option>
+      </select>
+    </div>
+    <div className="form-group">
+      <label>Período</label>
+      <select value={periodo} onChange={(e) => setPeriodo(e.target.value)} required>
+        <option value="" disabled>Selecione o período</option>
+        <option value="hoje">Hoje</option>
+        <option value="ultima_semana">Última Semana</option>
+        <option value="ultimo_mes">Último Mês</option>
+        <option value="ultimo_trimestre">Último Trimestre</option>
+        <option value="ultimo_ano">Último Ano</option>
+      </select>
+    </div>
+    <div className="form-group">
+      <label>Formato</label>
+      <select value={formato} onChange={(e) => setFormato(e.target.value)} required>
+        <option value="" disabled>Formato de saída</option>
+        <option value="pdf">PDF</option>
+        <option value="excel">Excel</option>
+        <option value="csv">CSV</option>
+      </select>
+    </div>
+    <div className="form-group">
+      <label>&nbsp;</label> 
+      <button type="submit" className="btn-gerar">Gerar Relatório</button>
+    </div>
+  </form>
+</section>
 
       {/* Seção 3: Relatórios Disponíveis */}
       
