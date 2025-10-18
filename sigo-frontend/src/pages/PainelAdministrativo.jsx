@@ -122,7 +122,7 @@ function PainelAdministrativo() {
       email: user.email || '',
       user_role: user.user_role || '',
       registration: user.registration || '',
-      is_active: user.is_active
+      is_active: String(user.is_active) === 'true'
     });
     setIsEditModalOpen(true);
   };
