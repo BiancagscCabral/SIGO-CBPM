@@ -298,12 +298,18 @@ function PainelAdministrativo() {
 
   const handleTeamStatusChange = async (teamId, newStatus) => {
     try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setTeamError('Usuário não autenticado.');
+        return;
+      }
+
       const response = await fetch(`/api/admin/teams/${teamId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
-        credentials: 'include',
         body: JSON.stringify({ status: newStatus }),
       });
 
