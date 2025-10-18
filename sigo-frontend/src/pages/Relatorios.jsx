@@ -140,7 +140,7 @@ function Relatorios() {
             </select>
           </div>
           
-          <div className="form-group">
+          <div className="form-group">  
           <label>&nbsp;</label> 
           <button type="submit" className="btn-gerar">Gerar Relatório</button>
           </div>
