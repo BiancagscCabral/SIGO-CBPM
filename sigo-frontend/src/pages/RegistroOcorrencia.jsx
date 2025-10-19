@@ -13,6 +13,39 @@ import save from "../assets/save.svg";
 import send from "../assets/send.svg";
 import lixo from "../assets/lixo.svg";
 
+const prioridadeParaBackend = {
+  'alta': 'High',
+  'media': 'Medium',
+  'baixa': 'Low',
+};
+
+const categoriaParaBackend = {
+  'fire': 'Fire',
+  'medic_emergency': 'MedicEmergency',
+  'traffic_accident': 'TrafficAccident',
+  'other': 'Other',
+};
+
+const subcategoriaParaBackend = {
+  'residential': 'Residential',
+  'comercial': 'Comercial',
+  'vegetation': 'Vegetation',
+  'vehicle': 'Vehicle',
+  'heart_stop': 'HeartStop',
+  'seizure': 'Seizure',
+  'serious_injury': 'SeriousInjury',
+  'intoxication': 'Intoxication',
+  'pre_hospital_care': 'PreHospitalCare',
+  'collision': 'Collision',
+  'run_over': 'RunOver',
+  'rollover': 'Rollover',
+  'motorcycle_crash': 'MotorcycleCrash',
+  'tree_crash': 'TreeCrash',
+  'flood': 'Flood',
+  'injured_animal': 'InjuredAnimal',
+};
+
+
 function RegistroOcorrencia() {
   const { userProfile } = useUser();
   const { adicionarOcorrencia } = useOcorrencias(); 
@@ -278,18 +311,18 @@ function RegistroOcorrencia() {
   };
 
   const validarCamposObrigatorios = () => {
-    const camposObrigatorios = [
-      { campo: endereco, nome: 'endereco', label: 'Endereço da Ocorrência' },
-      { campo: tipoOcorrencia, nome: 'tipoOcorrencia', label: 'Tipo de Ocorrência' },
-      { campo: subtipoOcorrencia, nome: 'subtipoOcorrencia', label: 'Subtipo de Ocorrência' },
-      { campo: prioridade, nome: 'prioridade', label: 'Prioridade' },
-      { campo: idEquipe, nome: 'idEquipe', label: 'Equipe Responsável' }
+    const campos = [
+      { valor: endereco, nome: 'endereco', label: 'Endereço da Ocorrência' },
+      { valor: tipoOcorrencia, nome: 'tipoOcorrencia', label: 'Tipo de Ocorrência' },
+      { valor: subtipoOcorrencia, nome: 'subtipoOcorrencia', label: 'Subtipo de Ocorrência' },
+      { valor: prioridade, nome: 'prioridade', label: 'Prioridade' },
+      { valor: idEquipe, nome: 'idEquipe', label: 'Equipe Responsável' }
     ];
 
-    const camposVazios = camposObrigatorios.filter(item => !item.campo.trim());
+    const vazios = campos.filter(c => !c.valor || !c.valor.trim());
 
-    if (camposVazios.length > 0) {
-      camposVazios.forEach(item => {
+    if (vazios.length > 0) {
+      vazios.forEach(item => {
         const elemento = document.querySelector(`[name="${item.nome}"]`);
         if (elemento) {
           elemento.classList.add('form-error');
@@ -299,12 +332,12 @@ function RegistroOcorrencia() {
         }
       });
 
-      const primeiroElemento = document.querySelector(`[name="${camposVazios[0].nome}"]`);
-      if (primeiroElemento) {
-        primeiroElemento.focus();
+      const primeiroVazio = document.querySelector(`[name="${vazios[0].nome}"]`);
+      if (primeiroVazio) {
+        primeiroVazio.focus();
       }
 
-      alert(`Por favor, preencha os seguintes campos obrigatórios:\n${camposVazios.map(item => `- ${item.label}`).join('\n')}`);
+      alert(`Por favor, preencha os seguintes campos obrigatórios:\n${vazios.map(c => `- ${c.label}`).join('\n')}`);
       return false;
     }
 
@@ -330,7 +363,6 @@ function RegistroOcorrencia() {
     setIsLoading(true);
 
     try {
-      const prioridadeParaBackend = { "alta": "high", "media": "medium", "baixa": "low" };
       let locationArray = [];
       if (gps) {
         const coords = gps.split(',').map(coord => parseFloat(coord.trim()));
@@ -359,14 +391,16 @@ function RegistroOcorrencia() {
 
       console.log("Enviando dados para o OcorrenciasService:", dadosOcorrencia);
 
-      const novoId = await adicionarOcorrencia(dadosOcorrencia);
+      const resultado = await adicionarOcorrencia(dadosOcorrenciaParaBackend);
+
+      const novoId = resultado;
       
       setSuccessMessage(`Ocorrência registrada com sucesso! ID: ${novoId}`);
       setShowSuccessModal(true);
       
     } catch (error) {
       console.error("Erro ao enviar ocorrência:", error);
-      alert(`Erro ao enviar ocorrência: ${error.message}`);
+      alert(`Erro ao enviar ocorrência: ${error.message || 'Erro desconhecido'}`);
     } finally {
       setIsLoading(false);
     }
