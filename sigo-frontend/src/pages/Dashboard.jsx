@@ -103,6 +103,7 @@ function Dashboard() {
     
     const equipesUnicas = new Set();
     ocorrencias.forEach(ocorrencia => {
+      if (ocorrencia.isLocal) return;
       ocorrencia.equipes?.forEach(equipe => {
         if (equipe.id) equipesUnicas.add(equipe.id);
       });
@@ -184,7 +185,7 @@ function Dashboard() {
     };
 
     fetchData();
-  }, [ocorrencias]); // Adicionar ocorrencias como dependência
+  }, [ocorrencias]);
 
   const handleRegistroClick = () => {
     navigate('/registro-ocorrencia');

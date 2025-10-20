@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { useUser } from "../contexts/UserContext";
+import { useOcorrencias } from "../contexts/OcorrenciasContext";
 import { useNavigate } from "react-router-dom";
-import { useOcorrencias } from "../contexts/OcorrenciasContext"; 
 import "./RegistroOcorrencia.css";
 import icon_gps from "../assets/icon_gps.svg";
 import icon_gpsb from "../assets/icon_gpsb.svg";
@@ -13,42 +13,9 @@ import save from "../assets/save.svg";
 import send from "../assets/send.svg";
 import lixo from "../assets/lixo.svg";
 
-const prioridadeParaBackend = {
-  'alta': 'High',
-  'media': 'Medium',
-  'baixa': 'Low',
-};
-
-const categoriaParaBackend = {
-  'fire': 'Fire',
-  'medic_emergency': 'MedicEmergency',
-  'traffic_accident': 'TrafficAccident',
-  'other': 'Other',
-};
-
-const subcategoriaParaBackend = {
-  'residential': 'Residential',
-  'comercial': 'Comercial',
-  'vegetation': 'Vegetation',
-  'vehicle': 'Vehicle',
-  'heart_stop': 'HeartStop',
-  'seizure': 'Seizure',
-  'serious_injury': 'SeriousInjury',
-  'intoxication': 'Intoxication',
-  'pre_hospital_care': 'PreHospitalCare',
-  'collision': 'Collision',
-  'run_over': 'RunOver',
-  'rollover': 'Rollover',
-  'motorcycle_crash': 'MotorcycleCrash',
-  'tree_crash': 'TreeCrash',
-  'flood': 'Flood',
-  'injured_animal': 'InjuredAnimal',
-};
-
-
 function RegistroOcorrencia() {
   const { userProfile } = useUser();
-  const { adicionarOcorrencia } = useOcorrencias(); 
+  const { adicionarOcorrencia, loading: ocorrenciasLoading } = useOcorrencias();
   const navigate = useNavigate();
   
   const [endereco, setEndereco] = useState("");
@@ -63,52 +30,37 @@ function RegistroOcorrencia() {
   const [fotos, setFotos] = useState([]);
   const [videos, setVideos] = useState([]);
 
+  // Estados para modal e carregamento
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const subtipoOptions = {
-    "medic_emergency": [
-      { value: "heart_stop", label: "Parada cardíaca" },
-      { value: "seizure", label: "Convulsão" },
-      { value: "serious_injury", label: "Ferimento grave" },
-      { value: "intoxication", label: "Intoxicação" },
-      { value: "pre_hospital_care", label: "Atendimento Pré-Hospitalar" }
-    ],
-    "fire": [
-      { value: "residential", label: "Residencial" },
-      { value: "comercial", label: "Comercial" },
-      { value: "vegetation", label: "Vegetação" },
-      { value: "vehicle", label: "Veículo" }
-    ],
-    "traffic_accident": [
-      { value: "collision", label: "Colisão" },
-      { value: "run_over", label: "Atropelamento" },
-      { value: "rollover", label: "Capotamento" },
-      { value: "motorcycle_crash", label: "Queda de motocicleta" }
-    ],
-    "other": [
-      { value: "tree_crash", label: "Queda de árvore" },
-      { value: "flood", label: "Alagamento" },
-      { value: "injured_animal", label: "Animal ferido" }
-    ]
+    "aph": ["Parada cardíaca", "Convulsão", "Ferimento grave", "Intoxicação"],
+    "incendio": ["Residencial", "Comercial", "Vegetação", "Veículo"],
+    "acidente_transito": ["Colisão", "Atropelamento", "Capotamento", "Queda de motocicleta"],
+    "outros": ["Queda de árvore", "Alagamento", "Animal ferido", "Resgate"]
   };
 
   const sigCanvas = useRef({});
 
+  // Função para lidar com mudança no tipo de ocorrência
   const handleTipoChange = (e) => {
     const selectedTipo = e.target.value;
     setTipoOcorrencia(selectedTipo);
     setSubtipoOcorrencia(""); 
   };
 
+  // Função para capturar localização usando Navigator Geolocation
   const captureLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
+          // Preencher apenas as coordenadas no campo GPS
           setGps(`${latitude}, ${longitude}`);
           
+          // Fazer geocoding reverso para obter o endereço formatado
           try {
             const response = await fetch(
               `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
@@ -116,9 +68,11 @@ function RegistroOcorrencia() {
             const data = await response.json();
             
             if (data && data.address) {
+              // Extrair informações específicas do endereço
               const address = data.address;
               let enderecoFormatado = '';
               
+              // Construir endereço formatado: Rua, Número, Bairro, CEP
               if (address.road || address.street) {
                 enderecoFormatado += address.road || address.street;
               }
@@ -136,9 +90,11 @@ function RegistroOcorrencia() {
                 enderecoFormatado += `, CEP: ${address.postcode}`;
               }
               
+              // Se conseguiu formar um endereço estruturado, usar ele
               if (enderecoFormatado.trim()) {
                 setEndereco(enderecoFormatado);
               } else if (data.display_name) {
+                // Fallback para o endereço completo se não conseguir extrair partes específicas
                 setEndereco(data.display_name);
               }
             } else if (data.display_name) {
@@ -146,6 +102,7 @@ function RegistroOcorrencia() {
             }
           } catch (error) {
             console.error("Erro ao fazer geocoding reverso:", error);
+            // Não mostrar erro ao usuário, pois as coordenadas já foram capturadas
           }
         },
         (error) => {
@@ -158,13 +115,14 @@ function RegistroOcorrencia() {
     }
   };
 
+  // Função para gerenciar fotos
   const handleFotosChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const validFiles = [];
     
     selectedFiles.forEach(file => {
       if (file.type.startsWith('image/')) {
-        if (file.size <= 10 * 1024 * 1024) { 
+        if (file.size <= 10 * 1024 * 1024) { // 10MB
           validFiles.push(file);
         } else {
           alert(`A foto ${file.name} é muito grande. Máximo 10MB.`);
@@ -177,17 +135,19 @@ function RegistroOcorrencia() {
     setFotos(prev => [...prev, ...validFiles]);
   };
 
+  // Função para remover foto
   const removeFoto = (indexToRemove) => {
     setFotos(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
+  // Função para gerenciar vídeos
   const handleVideosChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const validFiles = [];
     
     selectedFiles.forEach(file => {
       if (file.type.startsWith('video/')) {
-        if (file.size <= 50 * 1024 * 1024) { 
+        if (file.size <= 50 * 1024 * 1024) { // 50MB
           validFiles.push(file);
         } else {
           alert(`O vídeo ${file.name} é muito grande. Máximo 50MB.`);
@@ -200,11 +160,14 @@ function RegistroOcorrencia() {
     setVideos(prev => [...prev, ...validFiles]);
   };
 
+  // Função para remover vídeo
   const removeVideo = (indexToRemove) => {
     setVideos(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
+  // Função para resetar o formulário
   const resetarFormulario = () => {
+    // Limpar todos os campos (dados do usuário vêm automaticamente do backend)
     setEndereco("");
     setPontoReferencia("");
     setGps("");
@@ -217,12 +180,15 @@ function RegistroOcorrencia() {
     setFotos([]);
     setVideos([]);
     
+    // Limpar assinatura
     if (sigCanvas.current) {
       sigCanvas.current.clear();
     }
   };
 
+  // Função para salvar localmente (para uso offline)
   const salvarLocalmente = async () => {
+    // Validação robusta dos campos obrigatórios
     if (!validarCamposObrigatorios()) {
       return;
     }
@@ -230,10 +196,12 @@ function RegistroOcorrencia() {
     setIsLoading(true);
 
     try {
+      // Preparar dados da assinatura
       const assinaturaData = sigCanvas.current.isEmpty()
         ? null
         : sigCanvas.current.toDataURL();
 
+      // Converter fotos para base64
       const fotosData = await Promise.all(
         fotos.map(async (foto) => {
           return new Promise((resolve) => {
@@ -257,6 +225,7 @@ function RegistroOcorrencia() {
         tipo: video.type,
       }));
 
+      // Estrutura para salvamento local
       const ocorrenciaLocal = {
         id: Date.now(),
         localizacao: {
@@ -270,7 +239,7 @@ function RegistroOcorrencia() {
           prioridade: prioridade,
           descricao: descricaoInicial || null,
           codigoViatura: codigoViatura || null,
-          idsEquipe: idEquipe || null 
+          idEquipe: idEquipe || null
         },
         anexos: {
           fotos: fotosData,
@@ -286,11 +255,12 @@ function RegistroOcorrencia() {
         }
       };
 
+      // Salvar no localStorage
       const ocorrenciasSalvas = JSON.parse(localStorage.getItem('ocorrencias_offline') || '[]');
       ocorrenciasSalvas.push(ocorrenciaLocal);
       localStorage.setItem('ocorrencias_offline', JSON.stringify(ocorrenciasSalvas));
 
-      setSuccessMessage("Ocorrência salva localmente com sucesso!");
+      setSuccessMessage("Ocorrência salva localmente com sucesso! Será enviada automaticamente quando a conexão retornar.");
       setShowSuccessModal(true);
 
     } catch (error) {
@@ -301,49 +271,56 @@ function RegistroOcorrencia() {
     }
   };
 
+  // Função para registrar nova ocorrência
   const registrarNova = () => {
     resetarFormulario();
     setShowSuccessModal(false);
   };
 
+  // Função para voltar ao dashboard
   const voltarDashboard = () => {
     navigate('/dashboard');
   };
 
+  // Função para validar campos obrigatórios
   const validarCamposObrigatorios = () => {
-    const campos = [
-      { valor: endereco, nome: 'endereco', label: 'Endereço da Ocorrência' },
-      { valor: tipoOcorrencia, nome: 'tipoOcorrencia', label: 'Tipo de Ocorrência' },
-      { valor: subtipoOcorrencia, nome: 'subtipoOcorrencia', label: 'Subtipo de Ocorrência' },
-      { valor: prioridade, nome: 'prioridade', label: 'Prioridade' },
-      { valor: idEquipe, nome: 'idEquipe', label: 'Equipe Responsável' }
+    const camposObrigatorios = [
+      { campo: endereco, nome: 'endereco', label: 'Endereço da Ocorrência' },
+      { campo: tipoOcorrencia, nome: 'tipoOcorrencia', label: 'Tipo de Ocorrência' },
+      { campo: subtipoOcorrencia, nome: 'subtipoOcorrencia', label: 'Subtipo de Ocorrência' },
+      { campo: prioridade, nome: 'prioridade', label: 'Prioridade' }
     ];
 
-    const vazios = campos.filter(c => !c.valor || !c.valor.trim());
+    const camposVazios = camposObrigatorios.filter(item => !item.campo.trim());
 
-    if (vazios.length > 0) {
-      vazios.forEach(item => {
+    if (camposVazios.length > 0) {
+      // Adicionar classe de erro aos campos vazios
+      camposVazios.forEach(item => {
         const elemento = document.querySelector(`[name="${item.nome}"]`);
         if (elemento) {
           elemento.classList.add('form-error');
+          // Remover a classe após 3 segundos
           setTimeout(() => {
             elemento.classList.remove('form-error');
           }, 3000);
         }
       });
 
-      const primeiroVazio = document.querySelector(`[name="${vazios[0].nome}"]`);
-      if (primeiroVazio) {
-        primeiroVazio.focus();
+      // Focar no primeiro campo vazio
+      const primeiroElemento = document.querySelector(`[name="${camposVazios[0].nome}"]`);
+      if (primeiroElemento) {
+        primeiroElemento.focus();
       }
 
-      alert(`Por favor, preencha os seguintes campos obrigatórios:\n${vazios.map(c => `- ${c.label}`).join('\n')}`);
+      // Mostrar alerta com lista dos campos vazios
+      alert(`Por favor, preencha os seguintes campos obrigatórios:\n${camposVazios.map(item => `- ${item.label}`).join('\n')}`);
       return false;
     }
 
     return true;
   };
 
+  // Função para limpar a assinatura
   const clearSignature = () => {
     sigCanvas.current.clear();
   };
@@ -351,56 +328,99 @@ function RegistroOcorrencia() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
+    // Validação robusta dos campos obrigatórios
     if (!validarCamposObrigatorios()) {
-      return;
-    }
-
-    if (sigCanvas.current.isEmpty()) {
-      alert("Por favor, forneça a assinatura digital.");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      let locationArray = [];
-      if (gps) {
-        const coords = gps.split(',').map(coord => parseFloat(coord.trim()));
-        if (coords.length === 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
-          locationArray = [coords[0], coords[1]];
-        }
-      }
+      // Preparar dados da assinatura
+      const assinaturaData = sigCanvas.current.isEmpty()
+        ? null
+        : sigCanvas.current.toDataURL();
 
-      const assinaturaBase64 = sigCanvas.current.toDataURL("image/png");
+      // Converter arquivos para base64 (para fotos pequenas) ou preparar para FormData
+      const fotosData = await Promise.all(
+        fotos.map(async (foto) => {
+          return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              resolve({
+                nome: foto.name,
+                tamanho: foto.size,
+                tipo: foto.type,
+                dados: e.target.result // base64
+              });
+            };
+            reader.readAsDataURL(foto);
+          });
+        })
+      );
 
-      const dadosOcorrencia = {
-        categoria: tipoOcorrencia,
-        subcategoria: subtipoOcorrencia,
-        prioridade: prioridadeParaBackend[prioridade] || prioridade,
-        descricao: descricaoInicial || '',
-        pontoDeReferencia: pontoReferencia || '',
-        codigoViatura: codigoViatura || '',
-        gps: locationArray, 
-        idEquipe: idEquipe || '', 
-        assinatura: assinaturaBase64,
+      const videosData = videos.map((video) => ({
+        nome: video.name,
+        tamanho: video.size,
+        tipo: video.type,
+        // Para vídeos, não convertemos para base64 devido ao tamanho
+        // Eles serão enviados via FormData separadamente
+      }));
+
+      // Estrutura JSON completa para o backend
+      const ocorrenciaData = {
+        // Localização
+        localizacao: {
+          endereco: endereco,
+          pontoReferencia: pontoReferencia || null,
+          coordenadas: gps || null
+        },
+        
+        // Dados da ocorrência
+        ocorrencia: {
+          tipo: tipoOcorrencia,
+          subtipo: subtipoOcorrencia,
+          prioridade: prioridade,
+          descricao: descricaoInicial || null,
+          codigoViatura: codigoViatura || null,
+          idEquipe: idEquipe || null
+        },
+        
+        // Anexos
         anexos: {
-          fotosOriginais: fotos, 
-          videosOriginais: videos  
+          fotos: fotosData,
+          videos: videosData,
+          quantidadeFotos: fotos.length,
+          quantidadeVideos: videos.length,
+          fotosOriginais: fotos,
+          videosOriginais: videos
+        },
+        
+        // Assinatura
+        assinatura: assinaturaData,
+        
+        // Metadados
+        metadata: {
+          dataRegistro: new Date().toISOString(),
+          versaoFormulario: "1.0",
+          navegador: navigator.userAgent,
+          dispositivoMovel: /Mobi|Android/i.test(navigator.userAgent)
         }
       };
 
-      console.log("Enviando dados para o OcorrenciasService:", dadosOcorrencia);
-
-      const resultado = await adicionarOcorrencia(dadosOcorrenciaParaBackend);
-
-      const novoId = resultado;
+      console.log("DADOS JSON PARA BACKEND:", JSON.stringify(ocorrenciaData, null, 2));
       
-      setSuccessMessage(`Ocorrência registrada com sucesso! ID: ${novoId}`);
+      ocorrenciaData.anexos.fotosOriginais = fotos;
+      ocorrenciaData.anexos.videosOriginais = videos;
+      
+      const novaOcorrenciaId = await adicionarOcorrencia(ocorrenciaData);
+      
+      setSuccessMessage(`Ocorrência registrada com sucesso! ID: ${novaOcorrenciaId}`);
       setShowSuccessModal(true);
       
     } catch (error) {
-      console.error("Erro ao enviar ocorrência:", error);
-      alert(`Erro ao enviar ocorrência: ${error.message || 'Erro desconhecido'}`);
+      console.error("Erro ao processar dados:", error);
+      alert("Erro ao processar os dados do formulário.");
     } finally {
       setIsLoading(false);
     }
@@ -443,10 +463,10 @@ function RegistroOcorrencia() {
               <label htmlFor="tipoOcorrencia">Tipos de Ocorrência *</label>
               <select id="tipoOcorrencia" name="tipoOcorrencia" value={tipoOcorrencia} onChange={handleTipoChange} required>
                 <option value="">Selecione o tipo</option>
-                <option value="medic_emergency">Emergência Médica</option>
-                <option value="fire">Incêndio</option>
-                <option value="traffic_accident">Acidente de Trânsito</option>
-                <option value="other">Outros</option>
+                <option value="aph">Atendimento Pré-Hospitalar (APH)</option>
+                <option value="incendio">Incêndio</option>
+                <option value="acidente_transito">Acidente de Trânsito</option>
+                <option value="outros">Outros</option>
               </select>
             </div>
 
@@ -462,7 +482,7 @@ function RegistroOcorrencia() {
               >
                 <option value="">Selecione o subtipo</option>
                 {tipoOcorrencia && subtipoOptions[tipoOcorrencia]?.map((subtipo) => (
-                  <option key={subtipo.value} value={subtipo.value}>{subtipo.label}</option>
+                  <option key={subtipo} value={subtipo}>{subtipo}</option>
                 ))}
               </select>
             </div>
@@ -483,8 +503,8 @@ function RegistroOcorrencia() {
             </div>
 
             <div className="form-group full-width">
-              <label htmlFor="idEquipe">ID da Equipe</label>
-              <input type="text" id="idEquipe" placeholder="Ex: Id da Equipe" value={idEquipe} onChange={(e) => setIdEquipe(e.target.value)} />
+              <label htmlFor="idEquipe">ID da Equipe *</label>
+              <input type="text" id="idEquipe" name="idEquipe" placeholder="Ex: EQUIPE-1234 (ID da equipe)" value={idEquipe} onChange={(e) => setIdEquipe(e.target.value)} required />
             </div>
 
             <div className="form-group full-width">
@@ -567,24 +587,25 @@ function RegistroOcorrencia() {
                 type="button" 
                 className="btn-secondary"
                 onClick={salvarLocalmente}
-                disabled={isLoading}
+                disabled={isLoading || ocorrenciasLoading}
               >
                 <img src={save} alt="salvar" />
-                {isLoading ? 'Salvando...' : 'Salvar Localmente'}
+                {(isLoading || ocorrenciasLoading) ? 'Salvando...' : 'Salvar Localmente'}
               </button>
               <button 
                 type="submit" 
                 className="btn-primary"
-                disabled={isLoading}
+                disabled={isLoading || ocorrenciasLoading}
               >
                 <img src={send} alt="enviar" />
-                {isLoading ? 'Enviando...' : 'Enviar Online'}
+                {(isLoading || ocorrenciasLoading) ? 'Enviando...' : 'Enviar Online'}
               </button>
             </div>
           </form>
         </div>
       </div>
-    
+      
+      {/* Modal de Sucesso */}
       {showSuccessModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -596,6 +617,12 @@ function RegistroOcorrencia() {
                 className="btn-secondary"
               >
                 Registrar Nova
+              </button>
+              <button 
+                onClick={() => navigate('/minhas-ocorrencias')}
+                className="btn-secondary"
+              >
+                Ver Minhas Ocorrências
               </button>
               <button 
                 onClick={voltarDashboard}

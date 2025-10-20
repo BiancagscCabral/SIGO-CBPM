@@ -16,7 +16,7 @@ export const OcorrenciasProvider = ({ children }) => {
   const [ocorrencias, setOcorrencias] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { userProfile } = useUser();
+  const { userProfile, isLoading: isUserLoading } = useUser();
 
   const obterUsuarioAtual = () => {
     if (userProfile && userProfile.id) {
@@ -95,10 +95,10 @@ export const OcorrenciasProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (userProfile?.id) {
+    if (!isUserLoading && userProfile?.id) {
       carregarOcorrencias();
     }
-  }, [userProfile?.id, userProfile?.user_role]);
+  }, [userProfile?.id, userProfile?.user_role, isUserLoading]);
 
   useEffect(() => {
     if (ocorrencias.length > 0) {
@@ -140,7 +140,8 @@ export const OcorrenciasProvider = ({ children }) => {
         usuarioId: ocorrenciaBackend.usuario_id || null,
         nomeUsuario: ocorrenciaBackend.usuario_nome || '',
         matriculaUsuario: ocorrenciaBackend.usuario_matricula || ''
-      }
+      },
+      isLocal: false
     };
   };
 
@@ -179,9 +180,10 @@ export const OcorrenciasProvider = ({ children }) => {
         pontoReferencia: dadosRegistro.localizacao?.pontoReferencia || null,
         coordenadas: dadosRegistro.localizacao?.coordenadas || null
       },
-      equipes: dadosRegistro.ocorrencia?.codigoViatura ? [{
-        id: dadosRegistro.ocorrencia.codigoViatura,
-        efetivo: parseInt(dadosRegistro.ocorrencia.membrosEquipe) || 1
+
+      equipes: (dadosRegistro.ocorrencia?.idEquipe || dadosRegistro.ocorrencia?.codigoViatura) ? [{
+        id: dadosRegistro.ocorrencia?.idEquipe || dadosRegistro.ocorrencia?.codigoViatura,
+        efetivo: 1
       }] : [],
       anexos: {
         fotos: dadosRegistro.anexos?.quantidadeFotos || 0,
@@ -193,7 +195,8 @@ export const OcorrenciasProvider = ({ children }) => {
         usuarioId: usuarioAtual?.id || userProfile?.id || null,
         nomeUsuario: usuarioAtual?.nome || userProfile?.full_name || '',
         matriculaUsuario: usuarioAtual?.matricula || userProfile?.registration || ''
-      }
+      },
+      isLocal: true
     };
   };
 
@@ -211,6 +214,7 @@ export const OcorrenciasProvider = ({ children }) => {
       } else {
         console.warn('Falha ao salvar no backend, usando localStorage como fallback');
         const novaOcorrencia = converterParaFormatoMinhasOcorrencias(dadosRegistro);
+      
         setOcorrencias(prevOcorrencias => [novaOcorrencia, ...prevOcorrencias]);
         setError(result.message);
         return novaOcorrencia.id;
@@ -218,6 +222,7 @@ export const OcorrenciasProvider = ({ children }) => {
     } catch (error) {
       console.error('Erro ao adicionar ocorrência:', error);
       const novaOcorrencia = converterParaFormatoMinhasOcorrencias(dadosRegistro);
+      
       setOcorrencias(prevOcorrencias => [novaOcorrencia, ...prevOcorrencias]);
       setError('Erro de conexão com o servidor');
       return novaOcorrencia.id;
