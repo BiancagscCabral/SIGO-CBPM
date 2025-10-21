@@ -41,6 +41,19 @@ function PainelAdministrativo() {
     is_active: true
   });
 
+  const translateRoleToInternal = (roleNamePtBr) => {
+    if (!roleNamePtBr) return '';
+    const roleMap = {
+      "administrador": "admin",
+      "analista": "analist",
+      "bombeiro": "firefighter",
+      "capitão": "captain",
+      "desenvolvedor": "developer",
+      "sargento": "sargeant"
+    };
+    return roleMap[roleNamePtBr.toLowerCase()] || roleNamePtBr;
+  };
+
   const [teams, setTeams] = useState([]);
   const [teamsLoading, setTeamsLoading] = useState(false);
   const [isCreatingTeam, setIsCreatingTeam] = useState(false);
@@ -156,36 +169,51 @@ function PainelAdministrativo() {
     setUserError('');
     setUserSuccess('');
 
-    const profileData = {
+    const internalRoleName = translateRoleToInternal(editFormData.user_role);
+
+    const updatedUserData = {
       full_name: editFormData.full_name,
       email: editFormData.email,
-      user_role: editFormData.user_role,
+      user_role: internalRoleName,
       registration: editFormData.registration,
+      is_active: editFormData.is_active
     };
 
-    const newStatus = editFormData.is_active;
+    console.log("Dados enviados para updateUser:", updatedUserData);
 
     try {
-      const profileResult = await AdminService.updateUser(editingUser.id, profileData);
+      const result = await AdminService.updateUser(editingUser.id, updatedUserData);
 
-      if (!profileResult.success) {
-        setUserError(profileResult.error || 'Erro ao atualizar dados do perfil.');
-        return;
+      if (result.success) {
+        setUserSuccess('Usuário atualizado com sucesso!');
+
+        const updatedAllUsers = allUsers.map(u => {
+          if (u.id === editingUser.id) {
+            return {
+              ...u,
+              full_name: editFormData.full_name,
+              email: editFormData.email,
+              registration: editFormData.registration,
+              is_active: editFormData.is_active,
+              user_role: editFormData.user_role
+            };
+          }
+          return u;
+        });
+
+        setAllUsers(updatedAllUsers);
+
+        filterUsersByLetter(updatedAllUsers, selectedLetter);
+
+        handleCloseEditModal();
+
+      } else {
+        console.error("Erro retornado pelo AdminService:", result.error);
+        setUserError(result.error || 'Erro ao atualizar dados do usuário.');
       }
-
-      const statusResult = await AdminService.updateUserStatus(editingUser.id, newStatus);
-
-      if (!statusResult.success) {
-        setUserError(statusResult.error || 'Dados do perfil atualizados, mas falha ao atualizar status.');
-        return;
-      }
-
-      setUserSuccess('Usuário atualizado com sucesso!');
-      handleCloseEditModal();
-      loadUsers();
 
     } catch (error) {
-      console.error('Erro ao salvar usuário:', error);
+      console.error('Erro ao salvar usuário (catch):', error);
       setUserError('Ocorreu um erro inesperado. Tente novamente.');
     }
   };
@@ -865,7 +893,7 @@ function PainelAdministrativo() {
         <div className="modal-overlay" onClick={handleCloseEditModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>Editar Usuário</h3>
+              <h2>Editar Usuário</h2>
               <button
                 type="button"
                 className="close-button"
@@ -939,12 +967,12 @@ function PainelAdministrativo() {
                 <select
                   id="edit_is_active"
                   name="is_active"
-                  value={editFormData.is_active}
+                  value={String(editFormData.is_active)}
                   onChange={handleEditFormChange}
                   required
                 >
-                  <option value={true}>Ativo</option>
-                  <option value={false}>Inativo</option>
+                  <option value="true">Ativo</option>
+                  <option value="false">Inativo</option>
                 </select>
               </div>
             </div>

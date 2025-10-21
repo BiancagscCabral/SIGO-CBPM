@@ -33,38 +33,7 @@ class AdminService {
     }
   }
 
-  static async updateUserStatus(userId, status) {
-    try {
-      const response = await fetch(`${this.baseUrl}/admin/users/${userId}/status`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ status: status })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        return {
-          success: false,
-          error: `Erro ao atualizar status: ${response.status} - ${errorData}`
-        };
-      }
-
-      const result = await response.json();
-      return {
-        success: true,
-        data: result
-      };
-    } catch (error) {
-      console.error('Erro ao atualizar status do usuário:', error);
-      return {
-        success: false,
-        error: 'Erro de rede. Verifique sua conexão.'
-      };
-    }
-  }
+  // A função updateUserStatus foi removida pois sua lógica foi incorporada em updateUser.
 
   static async deleteUser(userId) {
     try {
@@ -135,6 +104,7 @@ class AdminService {
     }
   }
 
+  // Função updateUser agora lida com todos os dados, incluindo o status.
   static async updateUser(userId, userData) {
     try {
       const response = await fetch(`${this.baseUrl}/admin/users/${userId}`, {
