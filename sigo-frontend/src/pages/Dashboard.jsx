@@ -84,7 +84,6 @@ function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Função para calcular estatísticas das ocorrências locais
   const calcularEstatisticasLocais = () => {
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
@@ -121,7 +120,6 @@ function Dashboard() {
     fetchUserProfile();
   }, []);
 
-  // Atualizar estatísticas quando as ocorrências mudarem
   useEffect(() => {
     const estatisticasLocais = calcularEstatisticasLocais();
     setDashboardData(prev => ({
@@ -149,7 +147,6 @@ function Dashboard() {
         if (response.ok) {
           const data = await response.json();
           
-          // Combinar dados do backend com estatísticas locais
           const estatisticasLocais = calcularEstatisticasLocais();
           
           setDashboardData({
@@ -166,7 +163,6 @@ function Dashboard() {
       } catch (err) {
         console.error("Erro ao buscar dados do dashboard:", err);
         
-        // Se der erro no backend, usar apenas dados locais
         const estatisticasLocais = calcularEstatisticasLocais();
         
         setDashboardData({
@@ -184,7 +180,7 @@ function Dashboard() {
     };
 
     fetchData();
-  }, [ocorrencias]); // Adicionar ocorrencias como dependência
+  }, [ocorrencias]);
 
   const handleRegistroClick = () => {
     navigate('/registro-ocorrencia');

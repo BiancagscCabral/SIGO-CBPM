@@ -4,6 +4,7 @@ import { useUser } from '../contexts/UserContext';
 import { verificarPermissaoEdicaoOcorrencia } from '../utils/permissions';
 import './Ocorrencias.css';
 import Modal from '../components/Modal';
+import TeamsService from '../services/TeamsService';
 
 const getStatusClass = (status) => {
     if (status === 'Em andamento') return 'status-andamento';
@@ -24,6 +25,78 @@ const prioridadeValor = {
     'Alta': 3,
     'Média': 2,
     'Baixa': 1,
+};
+
+const mapPrioridadeDisplay = (valor) => {
+    if (!valor) return 'Baixa';
+    const v = valor.toString().toLowerCase();
+    if (v === 'high' || v === 'alta') return 'Alta';
+    if (v === 'medium' || v === 'média' || v === 'media') return 'Média';
+    if (v === 'low' || v === 'baixa') return 'Baixa';
+    return valor;
+};
+
+const categoriaLabelMap = {
+    'fire': 'Incêndio',
+    'medic_emergency': 'Emergência Médica',
+    'traffic_accident': 'Acidente de Trânsito',
+    'other': 'Outro'
+};
+
+const subcategoriaLabelMap = {
+    'residential': 'Residencial',
+    'comercial': 'Comercial',
+    'vegetation': 'Vegetação',
+    'vehicle': 'Veículo',
+    'heart_stop': 'Parada cardíaca',
+    'seizure': 'Convulsão',
+    'serious_injury': 'Ferimento grave',
+    'intoxication': 'Intoxicação',
+    'pre_hospital_care': 'Atendimento Pré-Hospitalar',
+    'collision': 'Colisão',
+    'run_over': 'Atropelamento',
+    'rollover': 'Capotamento',
+    'motorcycle_crash': 'Queda de motocicleta',
+    'tree_crash': 'Queda de árvore',
+    'flood': 'Alagamento',
+    'injured_animal': 'Animal ferido'
+};
+
+const formatEndereco = (ocorrencia) => {
+    const e = ocorrencia.endereco || {};
+    if (e.formatted && e.formatted.trim()) return e.formatted;
+    
+    const street = [e.logradouro, e.numero].filter(Boolean).join(', ').trim();
+    const bairro = e.bairro ? e.bairro.trim() : '';
+    const cidadeUf = [e.cidade, e.uf].filter(Boolean).join('/').trim();
+    const cep = e.cep ? `CEP: ${e.cep}` : '';
+
+    const parts = [];
+    if (street) parts.push(street);
+    if (bairro) parts.push(bairro);
+    if (cidadeUf) parts.push(cidadeUf);
+    if (cep) parts.push(cep);
+
+    return parts.join(', ') || 'Não disponível';
+};
+
+const displayTipo = (ocorrencia) => {
+    const tipoToken = ocorrencia.chamado?.tipoToken || '';
+    const tipoRaw = ocorrencia.chamado?.tipo || '';
+ 
+    if (tipoToken && categoriaLabelMap[tipoToken]) return categoriaLabelMap[tipoToken];
+    if (categoriaLabelMap[tipoRaw]) return categoriaLabelMap[tipoRaw];
+    if (tipoRaw && typeof tipoRaw === 'string' && tipoRaw.trim()) return tipoRaw;
+    return 'Não informado';
+};
+
+const displaySubtipo = (ocorrencia) => {
+    const subtipoToken = ocorrencia.chamado?.subtipoToken || '';
+    const subtipoRaw = ocorrencia.chamado?.subtipo || '';
+    if (subtipoToken && subcategoriaLabelMap[subtipoToken]) return subcategoriaLabelMap[subtipoToken];
+    if (subcategoriaLabelMap[subtipoRaw]) return subcategoriaLabelMap[subtipoRaw];
+    if (subtipoRaw && typeof subtipoRaw === 'string' && subtipoRaw.trim()) return subtipoRaw;
+    return '';
 };
 
 function Ocorrencias() {
@@ -119,8 +192,8 @@ function Ocorrencias() {
     const handleEquipeChange = (equipeIndex, campo, valor) => {
         setOcorrenciaEditando(prev => ({
             ...prev,
-            equipes: prev.equipes.map((equipe, index) => 
-                index === equipeIndex 
+            equipes: prev.equipes.map((equipe, index) =>
+                index === equipeIndex
                     ? { ...equipe, [campo]: valor }
                     : equipe
             )
@@ -149,8 +222,31 @@ function Ocorrencias() {
     };
 
     const handleVerDetalhes = (ocorrencia) => {
-        setOcorrenciaSelecionada(ocorrencia);
-        setModalVisivel(true);
+        const fetchTeamDetailsIfNeeded = async () => {
+            try {
+                if (ocorrencia.equipes && ocorrencia.equipes.length > 0) {
+                    const needDetails = ocorrencia.equipes.some(e => !e.lider && !e.membros);
+                    if (needDetails) {
+                        const teams = await TeamsService.getTeams();
+                        const enriched = ocorrencia.equipes.map(e => {
+                            const found = teams.find(t => String(t.id) === String(e.id));
+                            if (found) return { ...e, lider: found.leader || found.lider || null, membros: found.members || found.membros || [] };
+                            return e;
+                        });
+                        setOcorrenciaSelecionada({ ...ocorrencia, equipes: enriched });
+                        setModalVisivel(true);
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao buscar detalhes das equipes:', error);
+            }
+
+            setOcorrenciaSelecionada(ocorrencia);
+            setModalVisivel(true);
+        };
+
+        fetchTeamDetailsIfNeeded();
     };
 
     const podeEditar = (ocorrencia) => {
@@ -158,37 +254,81 @@ function Ocorrencias() {
         if (!userProfile?.id) {
             return false;
         }
-        
-        let isOwner = false;
-        if (ocorrencia.metadata && ocorrencia.metadata.usuarioId) {
-            const usuarioOcorrencia = String(ocorrencia.metadata.usuarioId);
-            const usuarioLogado = String(userProfile.id);
-            isOwner = usuarioOcorrencia === usuarioLogado;
-        }
-        
+
+        const isOwner = isCreatedByCurrentUser(ocorrencia);
         return verificarPermissaoEdicaoOcorrencia(userProfile.user_role, isOwner);
     };
 
-    const ocorrenciasFiltradas = filtroUsuario === 'minhas' 
-        ? ocorrencias.filter(ocorrencia => podeEditar(ocorrencia))
-        : ocorrencias;    const ocorrenciasOrdenadas = [...ocorrenciasFiltradas].sort((a, b) => {
-        switch (ordenacao) {
-            case 'id-crescente':
-                return parseInt(a.id) - parseInt(b.id);
-            case 'id-decrescente':
-                return parseInt(b.id) - parseInt(a.id);
-            case 'horario-recente':
-                return b.timestamps.abertura.localeCompare(a.timestamps.abertura);
-            case 'horario-antigo':
-                return a.timestamps.abertura.localeCompare(b.timestamps.abertura);
-            case 'prioridade-alta':
-                return (prioridadeValor[b.prioridade] || 0) - (prioridadeValor[a.prioridade] || 0);
-            case 'prioridade-baixa':
-                return (prioridadeValor[a.prioridade] || 0) - (prioridadeValor[b.prioridade] || 0);
-            default:
-                return 0;
+    const isCreatedByCurrentUser = (ocorrencia) => {
+        if (!userProfile) return false;
+        const currentUserId = userProfile.id ? String(userProfile.id) : null;
+        const currentUserMatricula = userProfile.registration ? String(userProfile.registration) : null;
+
+        const candidates = [];
+        if (ocorrencia) {
+        
+            if (ocorrencia.metadata) {
+                candidates.push(ocorrencia.metadata.usuarioId);
+                candidates.push(ocorrencia.metadata.usuario_id);
+                candidates.push(ocorrencia.metadata.applicant_id);
+                candidates.push(ocorrencia.metadata.applicantId);
+            }
+            candidates.push(ocorrencia.applicant_id);
+            candidates.push(ocorrencia.applicantId);
+            candidates.push(ocorrencia.usuario_id);
+            candidates.push(ocorrencia.usuarioId);
+            
+            if (ocorrencia.metadata) {
+                candidates.push(ocorrencia.metadata.matriculaUsuario);
+                candidates.push(ocorrencia.metadata.matricula);
+            }
+            candidates.push(ocorrencia.matricula);
+            candidates.push(ocorrencia.applicant_matricula);
         }
-    });
+
+        const idMatch = currentUserId ? candidates.filter(Boolean).map(v => String(v)).some(v => v === currentUserId) : false;
+        if (idMatch) return true;
+
+        if (currentUserMatricula) {
+            const matriculaCandidates = candidates.filter(Boolean).map(v => String(v));
+            return matriculaCandidates.some(v => v === currentUserMatricula);
+        }
+
+        return false;
+    };
+
+    const ocorrenciasFiltradas = filtroUsuario === 'minhas'
+        ? ocorrencias.filter(ocorrencia => isCreatedByCurrentUser(ocorrencia))
+        : ocorrencias;
+
+    const safeDate = (t) => {
+        if (!t) return 0;
+        try {
+            const d = new Date(t);
+            return isNaN(d.getTime()) ? 0 : d.getTime();
+        } catch (e) {
+            return 0;
+        }
+    };
+
+    const ocorrenciasOrdenadas = [...ocorrenciasFiltradas].sort((a, b) => {
+            switch (ordenacao) {
+                case 'id-crescente':
+                    return (parseInt(a.id) || 0) - (parseInt(b.id) || 0);
+                case 'id-decrescente':
+                    return (parseInt(b.id) || 0) - (parseInt(a.id) || 0);
+                case 'horario-recente':
+                    return (safeDate(b.timestamps?.abertura) || 0) - (safeDate(a.timestamps?.abertura) || 0);
+                case 'horario-antigo':
+                    return (safeDate(a.timestamps?.abertura) || 0) - (safeDate(b.timestamps?.abertura) || 0);
+                case 'prioridade-alta':
+                    return (prioridadeValor[b.prioridade] || 0) - (prioridadeValor[a.prioridade] || 0);
+                case 'prioridade-baixa':
+                    return (prioridadeValor[a.prioridade] || 0) - (prioridadeValor[b.prioridade] || 0);
+                default:
+                    return 0;
+            }
+        });
 
     return (
         <div className="ocorrencias-container">
@@ -201,9 +341,9 @@ function Ocorrencias() {
                 <div className="filters-container">
                     <div className="filter-group">
                         <label htmlFor="filtro-usuario-select">Filtrar por:</label>
-                        <select 
+                        <select
                             id="filtro-usuario-select"
-                            value={filtroUsuario} 
+                            value={filtroUsuario}
                             onChange={(e) => setFiltroUsuario(e.target.value)}
                             className="filter-select"
                         >
@@ -212,7 +352,7 @@ function Ocorrencias() {
                         </select>
                     </div>
                 </div>
-                
+
                 <div className="ordenacao-container">
                     <label htmlFor="ordenacao-select">Ordenar por:</label>
                     <select
@@ -244,13 +384,13 @@ function Ocorrencias() {
                 ) : ocorrenciasFiltradas.length === 0 ? (
                     <div className="empty-state">
                         <h3>
-                            {filtroUsuario === 'minhas' 
+                            {filtroUsuario === 'minhas'
                                 ? 'Nenhuma ocorrência registrada por você'
                                 : 'Nenhuma ocorrência encontrada'
                             }
                         </h3>
                         <p>
-                            {filtroUsuario === 'minhas' 
+                            {filtroUsuario === 'minhas'
                                 ? 'Você ainda não registrou nenhuma ocorrência. Quando você registrar uma nova ocorrência, ela aparecerá aqui.'
                                 : 'Não há ocorrências cadastradas no sistema no momento.'
                             }
@@ -261,41 +401,41 @@ function Ocorrencias() {
                     </div>
                 ) : (
                     ocorrenciasOrdenadas.map((ocorrencia) => (
-                    <div key={ocorrencia.id} className="ocorrencia-item">
-                        <div className="ocorrencia-details">
-                            <strong>
-                                #{ocorrencia.id}
-                                <span className={`status ${getStatusClass(ocorrencia.status)}`}>
-                                    {ocorrencia.status}
-                                </span>
-                                <span className={`prioridade prioridade-${ocorrencia.prioridade.toLowerCase()}`}>
-                                    Prioridade: {ocorrencia.prioridade}
-                                </span>
-                            </strong>
-                            <p>{ocorrencia.chamado.tipo}</p>
-                            <p className="endereco">
-                                {`${ocorrencia.endereco.logradouro}, ${ocorrencia.endereco.numero} - ${ocorrencia.endereco.bairro}`}
-                            </p>
-                            {ocorrencia.metadata && (ocorrencia.metadata.nomeUsuario || ocorrencia.metadata.matriculaUsuario) && (
-                                <p className="registrado-por">
-                                    Registrado por: {ocorrencia.metadata.nomeUsuario || 'N/A'} 
-                                    {ocorrencia.metadata.matriculaUsuario && (
-                                        <span className="matricula"> (Mat: {ocorrencia.metadata.matriculaUsuario})</span>
-                                    )}
-                                </p>
-                            )}
-                        </div>
-
-                        <div className="ocorrencia-actions-time">
-                            <span className="horario">{formatarHorario(ocorrencia.timestamps.abertura)}</span>
-                            <div className="item-buttons">
-                                {podeEditar(ocorrencia) && (
-                                    <button className="btn btn-editar" onClick={() => handleEdit(ocorrencia.id)}>Editar</button>
+                        <div key={ocorrencia.id} className="ocorrencia-item">
+                            <div className="ocorrencia-details">
+                                <strong>
+                                    #{ocorrencia.id}
+                                    <span className={`status ${getStatusClass(ocorrencia.status)}`}>
+                                        {ocorrencia.status || 'Em andamento'}
+                                    </span>
+                                    <span className={`prioridade prioridade-${(ocorrencia.prioridade || 'Baixa').toString().toLowerCase()}`}>
+                                        Prioridade: {mapPrioridadeDisplay(ocorrencia.prioridade)}
+                                    </span>
+                                </strong>
+                                    <p>{displayTipo(ocorrencia)}{displaySubtipo(ocorrencia) ? ` — ${displaySubtipo(ocorrencia)}` : ''}</p>
+                                    <p className="endereco">
+                                        {formatEndereco(ocorrencia)}
+                                    </p>
+                                {ocorrencia.metadata && (ocorrencia.metadata.nomeUsuario || ocorrencia.metadata.matriculaUsuario) && (
+                                    <p className="registrado-por">
+                                        Registrado por: {ocorrencia.metadata.nomeUsuario || 'N/A'}
+                                        {ocorrencia.metadata.matriculaUsuario && (
+                                            <span className="matricula"> (Mat: {ocorrencia.metadata.matriculaUsuario})</span>
+                                        )}
+                                    </p>
                                 )}
                             </div>
-                            <a href="#" onClick={() => handleVerDetalhes(ocorrencia)}>Ver Detalhes da Ocorrência</a>
+
+                            <div className="ocorrencia-actions-time">
+                                <span className="horario">{formatarHorario(ocorrencia.timestamps?.abertura)}</span>
+                                <div className="item-buttons">
+                                    {podeEditar(ocorrencia) && (
+                                        <button className="btn btn-editar" onClick={() => handleEdit(ocorrencia.id)}>Editar</button>
+                                    )}
+                                </div>
+                                <a href="#" onClick={() => handleVerDetalhes(ocorrencia)}>Ver Detalhes da Ocorrência</a>
+                            </div>
                         </div>
-                    </div>
                     ))
                 )}
             </div>
@@ -307,14 +447,14 @@ function Ocorrencias() {
                             <h2>Editar Ocorrência #{ocorrenciaEditando.id}</h2>
                             <button className="close-button" onClick={handleCancelarEdicao}>×</button>
                         </div>
-                        
+
                         <div className="modal-body">
                             <div className="form-section">
                                 <h3>Informações Básicas</h3>
                                 <div className="form-group">
                                     <label>Status:</label>
-                                    <select 
-                                        value={ocorrenciaEditando.status} 
+                                    <select
+                                        value={ocorrenciaEditando.status}
                                         onChange={(e) => handleInputChange('status', e.target.value)}
                                     >
                                         <option value="Em andamento">Em andamento</option>
@@ -322,11 +462,11 @@ function Ocorrencias() {
                                         <option value="Finalizada">Finalizada</option>
                                     </select>
                                 </div>
-                                
+
                                 <div className="form-group">
                                     <label>Prioridade:</label>
-                                    <select 
-                                        value={ocorrenciaEditando.prioridade} 
+                                    <select
+                                        value={ocorrenciaEditando.prioridade}
                                         onChange={(e) => handleInputChange('prioridade', e.target.value)}
                                     >
                                         <option value="Alta">Alta</option>
@@ -340,27 +480,27 @@ function Ocorrencias() {
                                 <h3>Horários</h3>
                                 <div className="form-group">
                                     <label>Data/Hora de Abertura:</label>
-                                    <input 
+                                    <input
                                         type="datetime-local"
-                                        value={ocorrenciaEditando.timestamps.abertura ? new Date(ocorrenciaEditando.timestamps.abertura).toISOString().slice(0, 16) : ''} 
+                                        value={ocorrenciaEditando.timestamps.abertura ? new Date(ocorrenciaEditando.timestamps.abertura).toISOString().slice(0, 16) : ''}
                                         onChange={(e) => handleTimestampChange('abertura', e.target.value ? new Date(e.target.value).toISOString() : null)}
                                     />
                                 </div>
-                                
+
                                 <div className="form-group">
                                     <label>Data/Hora de Chegada no Local:</label>
-                                    <input 
+                                    <input
                                         type="datetime-local"
-                                        value={ocorrenciaEditando.timestamps.chegadaNoLocal ? new Date(ocorrenciaEditando.timestamps.chegadaNoLocal).toISOString().slice(0, 16) : ''} 
+                                        value={ocorrenciaEditando.timestamps.chegadaNoLocal ? new Date(ocorrenciaEditando.timestamps.chegadaNoLocal).toISOString().slice(0, 16) : ''}
                                         onChange={(e) => handleTimestampChange('chegadaNoLocal', e.target.value ? new Date(e.target.value).toISOString() : null)}
                                     />
                                 </div>
-                                
+
                                 <div className="form-group">
                                     <label>Data/Hora de Finalização:</label>
-                                    <input 
+                                    <input
                                         type="datetime-local"
-                                        value={ocorrenciaEditando.timestamps.finalizacao ? new Date(ocorrenciaEditando.timestamps.finalizacao).toISOString().slice(0, 16) : ''} 
+                                        value={ocorrenciaEditando.timestamps.finalizacao ? new Date(ocorrenciaEditando.timestamps.finalizacao).toISOString().slice(0, 16) : ''}
                                         onChange={(e) => handleTimestampChange('finalizacao', e.target.value ? new Date(e.target.value).toISOString() : null)}
                                     />
                                 </div>
@@ -370,44 +510,44 @@ function Ocorrencias() {
                                 <h3>Endereço</h3>
                                 <div className="form-group">
                                     <label>Logradouro:</label>
-                                    <input 
+                                    <input
                                         type="text"
-                                        value={ocorrenciaEditando.endereco.logradouro} 
+                                        value={ocorrenciaEditando.endereco.logradouro}
                                         onChange={(e) => handleEnderecoChange('logradouro', e.target.value)}
                                     />
                                 </div>
-                                
+
                                 <div className="form-group">
                                     <label>Número:</label>
-                                    <input 
+                                    <input
                                         type="text"
-                                        value={ocorrenciaEditando.endereco.numero} 
+                                        value={ocorrenciaEditando.endereco.numero}
                                         onChange={(e) => handleEnderecoChange('numero', e.target.value)}
                                     />
                                 </div>
-                                
+
                                 <div className="form-group">
                                     <label>Bairro:</label>
-                                    <input 
+                                    <input
                                         type="text"
-                                        value={ocorrenciaEditando.endereco.bairro} 
+                                        value={ocorrenciaEditando.endereco.bairro}
                                         onChange={(e) => handleEnderecoChange('bairro', e.target.value)}
                                     />
                                 </div>
-                                
+
                                 <div className="form-group">
                                     <label>Cidade:</label>
-                                    <input 
+                                    <input
                                         type="text"
-                                        value={ocorrenciaEditando.endereco.cidade} 
+                                        value={ocorrenciaEditando.endereco.cidade}
                                         onChange={(e) => handleEnderecoChange('cidade', e.target.value)}
                                     />
                                 </div>
 
                                 <div className="form-group">
                                     <label>UF:</label>
-                                    <select 
-                                        value={ocorrenciaEditando.endereco.uf || 'PE'} 
+                                    <select
+                                        value={ocorrenciaEditando.endereco.uf || 'PE'}
                                         onChange={(e) => handleEnderecoChange('uf', e.target.value)}
                                     >
                                         <option value="PE">PE</option>
@@ -424,9 +564,9 @@ function Ocorrencias() {
 
                                 <div className="form-group">
                                     <label>Ponto de Referência:</label>
-                                    <input 
+                                    <input
                                         type="text"
-                                        value={ocorrenciaEditando.endereco.pontoReferencia || ''} 
+                                        value={ocorrenciaEditando.endereco.pontoReferencia || ''}
                                         onChange={(e) => handleEnderecoChange('pontoReferencia', e.target.value)}
                                         placeholder="Ex: Próximo ao shopping, em frente à escola..."
                                     />
@@ -437,8 +577,8 @@ function Ocorrencias() {
                                 <h3>Detalhes do Chamado</h3>
                                 <div className="form-group">
                                     <label>Tipo:</label>
-                                    <select 
-                                        value={ocorrenciaEditando.chamado.tipo} 
+                                    <select
+                                        value={ocorrenciaEditando.chamado.tipo}
                                         onChange={(e) => handleChamadoChange('tipo', e.target.value)}
                                     >
                                         <option value="Atendimento Pré-Hospitalar (APH)">Atendimento Pré-Hospitalar (APH)</option>
@@ -450,12 +590,12 @@ function Ocorrencias() {
                                         <option value="Outros">Outros</option>
                                     </select>
                                 </div>
-                                
+
                                 <div className="form-group">
                                     <label>Detalhes:</label>
-                                    <textarea 
+                                    <textarea
                                         rows="4"
-                                        value={ocorrenciaEditando.chamado.detalhes} 
+                                        value={ocorrenciaEditando.chamado.detalhes}
                                         onChange={(e) => handleChamadoChange('detalhes', e.target.value)}
                                         placeholder="Descreva os detalhes da ocorrência..."
                                     ></textarea>
@@ -465,9 +605,9 @@ function Ocorrencias() {
                                     <h4>Solicitante</h4>
                                     <div className="form-group">
                                         <label>Nome:</label>
-                                        <input 
+                                        <input
                                             type="text"
-                                            value={ocorrenciaEditando.chamado.solicitante?.nome || ''} 
+                                            value={ocorrenciaEditando.chamado.solicitante?.nome || ''}
                                             onChange={(e) => handleSolicitanteChange('nome', e.target.value)}
                                             placeholder="Nome do solicitante"
                                         />
@@ -482,8 +622,8 @@ function Ocorrencias() {
                                         <div className="equipe-header">
                                             <h4>Equipe {index + 1}</h4>
                                             {ocorrenciaEditando.equipes.length > 1 && (
-                                                <button 
-                                                    type="button" 
+                                                <button
+                                                    type="button"
                                                     className="btn-remove-equipe"
                                                     onClick={() => removerEquipe(index)}
                                                 >
@@ -491,42 +631,42 @@ function Ocorrencias() {
                                                 </button>
                                             )}
                                         </div>
-                                        
+
                                         <div className="form-group">
                                             <label>Viatura:</label>
-                                            <input 
+                                            <input
                                                 type="text"
-                                                value={equipe.id} 
+                                                value={equipe.id}
                                                 onChange={(e) => handleEquipeChange(index, 'id', e.target.value)}
                                                 placeholder="Ex: ABT-05"
                                             />
                                         </div>
-                                        
+
                                         <div className="form-group">
                                             <label>Líder:</label>
-                                            <input 
+                                            <input
                                                 type="text"
-                                                value={equipe.lider || ''} 
+                                                value={equipe.lider || ''}
                                                 onChange={(e) => handleEquipeChange(index, 'lider', e.target.value)}
                                                 placeholder="Ex: Sgt. Lima"
                                             />
                                         </div>
-                                        
+
                                         <div className="form-group">
                                             <label>Efetivo:</label>
-                                            <input 
+                                            <input
                                                 type="number"
                                                 min="1"
                                                 max="10"
-                                                value={equipe.efetivo} 
+                                                value={equipe.efetivo}
                                                 onChange={(e) => handleEquipeChange(index, 'efetivo', parseInt(e.target.value) || 1)}
                                             />
                                         </div>
                                     </div>
                                 ))}
-                                
-                                <button 
-                                    type="button" 
+
+                                <button
+                                    type="button"
                                     className="btn-add-equipe"
                                     onClick={adicionarEquipe}
                                 >

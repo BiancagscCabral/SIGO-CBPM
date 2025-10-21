@@ -184,13 +184,21 @@ class UserProfileService {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        return { success: true, message: 'Preferências de notificação salvas com sucesso!' };
+        let result = null;
+        try { result = await response.json(); } catch (e) { result = null; }
+        return { success: true, message: (result && result.message) ? result.message : 'Preferências de notificação salvas com sucesso!' };
       } else {
-        const errorData = await response.json();
+        let errorText = '';
+        try {
+          const errJson = await response.json();
+          errorText = errJson.error || errJson.message || JSON.stringify(errJson);
+        } catch (e) {
+          errorText = await response.text().catch(() => 'Erro ao salvar preferências de notificação');
+        }
+
         return { 
           success: false, 
-          error: errorData.error || 'Erro ao salvar preferências de notificação' 
+          error: errorText || 'Erro ao salvar preferências de notificação' 
         };
       }
     } catch (error) {
