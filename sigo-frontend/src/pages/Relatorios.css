@@ -96,6 +96,12 @@
   align-items: center;
 }
 
+.report-form .button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
 .btn-gerar {
   background-color: #ff6f00;
   color: white;
@@ -105,9 +111,11 @@
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  height: 41px;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 47px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .btn-gerar:hover {

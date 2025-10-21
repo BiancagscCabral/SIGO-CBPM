@@ -21,7 +21,6 @@ const AvailableReportCard = ({ title, description, count }) => (
 );
 
 function Relatorios() {
-  // Estados para controlar os dropdowns (ainda sem funcionalidade)
   const [tipoRelatorio, setTipoRelatorio] = useState('');
   const [periodo, setPeriodo] = useState('');
   const [formato, setFormato] = useState('');
@@ -38,7 +37,6 @@ function Relatorios() {
         <p>Visualize dados e gere relatórios detalhados</p>
       </div>
 
-      {/* Seção 1: Painel de Estatísticas */}
       <section className="analytics-grid">
         <AnalyticsCard 
           value="8min 32s"
@@ -61,11 +59,10 @@ function Relatorios() {
         <AnalyticsCard 
           value="8/12"
           title="Equipes Ativas"
-          change="" // Sem dados de mudança
+          change="" 
         />
       </section>
 
-      {/* Seção 2: Gerador de Relatório */}
       <section className="report-generator">
         <h3>Gerar Novo Relatório</h3>
         <p>Personalize e gere relatórios específicos</p>
@@ -100,11 +97,12 @@ function Relatorios() {
               <option value="csv">CSV</option>
             </select>
           </div>
-          <button type="submit" className="btn-gerar">Gerar Relatório</button>
+          <div className='form-group button-container'>
+            <button type="submit" className="btn-gerar">Gerar Relatório</button>
+          </div>
         </form>
       </section>
-
-      {/* Seção 3: Relatórios Disponíveis */}
+      
       <section className="available-reports">
         <h3>Relatórios Disponíveis</h3>
         <p>Acesse relatórios gerados anteriormente</p>
