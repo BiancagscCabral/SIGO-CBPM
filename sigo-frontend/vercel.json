@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://senac-brigade-server-v1-1.onrender.com" 
+    }
+  ]
+}
