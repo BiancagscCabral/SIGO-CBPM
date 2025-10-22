@@ -80,7 +80,6 @@ export const AccessibilityProvider = ({ children }) => {
 
     const utterance = new SpeechSynthesisUtterance(text);
     
-    // Configurações da voz
     utterance.rate = 0.8; // Velocidade da fala
     utterance.pitch = 1; // Tom da voz
     utterance.volume = 0.8; // Volume
