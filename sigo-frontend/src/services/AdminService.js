@@ -33,8 +33,6 @@ class AdminService {
     }
   }
 
-  // A função updateUserStatus foi removida pois sua lógica foi incorporada em updateUser.
-
   static async deleteUser(userId) {
     try {
       const response = await fetch(`${this.baseUrl}/admin/users/${userId}`, {
@@ -104,7 +102,6 @@ class AdminService {
     }
   }
 
-  // Função updateUser agora lida com todos os dados, incluindo o status.
   static async updateUser(userId, userData) {
     try {
       const response = await fetch(`${this.baseUrl}/admin/users/${userId}`, {
